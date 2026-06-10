@@ -1,0 +1,111 @@
+<!DOCTYPE html><html lang="ko"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sounds — ONDA beat</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Notable&amp;family=Lalezar&amp;family=Rubik+Dirt&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css">
+<link rel="stylesheet" href="assets/styles.css">
+<style>/* FT-OVERRIDES */
+.ft-col a { font-family: 'Pretendard Variable', sans-serif !important; color: #fff !important; }
+.ft-col a:hover { color: var(--pink) !important; }
+</style>
+<!-- FT-OVERRIDES -->
+</head>
+<body>
+<!-- GNB -->
+<header class="gnb">
+  <div class="gnb-inner">
+    <a href="index.html" class="logo"><span class="logo-mark"><span style="color:#fff;">ON</span><span style="color:#fff;">D</span><span style="color:#fff;">A</span></span><span class="logo-sub">beat</span></a>
+    <nav class="nav">
+      <a href="index.html">home</a>
+      <a href="sounds.html" class="active">sounds</a>
+      <a href="pricing.html">pricing</a>
+      <a href="qna.html">QnA</a>
+      <a href="sounds.html" class="try-now" style="font-size: 16px; width: 115px; height: 40px; text-align: center; line-height: 2; font-weight: 800">TRY NOW ↗</a>
+    </nav>
+  </div>
+</header>
+
+<!-- Sticky banner -->
+<div class="banner">
+  <div class="banner-marquee">
+    <span>저작권 제약 없는 트렌디한 비트로 당신의 안무 영상 수익을 온전히 지켜보세요</span>
+    <span>100% Royalty-Free · Unlimited use on YouTube, Instagram, TikTok</span>
+    <span>저작권 제약 없는 트렌디한 비트로 당신의 안무 영상 수익을 온전히 지켜보세요</span>
+    <span>100% Royalty-Free · Unlimited use on YouTube, Instagram, TikTok</span>
+  </div>
+</div>
+<section class="page-hero">
+  <div class="page-hero-inner">
+    <div class="section-kicker">/ CATALOG</div>
+    <h1 class="page-hero-title">SOUNDS</h1>
+    <p class="page-hero-sub">5가지 무드. 원하는 그루브를 선택하고 바로 미리 들어보세요.</p>
+  </div>
+</section>
+
+<!-- Sounds / Filters / Table -->
+<section class="sounds">
+  <div class="sounds-inner">
+    <div class="sounds-toolbar">
+      <div class="filters" id="filters">
+        <button class="filter-btn active" data-mood="all">All</button>
+        <button class="filter-btn" data-mood="dark">Dark &amp; Heavy</button>
+        <button class="filter-btn" data-mood="chill">Chill &amp; Groovy</button>
+        <button class="filter-btn" data-mood="bouncy">Bouncy &amp; Hype</button>
+        <button class="filter-btn" data-mood="sensual">Sensual &amp; Deep</button>
+        <button class="filter-btn" data-mood="raw">Raw &amp; Gritty</button>
+      </div>
+      <label class="search-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="search-icon"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input id="beat-search" type="search" placeholder="곡명·장르·댄스 스타일 검색" autocomplete="off" />
+      </label>
+    </div>
+
+    <div class="tag-filters-row">
+      <span class="tag-filters-label">DANCE STYLE</span>
+      <div class="tag-filters" id="tag-filters"></div>
+    </div>
+
+    <table class="beats-table">
+      <thead>
+        <tr>
+          <th class="check-col"><input type="checkbox" id="check-all" aria-label="모두 선택" /></th>
+          <th style="font-size: 0px">
+</th>
+          <th>song</th>
+          <th class="wave">
+</th>
+          <th class="genre">genre</th>
+          <th class="bpm">bpm</th>
+          <th>buy</th>
+        </tr>
+      </thead>
+      <tbody id="beats-body"></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="ft-inner">
+    <div class="ft-brand">
+      <a href="index.html" class="logo" style="color:#fff;"><span class="logo-mark"><span style="color:#fff;">ON</span><span style="color:#fff;">D</span><span style="color:#fff;">A</span></span><span class="logo-sub">beat</span></a>
+      <p>ON your Deep Awakening.</p>
+    </div>
+    <div class="ft-cols">
+      <div class="ft-col"><h5 style="font-family:'Pretendard Variable',sans-serif;color:#fff;letter-spacing:0.1em;">Contact us</h5>
+        <a href="https://www.instagram.com/" target="_blank" rel="noopener">Instagram</a>
+        <a href="mailto:hello@onda.beat">hello@onda.beat</a>
+      </div>
+    </div>
+  <div class="ft-base">
+    <span>© 2026 ONDA BEAT</span>
+    <span></span>
+  </div>
+</footer>
+
+<audio id="audio-player" preload="none"></audio>
+<script src="assets/app.js"></script>
+</body></html>
