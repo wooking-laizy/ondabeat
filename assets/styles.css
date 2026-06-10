@@ -68,7 +68,9 @@
     display: flex;
     gap: 36px;
     align-items: center;
-    margin-left: auto;
+    flex: 1;
+    justify-content: space-between;
+    margin-left: 48px;
   }
   .nav a {
     font-family: var(--f-body);
@@ -938,12 +940,16 @@
 
   /* compact table: hide bpm too, keep play / song / buy */
     .beats-table th.bpm, .beats-table td:nth-child(6) { display: none; }
-    .beats-table th, .beat-row td { padding: 12px 8px; }
-    .beats-table th.check-col, .beat-row td.check-cell { padding-left: 4px; padding-right: 4px; }
+    .beats-table { table-layout: fixed; width: 100%; }
+    .beats-table th, .beat-row td { padding: 12px 6px; }
+    .beats-table th.check-col, .beat-row td.check-cell { width: 30px; padding-left: 2px; padding-right: 2px; }
+    .beats-table th:nth-child(2), .beat-row td:nth-child(2) { width: 52px; }
+    .beats-table th:last-child, .beat-row td:last-child { width: 50px; }
     .beat-row td:nth-child(3) { min-width: 0; }
-    .song-title { font-size: 14px; }
-    .song-tags { flex-wrap: wrap; }
-    .song-tag { font-size: 9px; padding: 2px 6px; }
+    .song-title { font-size: 14px; white-space: normal; }
+    .song-tags { display: none; }
+    .play-btn { width: 38px; height: 38px; }
+    .play-btn svg { width: 13px; height: 13px; }
 
     .plans-grid { grid-template-columns: 1fr; }
     .plan-card { min-height: auto; padding: 28px 22px; }
