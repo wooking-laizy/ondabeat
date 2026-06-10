@@ -874,13 +874,13 @@
 
   /* ============ Responsive ============ */
   @media (max-width: 900px) {
-    .gnb-inner { padding: 14px 20px; }
-    .nav { gap: 16px; }
-    .nav a:not(.try-now) { display: none; }
+    .gnb-inner { padding: 12px 16px; flex-wrap: wrap; gap: 8px; }
+    .nav { gap: 14px; margin-left: auto; }
+    .nav a:not(.try-now) { font-size: 13px; }
     .banner { font-size: 12px; top: 57px; }
-    .hero { height: 500px; }
-    .hero-copy { padding: 70px 20px 0; }
-    .hero-copy h1 { font-size: 72px; }
+    .hero { height: 460px; }
+    .hero-copy { padding: 0 20px; bottom: 40px; }
+    .hero-copy h1 { font-size: 56px; }
     .sounds-head-inner, .sounds-inner, .pricing-inner, .community-inner, .qna-inner, .hero-carousel { padding: 0 20px 40px; }
     .sounds-head h2 { font-size: 44px; }
     .section-title { font-size: 48px; }
@@ -893,7 +893,69 @@
     .carousel-slide .num { font-size: 36px; min-width: 36px; }
     .carousel-slide .title { font-size: 22px; }
     .carousel-slide .meta, .carousel-slide .bpm-badge, .carousel-buy span { display: none; }
+    .carousel-slide .slide-tags { display: none; }
     .hero-carousel-head h2 { font-size: 30px; }
+  }
+
+  /* ===== Phone (≤560px) ===== */
+  @media (max-width: 560px) {
+    .gnb { position: sticky; }
+    .gnb-inner { padding: 12px 14px; justify-content: space-between; }
+    .logo { font-size: 20px; }
+    .logo-sub { font-size: 9px; }
+    .nav { gap: 10px; width: 100%; justify-content: center; order: 3; flex-wrap: wrap; }
+    .nav a:not(.try-now) { font-size: 13px; padding: 2px 0; }
+    .try-now {
+      font-size: 12px !important;
+      width: auto !important;
+      height: auto !important;
+      line-height: 1.2 !important;
+      padding: 9px 18px !important;
+      margin-left: 0 !important;
+    }
+    .banner { font-size: 11px; padding: 9px 14px; }
+    .hero { height: 380px; }
+    .hero-copy h1 { font-size: 42px; }
+    .hero-tag { font-size: 10px; margin-top: 16px; }
+
+    .hero-carousel { padding: 0 14px 50px; }
+    .hero-carousel-head h2 { font-size: 24px; }
+    .carousel-slide { padding: 16px 14px; gap: 10px; }
+    .carousel-slide .num { font-size: 28px; min-width: 28px; }
+    .carousel-slide .title { font-size: 17px; }
+    .carousel-play { width: 44px; height: 44px; }
+
+    .page-hero { padding: 44px 0 36px; }
+    .page-hero-title { font-size: 46px; }
+    .page-hero-sub { font-size: 14px; }
+    .section-kicker { font-size: 11px; }
+
+    .sounds-toolbar { flex-direction: column; align-items: stretch; gap: 12px; }
+    .search-wrap { width: 100%; min-width: 0; }
+    .filters { gap: 8px; }
+    .filter-btn { font-size: 12px; padding: 9px 16px; }
+    .tag-filters-row { flex-direction: column; align-items: flex-start; gap: 10px; }
+
+  /* compact table: hide bpm too, keep play / song / buy */
+    .beats-table th.bpm, .beats-table td:nth-child(6) { display: none; }
+    .beats-table th, .beat-row td { padding: 12px 8px; }
+    .beats-table th.check-col, .beat-row td.check-cell { padding-left: 4px; padding-right: 4px; }
+    .beat-row td:nth-child(3) { min-width: 0; }
+    .song-title { font-size: 14px; }
+    .song-tags { flex-wrap: wrap; }
+    .song-tag { font-size: 9px; padding: 2px 6px; }
+
+    .plans-grid { grid-template-columns: 1fr; }
+    .plan-card { min-height: auto; padding: 28px 22px; }
+    .plan-amount { font-size: 40px; }
+
+    .ft-inner { flex-direction: column; gap: 28px; }
+    .ft-cols { gap: 40px; flex-wrap: wrap; }
+    .ft-base { flex-direction: column; gap: 8px; text-align: center; }
+
+    .cart-bar-inner { padding: 0 14px; }
+    .checkout-card { padding: 24px 20px; max-height: 90vh; }
+    .checkout-head h3 { font-size: 26px; }
   }
 
 
@@ -1125,12 +1187,22 @@
 .pb-close:hover { background: rgba(255,255,255,0.08); }
 
 @media (max-width: 720px){
+  .player-bar { padding: 10px 0; }
   .pb-inner {
-    grid-template-columns: 44px 1fr auto 28px;
-    gap: 12px;
-    padding: 0 16px;
+    grid-template-columns: 40px 1fr 28px;
+    grid-template-areas:
+      "toggle meta close"
+      "track  track track";
+    gap: 8px 12px;
+    padding: 0 14px;
+    align-items: center;
   }
-  .pb-time, .pb-track { display: none; }
+  .pb-toggle { grid-area: toggle; width: 40px; height: 40px; }
+  .pb-meta   { grid-area: meta; }
+  .pb-close  { grid-area: close; }
+  .pb-track  { grid-area: track; min-width: 0; width: 100%; }
+  .pb-cur, .pb-dur, .pb-preview-badge { display: none; }
+  .pb-title { font-size: 14px; }
 }
 
 /* leave room above footer when player visible */

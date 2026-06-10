@@ -108,6 +108,9 @@ async function fetchFromSheet(){
         if (document.getElementById('beats-body') && typeof applyFilters === 'function'){
           applyFilters();
         }
+        if (typeof initCarousel === 'function' && document.getElementById('hotTrack')){
+          initCarousel();
+        }
       }
       console.log('[ONDA] Loaded', BEATS.length, 'beats from Google Sheet');
     }
@@ -870,9 +873,9 @@ function initCarousel(){
 
   const prev = document.getElementById('hotPrev');
   const next = document.getElementById('hotNext');
-  if (prev) prev.addEventListener('click', () => goToSlide(hotIdx - 1));
-  if (next) next.addEventListener('click', () => goToSlide(hotIdx + 1));
-  dotsWrap.querySelectorAll('span').forEach((d, i) => d.addEventListener('click', () => goToSlide(i)));
+  if (prev) prev.onclick = () => goToSlide(hotIdx - 1);
+  if (next) next.onclick = () => goToSlide(hotIdx + 1);
+  dotsWrap.querySelectorAll('span').forEach((d, i) => d.onclick = () => goToSlide(i));
 
   track.querySelectorAll('.carousel-slide').forEach(slide => {
     const btn = slide.querySelector('.carousel-play');
