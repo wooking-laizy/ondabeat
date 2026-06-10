@@ -41,8 +41,9 @@
     margin: 0 auto;
     padding: 18px 40px;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
   }
   .logo {
     font-family: var(--f-logo);
@@ -68,20 +69,21 @@
     display: flex;
     gap: 36px;
     align-items: center;
-    flex: 1;
     justify-content: space-between;
-    margin-left: 48px;
+    width: 100%;
+    padding-top: 12px;
+    border-top: 1px solid #1c1c22;
   }
   .nav a {
     font-family: var(--f-body);
-    font-size: 17px;
+    font-size: 19px;
     color: #e8e8ec;
-    font-weight: 500;
+    font-weight: 600;
     position: relative;
     padding: 4px 0;
     transition: color .2s;
   }
-  .nav a.try-now { margin-left: 12px; }
+  .nav a.try-now { margin-left: auto; }
   .nav a:hover { color: var(--pink-hot); }
   .nav a::after {
     content: '';
@@ -97,10 +99,10 @@
   .try-now {
     background: #FF427B;
     color: #fff;
-    padding: 12px 28px;
+    padding: 11px 26px;
     border-radius: 999px;
     font-weight: 800;
-    font-size: 11px;
+    font-size: 13px;
     letter-spacing: 0.08em;
     text-align: center;
     display: inline-flex;
@@ -419,7 +421,8 @@
   .beats-table th:last-child { width: 80px; text-align: center; }
   .beats-table th.wave { width: 220px; text-align: center; }
   .beats-table th.bpm { width: 100px; text-align: center; }
-  .beats-table th.genre { width: 200px; }
+  .beats-table th.genre { width: 180px; }
+  .beats-table td.genre-cell { max-width: 180px; padding-right: 20px; }
   .beats-table td.wave-cell { text-align: center; }
   .beats-table td:nth-child(6) { text-align: center; }
   .beats-table td:last-child { text-align: center; }
@@ -470,8 +473,10 @@
     font-size: 13px;
     color: var(--text-dim);
     font-family: var(--f-body);
-    line-height: 1.5;
-    display: inline-block;
+    line-height: 1.4;
+    display: block;
+    white-space: normal;
+    overflow-wrap: break-word;
   }
   .song-bpm { font-family: var(--f-mono); font-size: 14px; color: var(--text-dim); }
   .song-price { font-family: var(--f-body); font-size: 14px; color: #fff; font-weight: 600; }
