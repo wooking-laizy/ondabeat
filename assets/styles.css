@@ -1251,16 +1251,16 @@ body { padding-bottom: 0; }
 
 .plans-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: 1fr 1fr;
   grid-auto-rows: 1fr;
-  gap: 16px;
+  gap: 22px;
   margin-bottom: 64px;
 }
 .plan-card {
   background: #141418;
   border: 1px solid #242430;
   border-radius: 22px;
-  padding: 28px 22px 26px;
+  padding: 40px 38px 36px;
   position: relative;
   transition: transform .2s, border-color .2s;
   display: flex;
@@ -1486,7 +1486,7 @@ body { padding-bottom: 0; }
 
 /* ============ Plan card unification (all 4 same size) ============ */
 .plan-card {
-  min-height: 440px;
+  min-height: 480px;
 }
 .plan-h3 {
   font-family: var(--f-title);
