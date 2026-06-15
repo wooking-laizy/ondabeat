@@ -865,17 +865,36 @@ function initCarousel(){
 
   function goToSlide(i){
     hotIdx = (i + hotBeats.length) % hotBeats.length;
-    const shift = 14 - hotIdx * 76;
-    track.style.transform = `translateX(${shift}%)`;
+    const slides = track.querySelectorAll('.carousel-slide');
+    const slide = slides[hotIdx];
+    const vp = track.parentElement;
+    let shiftPx = 0;
+    if (slide && vp){
+      const slideCenter = slide.offsetLeft + slide.offsetWidth / 2;
+      shiftPx = vp.clientWidth / 2 - slideCenter;
+    }
+    track.style.transform = `translateX(${shiftPx}px)`;
     dotsWrap.querySelectorAll('span').forEach((d, idx) => d.classList.toggle('on', idx === hotIdx));
-    track.querySelectorAll('.carousel-slide').forEach((s, idx) => s.classList.toggle('is-active', idx === hotIdx));
+    slides.forEach((s, idx) => s.classList.toggle('is-active', idx === hotIdx));
   }
+  window.addEventListener('resize', () => goToSlide(hotIdx));
 
   const prev = document.getElementById('hotPrev');
   const next = document.getElementById('hotNext');
   if (prev) prev.onclick = () => goToSlide(hotIdx - 1);
   if (next) next.onclick = () => goToSlide(hotIdx + 1);
   dotsWrap.querySelectorAll('span').forEach((d, i) => d.onclick = () => goToSlide(i));
+
+  // touch swipe (mobile)
+  const vp = track.closest('.carousel-viewport') || track.parentElement;
+  let touchX = null;
+  vp.addEventListener('touchstart', e => { touchX = e.touches[0].clientX; }, { passive: true });
+  vp.addEventListener('touchend', e => {
+    if (touchX === null) return;
+    const dx = e.changedTouches[0].clientX - touchX;
+    if (Math.abs(dx) > 40) goToSlide(hotIdx + (dx < 0 ? 1 : -1));
+    touchX = null;
+  }, { passive: true });
 
   track.querySelectorAll('.carousel-slide').forEach(slide => {
     const btn = slide.querySelector('.carousel-play');

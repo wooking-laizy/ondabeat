@@ -931,7 +931,8 @@
     .hero-carousel-head { margin-bottom: 32px; }
     .home-links { padding: 56px 0 80px; }
     .hero-carousel-head h2 { font-size: 24px; }
-    .carousel-slide { padding: 16px 14px; gap: 10px; }
+    .carousel-nav { display: none; }
+    .carousel-slide { flex: 0 0 88%; margin: 0 1.5%; padding: 18px 16px; gap: 12px; }
     .carousel-slide .num { font-size: 28px; min-width: 28px; }
     .carousel-slide .title { font-size: 17px; }
     .carousel-play { width: 44px; height: 44px; }
