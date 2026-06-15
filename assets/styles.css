@@ -152,16 +152,17 @@
     overflow: hidden;
     border-bottom: 1px solid #141418;
   }
-  .hero-bg {
+  .hero-slot {
     position: absolute; inset: 0;
-    background-image: url('https://images.unsplash.com/photo-1535525153412-5a42439a210d?auto=format&fit=crop&w=1920&q=85');
-    background-size: cover;
-    background-position: center 25%;
+    width: 100%; height: 100%;
     filter: grayscale(1) contrast(1.08) brightness(0.72);
+    z-index: 0;
   }
-  .hero-bg::after {
+  .hero-overlay {
     content: '';
     position: absolute; inset: 0;
+    z-index: 1;
+    pointer-events: none;
     background:
       radial-gradient(ellipse at 25% 50%, rgba(0,0,0,.85) 0%, transparent 65%),
       linear-gradient(180deg, rgba(0,0,0,.45) 0%, rgba(0,0,0,.2) 40%, rgba(10,10,12,.9) 100%);
@@ -206,8 +207,8 @@
   .hero-carousel {
     position: relative;
     max-width: 1280px;
-    margin: -70px auto 0;
-    padding: 0 40px 80px;
+    margin: 10px auto 0;
+    padding: 40px 40px 50px;
     z-index: 5;
     overflow: hidden;
   }
@@ -216,7 +217,7 @@
     align-items: baseline;
     justify-content: center;
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 44px;
   }
   .hero-carousel-head h2 {
     font-family: var(--f-title);
@@ -888,7 +889,8 @@
     .hero { height: 460px; }
     .hero-copy { padding: 0 20px; bottom: 40px; }
     .hero-copy h1 { font-size: 56px; }
-    .sounds-head-inner, .sounds-inner, .pricing-inner, .community-inner, .qna-inner, .hero-carousel { padding: 0 20px 40px; }
+    .sounds-head-inner, .sounds-inner, .pricing-inner, .community-inner, .qna-inner { padding: 0 20px 40px; }
+    .hero-carousel { padding: 36px 20px 56px; margin-top: 20px; }
     .sounds-head h2 { font-size: 44px; }
     .section-title { font-size: 48px; }
     .pricing-hero, .license-grid, .comm-grid { grid-template-columns: 1fr; gap: 30px; }
@@ -925,7 +927,9 @@
     .hero-copy h1 { font-size: 42px; }
     .hero-tag { font-size: 10px; margin-top: 16px; }
 
-    .hero-carousel { padding: 0 14px 50px; }
+    .hero-carousel { padding: 40px 14px 68px; margin-top: 28px; }
+    .hero-carousel-head { margin-bottom: 32px; }
+    .home-links { padding: 56px 0 80px; }
     .hero-carousel-head h2 { font-size: 24px; }
     .carousel-slide { padding: 16px 14px; gap: 10px; }
     .carousel-slide .num { font-size: 28px; min-width: 28px; }
@@ -952,7 +956,8 @@
     .beats-table th:last-child, .beat-row td:last-child { width: 50px; }
     .beat-row td:nth-child(3) { min-width: 0; }
     .song-title { font-size: 14px; white-space: normal; }
-    .song-tags { display: none; }
+    .song-tags { display: flex; gap: 3px; margin-top: 5px; flex-wrap: wrap; }
+    .song-tag { font-size: 8px; padding: 1.5px 5px; letter-spacing: 0.04em; }
     .play-btn { width: 38px; height: 38px; }
     .play-btn svg { width: 13px; height: 13px; }
 
@@ -1024,7 +1029,7 @@
 }
 
 /* Home: section link cards */
-.home-links { padding: 60px 0 120px; background: var(--bg); }
+.home-links { padding: 80px 0 120px; background: var(--bg); }
 .home-links-inner {
   max-width: 1280px;
   margin: 0 auto;
@@ -1435,7 +1440,7 @@ body { padding-bottom: 0; }
   display: flex;
   gap: 5px;
   margin-top: 7px;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   align-items: center;
 }
 .song-tag {
