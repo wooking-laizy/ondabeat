@@ -468,11 +468,11 @@ function ensureCheckout(){
           </div>
           <div class="bank-row">
             <span class="bank-label">예금주</span>
-            <span class="bank-value">온다비트 (ONDA beat)</span>
+            <span class="bank-value">디어뮤직스튜디오</span>
           </div>
           <div class="bank-row">
             <span class="bank-label">계좌번호</span>
-            <span class="bank-value bank-account">3333-00-1234567 <button class="bank-copy" type="button" data-copy="3333001234567">복사</button></span>
+            <span class="bank-value bank-account">3333-31-2035748 <button class="bank-copy" type="button" data-copy="3333312035748">복사</button></span>
           </div>
           <div class="bank-row bank-amount">
             <span class="bank-label">입금 금액</span>
@@ -505,7 +505,7 @@ function ensureCheckout(){
           <p>주문번호 <b id="done-order">—</b></p>
           <p>위 계좌로 <b id="done-amount">₩ 0</b>을 입금해 주시면<br/>
           <b id="done-email">your email</b>으로 음원을 보내드립니다.</p>
-          <p class="checkout-done-sub">입금 후 24시간 안에 메일이 도착하지 않으면<br/>hello@onda.beat 으로 알려주세요.</p>
+          <p class="checkout-done-sub">입금 후 24시간 안에 메일이 도착하지 않으면<br/>ondaroombeat@gmail.com 으로 알려주세요.</p>
           <button class="checkout-pay" id="done-close">확인</button>
         </div>
       </div>
