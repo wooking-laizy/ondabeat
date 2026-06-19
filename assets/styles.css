@@ -1244,6 +1244,8 @@ body { padding-bottom: 0; }
 .pricing-intro.single-row p {
   font-family: var(--f-body);
   font-size: 16px;
+  max-width: none;
+  margin: 0 auto;
   line-height: 1.7;
   color: #d0d0d6;
 }
