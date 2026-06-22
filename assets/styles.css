@@ -51,9 +51,18 @@
     color: #fff;
     letter-spacing: 0.04em;
     display: inline-flex;
-    align-items: baseline;
+    align-items: center;
     gap: 6px;
   }
+  .logo-img {
+    height: 30px;
+    width: auto;
+    display: block;
+  }
+  .ft-brand { display: inline-block; }
+  .ft-brand .logo { display: block; }
+  .ft-brand .logo-img { width: 151px; height: auto; }
+  .ft-brand p { white-space: nowrap; display: inline-block; }
   .logo-sub {
     font-family: 'Pretendard Variable', sans-serif;
     font-size: 11px;
@@ -912,6 +921,7 @@
     .gnb { position: sticky; }
     .gnb-inner { padding: 12px 14px; justify-content: space-between; }
     .logo { font-size: 20px; }
+    .logo-img { height: 24px; }
     .logo-sub { font-size: 9px; }
     .nav { gap: 10px; width: 100%; justify-content: center; order: 3; flex-wrap: wrap; }
     .nav a:not(.try-now) { font-size: 13px; padding: 2px 0; }
