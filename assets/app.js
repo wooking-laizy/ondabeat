@@ -693,7 +693,8 @@ function renderBeats(beats){
       </td>
       <td>
         <button class="play-btn" aria-label="Play ${b.title}">
-          <svg viewBox="0 0 10 12"><polygon points="0,0 10,6 0,12"/></svg>
+          <svg class="play-icon" viewBox="0 0 10 12"><polygon points="0,0 10,6 0,12"/></svg>
+          <svg class="pause-icon" viewBox="0 0 10 12"><rect x="1" y="1" width="3" height="10"/><rect x="6" y="1" width="3" height="10"/></svg>
         </button>
       </td>
       <td>

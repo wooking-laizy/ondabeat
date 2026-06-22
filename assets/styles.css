@@ -464,6 +464,9 @@
     transition: all .2s;
   }
   .play-btn svg { width: 16px; height: 16px; fill: var(--pink); }
+  .play-btn .pause-icon { display: none; }
+  .beat-row.playing .play-btn .play-icon { display: none; }
+  .beat-row.playing .play-btn .pause-icon { display: block; }
   .play-btn:hover { background: var(--pink); transform: scale(1.08); }
   .play-btn:hover svg { fill: #fff; }
   .beat-row.playing .play-btn {
