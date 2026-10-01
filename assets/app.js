@@ -330,6 +330,120 @@ let activeMood = 'all';
 let activeTags = new Set();
 let searchQuery = '';
 
+/* ========== PAGINATION ========== */
+const ITEMS_PER_PAGE = 10;
+let currentPage = 1;
+let filteredBeats = [];
+
+function ensurePagination(){
+  if (!beatsBody) return null;
+  let pagination = document.getElementById('beats-pagination');
+  if (pagination) return pagination;
+
+  pagination = document.createElement('div');
+  pagination.id = 'beats-pagination';
+  pagination.className = 'beats-pagination';
+  pagination.setAttribute('aria-label', '곡 목록 페이지 이동');
+
+  const table = beatsBody.closest('table');
+  if (table) table.insertAdjacentElement('afterend', pagination);
+
+  if (!document.getElementById('beats-pagination-style')){
+    const style = document.createElement('style');
+    style.id = 'beats-pagination-style';
+    style.textContent = `
+      .beats-pagination{
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        gap:8px;
+        margin:34px 0 8px;
+        min-height:42px;
+      }
+      .beats-pagination button{
+        appearance:none;
+        border:1px solid #2a2a31;
+        background:transparent;
+        color:#9b9ba5;
+        min-width:38px;
+        height:38px;
+        padding:0 11px;
+        border-radius:999px;
+        font-family:'JetBrains Mono', monospace;
+        font-size:12px;
+        cursor:pointer;
+        transition:all .18s ease;
+      }
+      .beats-pagination button:hover:not(:disabled){
+        border-color:#ff3f8f;
+        color:#fff;
+      }
+      .beats-pagination button.active{
+        background:#ff3f8f;
+        border-color:#ff3f8f;
+        color:#fff;
+        font-weight:700;
+      }
+      .beats-pagination button:disabled{
+        opacity:.28;
+        cursor:default;
+      }
+      @media (max-width:640px){
+        .beats-pagination{ gap:5px; margin-top:24px; }
+        .beats-pagination button{
+          min-width:34px;
+          height:34px;
+          padding:0 9px;
+          font-size:11px;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+  return pagination;
+}
+
+function renderPagination(totalItems){
+  const pagination = ensurePagination();
+  if (!pagination) return;
+
+  const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+  if (totalPages <= 1){
+    pagination.innerHTML = '';
+    pagination.style.display = 'none';
+    return;
+  }
+
+  pagination.style.display = 'flex';
+  currentPage = Math.min(Math.max(1, currentPage), totalPages);
+
+  let html = `<button type="button" data-page="${currentPage - 1}" ${currentPage === 1 ? 'disabled' : ''} aria-label="이전 페이지">‹</button>`;
+  for (let page = 1; page <= totalPages; page++){
+    html += `<button type="button" data-page="${page}" class="${page === currentPage ? 'active' : ''}" ${page === currentPage ? 'aria-current="page"' : ''}>${page}</button>`;
+  }
+  html += `<button type="button" data-page="${currentPage + 1}" ${currentPage === totalPages ? 'disabled' : ''} aria-label="다음 페이지">›</button>`;
+
+  pagination.innerHTML = html;
+  pagination.querySelectorAll('button[data-page]:not(:disabled)').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const nextPage = Number(btn.dataset.page);
+      if (!Number.isFinite(nextPage) || nextPage === currentPage) return;
+      currentPage = nextPage;
+      renderCurrentPage();
+      const soundsSection = document.querySelector('.sounds');
+      if (soundsSection) soundsSection.scrollIntoView({ behavior:'smooth', block:'start' });
+    });
+  });
+}
+
+function renderCurrentPage(){
+  const start = (currentPage - 1) * ITEMS_PER_PAGE;
+  const pageItems = filteredBeats.slice(start, start + ITEMS_PER_PAGE);
+  renderBeats(pageItems);
+  renderPagination(filteredBeats.length);
+  updateCartBar();
+}
+
 /* ========== CART ========== */
 const SINGLE_PRICE = 9800;
 const BUNDLE_PRICE = 15000; // 3-pack
@@ -777,7 +891,9 @@ function applyFilters(){
       stopCurrent();
     }
   }
-  renderBeats(list);
+  filteredBeats = list;
+  currentPage = 1;
+  renderCurrentPage();
 }
 
 function initSoundsUI(){
@@ -828,8 +944,9 @@ function initSoundsUI(){
     });
   }
 
-  renderBeats(BEATS);
-  updateCartBar();
+  filteredBeats = BEATS;
+  currentPage = 1;
+  renderCurrentPage();
 }
 
 /* ========== HOT BEAT CAROUSEL (if present) ========== */
