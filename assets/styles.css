@@ -2721,3 +2721,10 @@ body.cart-visible.player-visible{padding-bottom:0;}
   #top.hero > section.hero-carousel .carousel-dots,
   #top.hero > section.hero-carousel .carousel-now-playing{display:none !important;}
 }
+
+/* ===== HOME HOT TOP 3 · ALIGN CARD RIGHT EDGE WITH HEADER CART ===== */
+@media (min-width: 901px){
+  #top.hero > section.hero-carousel{
+    right:max(40px, calc((100vw - 1200px) / 2)) !important;
+  }
+}
