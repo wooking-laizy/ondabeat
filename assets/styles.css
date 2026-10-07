@@ -4020,79 +4020,96 @@ body.cart-visible.player-visible{padding-bottom:0;}
   }
 }
 
-/* ===== HOT BEAT TOP 3 · DEFINITIVE FIX ===== */
+/* ===== HOT BEAT TOP 3 · CLEAN GRID OVERRIDE ===== */
 @media (min-width: 901px){
+  /* panel: keep it inside the hero's right-side layout */
   #top.hero > section.hero-carousel{
-    right: clamp(210px, 15vw, 270px) !important;
     left: auto !important;
-    width: min(480px, 37vw) !important;
-    max-width: 480px !important;
+    right: 64px !important;
     top: 50% !important;
+    bottom: auto !important;
+    width: 480px !important;
+    max-width: calc(50vw - 80px) !important;
     transform: translateY(-42%) !important;
+  }
+
+  #top.hero > section.hero-carousel .hero-carousel-head{
+    box-sizing: border-box !important;
+    width: 100% !important;
+    margin: 0 0 12px !important;
+    padding: 0 4px !important;
   }
 
   #top.hero > section.hero-carousel #hotTrack{
     display: flex !important;
     flex-direction: column !important;
-    gap: 12px !important;
+    gap: 10px !important;
     width: 100% !important;
     transform: none !important;
   }
 
   #top.hero > section.hero-carousel .carousel-slide.hot-rank-item{
+    position: relative !important;
     box-sizing: border-box !important;
     display: grid !important;
-    grid-template-columns: 42px minmax(0, 1fr) auto 42px !important;
+    grid-template-columns: 42px minmax(0,1fr) 62px 42px !important;
+    grid-template-rows: 74px !important;
     align-items: center !important;
     column-gap: 12px !important;
     width: 100% !important;
-    min-width: 0 !important;
-    height: 72px !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+    height: 74px !important;
+    min-height: 74px !important;
     padding: 0 14px !important;
+    margin: 0 !important;
     overflow: hidden !important;
+    border-radius: 20px !important;
   }
 
+  /* Explicit placement beats all old carousel rules */
   #top.hero > section.hero-carousel .hot-rank-number{
+    grid-column: 1 !important;
+    grid-row: 1 !important;
     position: static !important;
     display: block !important;
+    justify-self: start !important;
     width: auto !important;
-    min-width: 0 !important;
-    opacity: 1 !important;
-    visibility: visible !important;
+    margin: 0 !important;
   }
 
   #top.hero > section.hero-carousel .hot-rank-info{
+    grid-column: 2 !important;
+    grid-row: 1 !important;
     position: static !important;
     display: block !important;
+    justify-self: stretch !important;
     width: 100% !important;
     min-width: 0 !important;
     max-width: none !important;
     height: auto !important;
-    overflow: visible !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
     opacity: 1 !important;
     visibility: visible !important;
-    z-index: 5 !important;
   }
 
   #top.hero > section.hero-carousel .hot-rank-info .title-row{
     display: flex !important;
     align-items: center !important;
-    gap: 7px !important;
     width: 100% !important;
     min-width: 0 !important;
-    height: auto !important;
-    overflow: visible !important;
+    margin: 0 !important;
     opacity: 1 !important;
     visibility: visible !important;
   }
 
   #top.hero > section.hero-carousel .hot-rank-info .title{
-    position: static !important;
     display: block !important;
     flex: 1 1 auto !important;
-    width: auto !important;
     min-width: 0 !important;
-    max-width: 100% !important;
+    width: auto !important;
     height: auto !important;
     margin: 0 !important;
     padding: 0 !important;
@@ -4105,16 +4122,14 @@ body.cart-visible.player-visible{padding-bottom:0;}
     white-space: nowrap !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
-    z-index: 6 !important;
   }
 
   #top.hero > section.hero-carousel .hot-rank-info .meta{
-    position: static !important;
     display: block !important;
     width: 100% !important;
     height: auto !important;
-    margin-top: 5px !important;
-    color: rgba(255,255,255,.62) !important;
+    margin: 5px 0 0 !important;
+    color: rgba(255,255,255,.58) !important;
     font-size: 9px !important;
     line-height: 1.1 !important;
     opacity: 1 !important;
@@ -4124,10 +4139,33 @@ body.cart-visible.player-visible{padding-bottom:0;}
     text-overflow: ellipsis !important;
   }
 
-  #top.hero > section.hero-carousel .bpm-badge,
-  #top.hero > section.hero-carousel .carousel-play{
+  #top.hero > section.hero-carousel .slide-tags{
+    display: none !important;
+  }
+
+  #top.hero > section.hero-carousel .bpm-badge{
+    grid-column: 3 !important;
+    grid-row: 1 !important;
     position: static !important;
+    inset: auto !important;
+    justify-self: center !important;
+    width: auto !important;
+    min-width: 54px !important;
+    margin: 0 !important;
     transform: none !important;
-    z-index: 5 !important;
+  }
+
+  #top.hero > section.hero-carousel .carousel-play{
+    grid-column: 4 !important;
+    grid-row: 1 !important;
+    position: static !important;
+    inset: auto !important;
+    justify-self: end !important;
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+    min-height: 38px !important;
+    margin: 0 !important;
+    transform: none !important;
   }
 }
