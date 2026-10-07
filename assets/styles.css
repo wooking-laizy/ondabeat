@@ -4019,3 +4019,115 @@ body.cart-visible.player-visible{padding-bottom:0;}
     display: none !important;
   }
 }
+
+/* ===== HOT BEAT TOP 3 · DEFINITIVE FIX ===== */
+@media (min-width: 901px){
+  #top.hero > section.hero-carousel{
+    right: clamp(210px, 15vw, 270px) !important;
+    left: auto !important;
+    width: min(480px, 37vw) !important;
+    max-width: 480px !important;
+    top: 50% !important;
+    transform: translateY(-42%) !important;
+  }
+
+  #top.hero > section.hero-carousel #hotTrack{
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+    width: 100% !important;
+    transform: none !important;
+  }
+
+  #top.hero > section.hero-carousel .carousel-slide.hot-rank-item{
+    box-sizing: border-box !important;
+    display: grid !important;
+    grid-template-columns: 42px minmax(0, 1fr) auto 42px !important;
+    align-items: center !important;
+    column-gap: 12px !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 72px !important;
+    padding: 0 14px !important;
+    overflow: hidden !important;
+  }
+
+  #top.hero > section.hero-carousel .hot-rank-number{
+    position: static !important;
+    display: block !important;
+    width: auto !important;
+    min-width: 0 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  #top.hero > section.hero-carousel .hot-rank-info{
+    position: static !important;
+    display: block !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    height: auto !important;
+    overflow: visible !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    z-index: 5 !important;
+  }
+
+  #top.hero > section.hero-carousel .hot-rank-info .title-row{
+    display: flex !important;
+    align-items: center !important;
+    gap: 7px !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    height: auto !important;
+    overflow: visible !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  #top.hero > section.hero-carousel .hot-rank-info .title{
+    position: static !important;
+    display: block !important;
+    flex: 1 1 auto !important;
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    color: #fff !important;
+    font-size: 16px !important;
+    line-height: 1.15 !important;
+    font-weight: 800 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    z-index: 6 !important;
+  }
+
+  #top.hero > section.hero-carousel .hot-rank-info .meta{
+    position: static !important;
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    margin-top: 5px !important;
+    color: rgba(255,255,255,.62) !important;
+    font-size: 9px !important;
+    line-height: 1.1 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  #top.hero > section.hero-carousel .bpm-badge,
+  #top.hero > section.hero-carousel .carousel-play{
+    position: static !important;
+    transform: none !important;
+    z-index: 5 !important;
+  }
+}
