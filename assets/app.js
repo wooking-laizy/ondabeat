@@ -1062,7 +1062,7 @@ function initCarousel(){
 
       <div class="hot-rank-info">
         <div class="title-row">
-          <div class="title">${b.title}</div>
+          <div class="hot-rank-title">${b.title}</div>
           <span class="carousel-now-playing">NOW PLAYING</span>
         </div>
 
