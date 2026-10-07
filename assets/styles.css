@@ -2994,3 +2994,196 @@ body.cart-visible.player-visible{padding-bottom:0;}
   #top.hero > section.hero-carousel .hero-carousel-head{margin:0 0 10px !important;padding:0 2px !important;}
   #top.hero > section.hero-carousel .hero-carousel-head h2{font-size:13px !important;color:#fff !important;letter-spacing:.14em !important;}
 }
+/* ===== HOT BEAT TOP 3 · FINAL VISUAL TUNE ===== */
+
+@media (min-width: 901px){
+
+  /* 전체 HOT 영역 */
+  .hero > .hero-carousel{
+    width: min(480px, 38vw) !important;
+    max-width: 480px !important;
+    right: 4.8% !important;
+    transform: translateY(-42%) !important;
+  }
+
+  /* HOT BEAT TOP 3 제목 */
+  .hero > .hero-carousel .hero-carousel-head{
+    margin-bottom: 16px !important;
+    padding: 0 2px !important;
+  }
+
+  .hero > .hero-carousel .hero-carousel-head h2{
+    font-size: 17px !important;
+    line-height: 1 !important;
+    letter-spacing: .16em !important;
+    font-weight: 800 !important;
+    color: #fff !important;
+  }
+
+  /* TOP 3 세로 배치 */
+  .hero > .hero-carousel .carousel-track{
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+    width: 100% !important;
+    transform: none !important;
+  }
+
+  /* 개별 곡 카드 */
+  .hero > .hero-carousel .carousel-slide{
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 112px !important;
+    padding: 18px 20px !important;
+
+    display: grid !important;
+    grid-template-columns: 42px minmax(0, 1fr) auto 46px !important;
+    align-items: center !important;
+    gap: 14px !important;
+
+    background:
+      linear-gradient(
+        105deg,
+        rgba(17,17,20,.94),
+        rgba(13,11,18,.90)
+      ) !important;
+
+    border: 1px solid rgba(255,63,143,.42) !important;
+    border-radius: 15px !important;
+
+    box-shadow:
+      0 12px 35px rgba(0,0,0,.28),
+      inset 0 0 24px rgba(255,63,143,.025) !important;
+
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+
+    transition:
+      border-color .2s ease,
+      background .2s ease,
+      box-shadow .2s ease,
+      transform .2s ease !important;
+  }
+
+  /* hover */
+  .hero > .hero-carousel .carousel-slide:hover{
+    transform: translateX(-4px) !important;
+    border-color: rgba(255,63,143,.8) !important;
+
+    box-shadow:
+      0 14px 38px rgba(0,0,0,.36),
+      0 0 24px rgba(255,63,143,.09) !important;
+  }
+
+  /* 순위 */
+  .hero > .hero-carousel .hot-rank-number{
+    font-size: 19px !important;
+    line-height: 1 !important;
+    font-weight: 500 !important;
+    letter-spacing: -.03em !important;
+    color: rgba(255,255,255,.72) !important;
+  }
+
+  /* 곡 정보 */
+  .hero > .hero-carousel .hot-rank-info{
+    min-width: 0 !important;
+  }
+
+  .hero > .hero-carousel .title-row{
+    display: flex !important;
+    align-items: center !important;
+    gap: 9px !important;
+  }
+
+  .hero > .hero-carousel .title{
+    font-size: 17px !important;
+    line-height: 1.2 !important;
+    font-weight: 800 !important;
+    letter-spacing: -.02em !important;
+    color: #fff !important;
+  }
+
+  .hero > .hero-carousel .meta{
+    margin-top: 7px !important;
+    font-size: 11px !important;
+    line-height: 1.2 !important;
+    letter-spacing: .09em !important;
+    color: rgba(255,255,255,.57) !important;
+  }
+
+  /* 태그는 너무 복잡해 보이지 않게 */
+  .hero > .hero-carousel .slide-tags{
+    display: none !important;
+  }
+
+  /* BPM */
+  .hero > .hero-carousel .bpm-badge{
+    position: static !important;
+    white-space: nowrap !important;
+
+    padding: 6px 9px !important;
+    border-radius: 6px !important;
+
+    font-size: 9px !important;
+    line-height: 1 !important;
+    letter-spacing: .08em !important;
+
+    color: rgba(255,255,255,.72) !important;
+    background: rgba(255,255,255,.045) !important;
+    border: 1px solid rgba(255,255,255,.12) !important;
+  }
+
+  /* 재생 버튼 */
+  .hero > .hero-carousel .carousel-play{
+    position: static !important;
+
+    width: 42px !important;
+    height: 42px !important;
+    min-width: 42px !important;
+
+    border-radius: 50% !important;
+    border: 0 !important;
+
+    background: #ff3f8f !important;
+    color: #fff !important;
+
+    box-shadow: 0 0 20px rgba(255,63,143,.22) !important;
+  }
+
+  .hero > .hero-carousel .carousel-play:hover{
+    transform: scale(1.07) !important;
+    box-shadow: 0 0 26px rgba(255,63,143,.4) !important;
+  }
+
+  /* 현재 재생 중인 곡만 강조 */
+  .hero > .hero-carousel .carousel-slide.playing{
+    background:
+      linear-gradient(
+        105deg,
+        rgba(38,13,28,.96),
+        rgba(20,12,31,.94)
+      ) !important;
+
+    border-color: #ff3f8f !important;
+
+    box-shadow:
+      0 14px 40px rgba(0,0,0,.4),
+      0 0 30px rgba(255,63,143,.15) !important;
+  }
+
+  /* NOW PLAYING */
+  .hero > .hero-carousel .carousel-now-playing{
+    display: none !important;
+
+    font-size: 7px !important;
+    font-weight: 800 !important;
+    letter-spacing: .12em !important;
+    color: #ff3f8f !important;
+  }
+
+  .hero > .hero-carousel .carousel-slide.playing
+  .carousel-now-playing{
+    display: inline-block !important;
+  }
+
+}
