@@ -1031,84 +1031,98 @@ function initSoundsUI(){
   renderCurrentPage();
 }
 
-/* ========== HOT BEAT CAROUSEL (if present) ========== */
+/* ========== HOT BEAT TOP 3 (if present) ========== */
 let track = document.getElementById('hotTrack');
 let dotsWrap = document.getElementById('hotDots');
 
 function initCarousel(){
-  if (!track || !dotsWrap) return;
-const hotBeats = BEATS.filter(b => b.hot_rank != null).sort((a, b) => a.hot_rank - b.hot_rank).slice(0, 3);
-  let hotIdx = 0;
+  if (!track) return;
+
+  const hotBeats = BEATS
+    .filter(b => b.hot_rank != null)
+    .sort((a, b) => a.hot_rank - b.hot_rank)
+    .slice(0, 3);
+
+  if (!hotBeats.length){
+    track.innerHTML = '';
+    return;
+  }
+
+  // TOP 3를 한 번에 보여주는 세로 랭킹 패널
+  track.style.transform = 'none';
 
   track.innerHTML = hotBeats.map((b, i) => `
-    <div class="carousel-slide" data-id="${b.id}" data-src="${b.preview}">
-      <div style="display:flex;align-items:center;gap:24px;min-width:0;">
-        <div class="num">0${i+1}</div>
-        <div>
-          <div class="title-row"><div class="title">${b.title}</div><span class="carousel-now-playing">NOW PLAYING</span></div>
-          <div class="meta">${b.genre}</div>
-          <div class="slide-tags">${(b.tags || []).map(t => `<span class="slide-tag">${t}</span>`).join('')}</div>
+    <div class="carousel-slide hot-rank-item"
+         data-id="${b.id}"
+         data-src="${b.preview}">
+
+      <div class="hot-rank-number">
+        ${String(i + 1).padStart(2, '0')}
+      </div>
+
+      <div class="hot-rank-info">
+        <div class="title-row">
+          <div class="title">${b.title}</div>
+          <span class="carousel-now-playing">NOW PLAYING</span>
+        </div>
+
+        <div class="meta">${b.genre}</div>
+
+        <div class="slide-tags">
+          ${(b.tags || [])
+            .map(t => `<span class="slide-tag">${t}</span>`)
+            .join('')}
         </div>
       </div>
+
       <div class="bpm-badge">${b.bpm} BPM</div>
+
       <button class="carousel-play" aria-label="Play ${b.title}">
-        <svg class="play-icon" viewBox="0 0 10 12"><polygon points="0,0 10,6 0,12"/></svg>
-        <svg class="pause-icon" viewBox="0 0 10 12"><rect x="1" y="1" width="3" height="10"/><rect x="6" y="1" width="3" height="10"/></svg>
+        <svg class="play-icon" viewBox="0 0 10 12">
+          <polygon points="0,0 10,6 0,12"/>
+        </svg>
+        <svg class="pause-icon" viewBox="0 0 10 12">
+          <rect x="1" y="1" width="3" height="10"/>
+          <rect x="6" y="1" width="3" height="10"/>
+        </svg>
       </button>
-      <a class="carousel-buy" href="${b.gumroad}" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v14"/><polyline points="7 12 12 17 17 12"/><line x1="5" y1="21" x2="19" y2="21"/></svg>
-      </a>
+
     </div>
   `).join('');
 
-  dotsWrap.innerHTML = hotBeats.map((_, i) => `<span${i===0?' class="on"':''}></span>`).join('');
-
-  function goToSlide(i){
-    hotIdx = (i + hotBeats.length) % hotBeats.length;
-    const slides = track.querySelectorAll('.carousel-slide');
-    const slide = slides[hotIdx];
-    const vp = track.parentElement;
-    let shiftPx = 0;
-    if (slide && vp){
-      const slideCenter = slide.offsetLeft + slide.offsetWidth / 2;
-      shiftPx = vp.clientWidth / 2 - slideCenter;
-    }
-    track.style.transform = `translateX(${shiftPx}px)`;
-    dotsWrap.querySelectorAll('span').forEach((d, idx) => d.classList.toggle('on', idx === hotIdx));
-    slides.forEach((s, idx) => s.classList.toggle('is-active', idx === hotIdx));
-    // Changing carousel slides must never interrupt the shared audio player.
-    if (currentId){
-      slides.forEach(s => s.classList.toggle('playing', s.dataset.id === currentId && !audio.paused));
-    }
-  }
-  window.addEventListener('resize', () => goToSlide(hotIdx));
+  // 기존 점/화살표는 세로 TOP3에서는 사용하지 않음
+  if (dotsWrap) dotsWrap.innerHTML = '';
 
   const prev = document.getElementById('hotPrev');
   const next = document.getElementById('hotNext');
-  if (prev) prev.onclick = () => goToSlide(hotIdx - 1);
-  if (next) next.onclick = () => goToSlide(hotIdx + 1);
-  dotsWrap.querySelectorAll('span').forEach((d, i) => d.onclick = () => goToSlide(i));
 
-  // touch swipe (mobile)
-  const vp = track.closest('.carousel-viewport') || track.parentElement;
-  let touchX = null;
-  vp.addEventListener('touchstart', e => { touchX = e.touches[0].clientX; }, { passive: true });
-  vp.addEventListener('touchend', e => {
-    if (touchX === null) return;
-    const dx = e.changedTouches[0].clientX - touchX;
-    if (Math.abs(dx) > 40) goToSlide(hotIdx + (dx < 0 ? 1 : -1));
-    touchX = null;
-  }, { passive: true });
+  if (prev) prev.style.display = 'none';
+  if (next) next.style.display = 'none';
 
+  // 각 곡 재생 버튼
   track.querySelectorAll('.carousel-slide').forEach(slide => {
     const btn = slide.querySelector('.carousel-play');
-    btn.addEventListener('click', () => {
-      togglePlay(slide, slide.dataset.id, slide.dataset.src);
-    });
+
+    if (btn){
+      btn.addEventListener('click', () => {
+        togglePlay(
+          slide,
+          slide.dataset.id,
+          slide.dataset.src
+        );
+      });
+    }
   });
 
-  // activate first slide
-  goToSlide(0);
+  // 다른 페이지에서 재생 중인 곡이 있다면 표시 유지
+  if (currentId){
+    track.querySelectorAll('.carousel-slide').forEach(slide => {
+      slide.classList.toggle(
+        'playing',
+        slide.dataset.id === currentId && !audio.paused
+      );
+    });
+  }
 }
 
 
