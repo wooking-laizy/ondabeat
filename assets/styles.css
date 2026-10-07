@@ -2174,3 +2174,60 @@ body { padding-bottom: 0; }
 
 /* ONDAZINE magazine-shop detail */
 .ondazine-detail-mode .ondazine-section{padding-top:34px}.ondazine-detail-mode .ondazine-inner{max-width:1180px}.zine-shop-layout{display:grid;grid-template-columns:minmax(300px,440px) minmax(0,1fr);gap:64px;align-items:start;margin:18px 0 84px}.zine-cover-link{display:block;text-decoration:none}.zine-shop-cover{position:relative;overflow:hidden;background:#111}.zine-shop-cover img{display:block;width:100%;height:auto}.zine-shop-cover span{position:absolute;left:18px;right:18px;bottom:18px;padding:13px;background:rgba(5,5,8,.86);color:#fff;text-align:center;font:700 11px var(--f-mono);letter-spacing:.08em;opacity:0;transform:translateY(5px);transition:.2s}.zine-cover-link:hover .zine-shop-cover span{opacity:1;transform:none}.zine-shop-info{min-width:0;padding-top:4px}.zine-shop-info h2{font-size:clamp(36px,4.1vw,58px);line-height:1.04;letter-spacing:-.045em;margin:16px 0 14px;color:#fff;word-break:keep-all}.zine-shop-sub{font-size:15px;color:#999;line-height:1.65;margin:0 0 34px}.zine-shop-featured{border-top:1px solid #292932;padding-top:25px}.zine-shop-label{font:700 12px var(--f-mono);letter-spacing:.12em;color:#fff;margin-bottom:20px}.zine-shop-label span{color:var(--pink)}.zine-featured-title{font-size:29px;font-weight:800;color:#fff;margin-bottom:7px}.zine-featured-meta{font-size:13px;color:#aaa}.zine-featured-tags{font-size:12px;color:#765d8c;margin-top:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.zine-featured-actions{display:grid;grid-template-columns:145px 1fr;gap:10px;margin-top:22px}.zine-preview-action,.zine-add-action,.zine-mini-play,.zine-mini-add{border:1px solid #34343d;background:transparent;color:#fff;min-height:44px;font:800 11px var(--f-mono);letter-spacing:.06em;cursor:pointer}.zine-preview-action:hover,.zine-mini-play:hover{border-color:var(--pink);color:var(--pink)}.zine-add-action{background:var(--pink);border-color:var(--pink);color:#08080b}.zine-shop-more{border-top:1px solid #292932;margin-top:34px;padding-top:24px}.zine-mini-card{display:grid;grid-template-columns:minmax(0,1fr) 44px 132px;gap:10px;align-items:center;padding:15px 0;border-bottom:1px solid #24242b}.zine-mini-copy{display:flex;flex-direction:column;gap:5px;min-width:0}.zine-mini-copy strong{font-size:16px;color:#fff}.zine-mini-copy span{font-size:12px;color:#8e8e98}.zine-mini-play,.zine-mini-add{min-height:40px}.zine-mini-add{background:#17171d}@media(max-width:900px){.zine-shop-layout{grid-template-columns:1fr;gap:30px}.zine-shop-cover{max-width:560px}.zine-shop-info h2{font-size:38px}}@media(max-width:560px){.ondazine-detail-mode .ondazine-inner{padding:0 20px}.zine-featured-actions{grid-template-columns:1fr}.zine-mini-card{grid-template-columns:minmax(0,1fr) 42px}.zine-mini-add{grid-column:1/-1}}
+
+
+/* ONDAZINE detail polish */
+#ondazine-list[hidden],
+#ondazine-detail[hidden],
+.ondazine-detail-mode #ondazine-list[hidden]{
+  display:none !important;
+}
+.ondazine-detail-mode .ondazine-section{
+  padding-top:0 !important;
+}
+.ondazine-detail-mode .ondazine-inner{
+  max-width:1180px;
+  padding-top:38px;
+}
+.ondazine-detail-mode .zine-back{
+  margin:0 0 18px;
+}
+.ondazine-detail-mode .zine-shop-layout{
+  grid-template-columns:minmax(330px,440px) minmax(0,1fr);
+  gap:64px;
+  align-items:start;
+  margin-top:0;
+}
+.ondazine-detail-mode .zine-shop-info{
+  padding-top:0;
+}
+.ondazine-detail-mode .zine-shop-featured{
+  border-top:0;
+  padding-top:0;
+}
+.ondazine-detail-mode .zine-shop-label{
+  margin-top:0;
+  margin-bottom:24px;
+}
+.ondazine-detail-mode .zine-featured-title{
+  font-size:34px;
+  line-height:1.08;
+}
+.ondazine-detail-mode .zine-featured-actions{
+  margin-top:26px;
+}
+.ondazine-detail-mode .zine-add-action{
+  color:#fff !important;
+  font-size:12px;
+  text-shadow:none;
+}
+.ondazine-detail-mode .zine-mini-add{
+  color:#fff !important;
+}
+.ondazine-detail-mode .zine-shop-more{
+  margin-top:34px;
+}
+@media(max-width:900px){
+  .ondazine-detail-mode .ondazine-inner{padding-top:24px}
+  .ondazine-detail-mode .zine-shop-layout{grid-template-columns:1fr;gap:30px}
+}
