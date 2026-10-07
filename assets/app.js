@@ -29,101 +29,123 @@ let BEATS = [
 
 let ALL_TAGS = [...new Set(BEATS.flatMap(b => b.tags))].sort();
 
-/* ========== LOAD BEATS — Google Sheet + localStorage cache ========== */
-// 곡 데이터는 Google Sheet에서 자동으로 불러옵니다.
-// 두 번째 방문부터는 localStorage 캐시로 즉시 표시되고, 백그라운드에서 새 데이터를 받아옵니다.
-//
-// 시트 컬럼: id, title, genre, bpm, mood, tags(;로 구분), preview, gumroad, hot
-// 시트 편집하시면: https://docs.google.com/spreadsheets/d/1FvHA... (원본 시트)
-const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRC420Lmntg_m7WA4i55CVy-osc35ajc_NzBNr6PU07wqBRWze3TXWGrGz21Ur2pSYiCwfNG2phWUST/pub?output=csv';
-const CACHE_KEY = 'onda_beats_cache_v1';
+/* ========== LOAD BEATS — Supabase + localStorage cache ========== */
+const SUPABASE_URL = 'https://rcqukanxcyxmrtxdezpw.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_lFxc4HXVFQw_v4ArcbBYHA_h9_mFN4h';
+const CACHE_KEY = 'onda_beats_supabase_cache_v1';
 
-function parseCSVLine(line){
-  const out = []; let cur = ''; let inQ = false;
-  for (let i = 0; i < line.length; i++){
-    const c = line[i];
-    if (c === '"' && line[i+1] === '"'){ cur += '"'; i++; }
-    else if (c === '"') inQ = !inQ;
-    else if (c === ',' && !inQ){ out.push(cur); cur = ''; }
-    else cur += c;
-  }
-  out.push(cur);
-  return out;
-}
-function parseCSV(text){
-  const lines = text.replace(/\r/g, '').split('\n').filter(l => l.trim().length);
-  if (!lines.length) return [];
-  const headers = parseCSVLine(lines[0]).map(h => h.trim().toLowerCase());
-  return lines.slice(1).map(line => {
-    const cells = parseCSVLine(line);
-    const row = {};
-    headers.forEach((h, idx) => row[h] = (cells[idx] || '').trim());
-    return row;
-  });
-}
-function normaliseRow(r){
+function normaliseSupabaseRow(r){
   return {
-    id: r.id,
-    title: r.title,
+    id: String(r.beat_id || r.id || ''),
+    title: r.title || '',
     genre: r.genre || '',
-    bpm: r.bpm || '',
+    bpm: r.bpm ?? '',
     mood: (r.mood || '').toLowerCase(),
     tags: (r.tags || '').split(/[;,|]/).map(s => s.trim()).filter(Boolean),
-    preview: r.preview || '',
+    preview: r.audio_url || r.preview_url || '',
     gumroad: r.gumroad || '#',
-    hot: /^(true|1|y|yes)$/i.test(String(r.hot || '').trim())
+    hot: Boolean(r.hot)
   };
 }
+
 function applyBeats(parsed){
   if (!parsed || !parsed.length) return false;
+
   BEATS = parsed.filter(b => b.id && b.title);
   ALL_TAGS = [...new Set(BEATS.flatMap(b => b.tags))].sort();
+
   return true;
 }
 
-// Try loading cached sheet data synchronously (super fast)
 function loadFromCache(){
   try {
     const raw = localStorage.getItem(CACHE_KEY);
     if (!raw) return false;
+
     const cached = JSON.parse(raw);
-    if (!cached || !Array.isArray(cached.beats) || !cached.beats.length) return false;
+
+    if (!cached || !Array.isArray(cached.beats) || !cached.beats.length){
+      return false;
+    }
+
     return applyBeats(cached.beats);
-  } catch(e) { return false; }
+  } catch(e){
+    return false;
+  }
 }
 
-// Always fetch fresh sheet data in the background
-async function fetchFromSheet(){
+async function fetchFromSupabase(){
   try {
-    const res = await fetch(SHEET_CSV_URL, { cache: 'no-store' });
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    const text = await res.text();
-    const parsed = parseCSV(text).map(normaliseRow).filter(b => b.id && b.title);
+    const url =
+      `${SUPABASE_URL}/rest/v1/sounds?select=*&published=eq.true&order=sort_order.asc.nullslast,created_at.asc`;
+
+    const res = await fetch(url, {
+      cache: 'no-store',
+      headers: {
+        apikey: SUPABASE_ANON_KEY,
+        Authorization: `Bearer ${SUPABASE_ANON_KEY}`
+      }
+    });
+
+    if (!res.ok){
+      throw new Error('HTTP ' + res.status + ' — ' + await res.text());
+    }
+
+    const rows = await res.json();
+
+    const parsed = rows
+      .map(normaliseSupabaseRow)
+      .filter(b => b.id && b.title);
+
     if (parsed.length){
       const prevJson = JSON.stringify(BEATS);
+
       applyBeats(parsed);
-      try { localStorage.setItem(CACHE_KEY, JSON.stringify({ beats: parsed, t: Date.now() })); } catch(e){}
-      // re-render only if data actually changed
+
+      try {
+        localStorage.setItem(
+          CACHE_KEY,
+          JSON.stringify({
+            beats: parsed,
+            t: Date.now()
+          })
+        );
+      } catch(e){}
+
       if (JSON.stringify(BEATS) !== prevJson){
-        if (document.getElementById('beats-body') && typeof applyFilters === 'function'){
+        if (
+          document.getElementById('beats-body') &&
+          typeof applyFilters === 'function'
+        ){
           applyFilters();
         }
-        if (typeof initCarousel === 'function' && document.getElementById('hotTrack')){
+
+        if (
+          typeof initCarousel === 'function' &&
+          document.getElementById('hotTrack')
+        ){
           initCarousel();
         }
       }
-      console.log('[ONDA] Loaded', BEATS.length, 'beats from Google Sheet');
+
+      console.log(
+        '[ONDA] Loaded',
+        BEATS.length,
+        'beats from Supabase'
+      );
     }
-  } catch (e) {
-    console.warn('[ONDA] Sheet load failed (using cache/fallback):', e);
+
+  } catch(e){
+    console.warn(
+      '[ONDA] Supabase load failed (using cache/fallback):',
+      e
+    );
   }
 }
 
 async function loadBeats(){
-  // Step 1: cache hit → render instantly
   loadFromCache();
-  // Step 2: kick off background refresh (don't await — UI renders immediately)
-  fetchFromSheet();
+  await fetchFromSupabase();
 }
 
 const audio = document.getElementById('audio-player');
