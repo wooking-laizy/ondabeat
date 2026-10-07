@@ -2374,3 +2374,50 @@ body { padding-bottom: 0; }
   color:#fff !important;
   transform:translateY(-1px);
 }
+/* ===== HEADER CART ===== */
+.header-cart-btn{
+  height:38px;
+  min-width:58px;
+  padding:0 12px;
+
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+
+  background:#141419;
+  border:1px solid #34343c;
+  border-radius:6px;
+
+  color:#fff;
+  cursor:pointer;
+  transition:all .2s ease;
+}
+
+.header-cart-btn:hover{
+  border-color:#ff3f8f;
+  background:rgba(255,63,143,.08);
+}
+
+.header-cart-icon{
+  font-size:15px;
+  line-height:1;
+}
+
+.header-cart-count{
+  min-width:18px;
+  height:18px;
+  padding:0 5px;
+
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+
+  background:#ff3f8f;
+  border-radius:999px;
+
+  color:#fff;
+  font-family:'JetBrains Mono', monospace;
+  font-size:10px;
+  font-weight:700;
+}
