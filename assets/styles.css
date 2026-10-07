@@ -2763,3 +2763,56 @@ body.cart-visible.player-visible{padding-bottom:0;}
     margin-right:0 !important;
   }
 }
+
+
+/* ===== HOT TOP 3 · VISIBILITY RESTORE ===== */
+@media (min-width: 901px){
+  html body #top.hero .hero-carousel{
+    opacity:1 !important;
+    visibility:visible !important;
+  }
+
+  html body #top.hero .hero-carousel .carousel-viewport,
+  html body #top.hero .hero-carousel #hotTrack{
+    opacity:1 !important;
+  }
+
+  html body #top.hero .hero-carousel .carousel-slide.hot-rank-item{
+    opacity:1 !important;
+    background:rgba(10,10,14,.88) !important;
+    border:1px solid rgba(255,255,255,.16) !important;
+    box-shadow:0 10px 28px rgba(0,0,0,.28) !important;
+  }
+
+  html body #top.hero .hero-carousel .hot-rank-number{
+    opacity:1 !important;
+    color:#ff3f8f !important;
+  }
+
+  html body #top.hero .hero-carousel .hot-rank-info,
+  html body #top.hero .hero-carousel .title,
+  html body #top.hero .hero-carousel .meta,
+  html body #top.hero .hero-carousel .bpm-badge,
+  html body #top.hero .hero-carousel .carousel-play{
+    opacity:1 !important;
+    visibility:visible !important;
+  }
+
+  html body #top.hero .hero-carousel .title{
+    color:#fff !important;
+  }
+
+  html body #top.hero .hero-carousel .meta{
+    color:rgba(255,255,255,.58) !important;
+  }
+
+  html body #top.hero .hero-carousel .bpm-badge{
+    color:rgba(255,255,255,.68) !important;
+  }
+
+  html body #top.hero .hero-carousel .carousel-play{
+    background:rgba(255,63,143,.18) !important;
+    border-color:rgba(255,63,143,.35) !important;
+    color:#ff3f8f !important;
+  }
+}
