@@ -1115,6 +1115,15 @@ function initCarousel(){
 
   // 각 곡 재생 버튼
   track.querySelectorAll('.carousel-slide').forEach(slide => {
+    slide.addEventListener('click', (e) => {
+  if (e.target.closest('.carousel-play, .hot-cart-btn')) return;
+
+  togglePlay(
+    slide,
+    slide.dataset.id,
+    slide.dataset.src
+  );
+});
     const cartBtn = slide.querySelector('.hot-cart-btn');
 
 if (cartBtn) {

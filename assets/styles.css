@@ -3348,7 +3348,7 @@ body.cart-visible.player-visible{padding-bottom:0;}
 @media (min-width: 901px){
   html body #top.hero > section.hero-carousel .hero-carousel-head > h2{
     font-family:var(--f-title) !important;
-    font-size:20px !important;
+    font-size:30px !important;
     line-height:1.1 !important;
     font-weight:400 !important;
     letter-spacing:.08em !important;
