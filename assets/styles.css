@@ -2932,3 +2932,62 @@ body.cart-visible.player-visible{padding-bottom:0;}
       0 7px 20px rgba(255,47,135,.30) !important;
   }
 }
+
+
+/* ===== HOT TOP 3 · LOWER + STRONGER TYPE + ONDA PINK ===== */
+@media (min-width: 901px){
+  /* Horizontal position untouched. Move only downward. */
+  html body #top.hero .hero-carousel{
+    top:58.5% !important;
+  }
+
+  html body #top.hero .hero-carousel .hero-carousel-head h2{
+    font-size:17px !important;
+    line-height:1.1 !important;
+    font-weight:900 !important;
+    letter-spacing:.14em !important;
+    color:#fff !important;
+  }
+
+  html body #top.hero .hero-carousel .title{
+    font-size:16px !important;
+    line-height:1.12 !important;
+    font-weight:800 !important;
+    color:#fff !important;
+    text-shadow:0 1px 8px rgba(0,0,0,.45) !important;
+  }
+
+  html body #top.hero .hero-carousel .meta{
+    margin-top:5px !important;
+    font-size:11px !important;
+    line-height:1.15 !important;
+    font-weight:650 !important;
+    color:rgba(255,255,255,.78) !important;
+  }
+
+  html body #top.hero .hero-carousel .bpm-badge{
+    min-width:56px !important;
+    padding:5px 8px !important;
+    font-size:10px !important;
+    font-weight:750 !important;
+    color:rgba(255,255,255,.92) !important;
+  }
+
+  html body #top.hero .hero-carousel .hot-rank-number{
+    color:#ff2d87 !important;
+    font-weight:700 !important;
+  }
+
+  html body #top.hero .hero-carousel .carousel-play{
+    background:#ff2d87 !important;
+    border-color:#ff2d87 !important;
+    color:#fff !important;
+    box-shadow:0 5px 17px rgba(255,45,135,.28) !important;
+  }
+
+  html body #top.hero .hero-carousel .carousel-play:hover{
+    background:#ff4a99 !important;
+    border-color:#ff4a99 !important;
+    box-shadow:0 7px 21px rgba(255,45,135,.36) !important;
+  }
+}
