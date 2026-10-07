@@ -3043,3 +3043,54 @@ body.cart-visible.player-visible{padding-bottom:0;}
     color:#fff !important;
   }
 }
+
+
+/* ===== HOT TOP 3 · ACTUAL MARKUP READABILITY FIX ===== */
+@media (min-width: 901px){
+  #top.hero > section.hero-carousel .carousel-slide.hot-rank-item{
+    min-height:82px !important;
+    height:82px !important;
+    padding-top:12px !important;
+    padding-bottom:12px !important;
+  }
+
+  #top.hero > section.hero-carousel .hero-carousel-head h2,
+  #top.hero > section.hero-carousel .hero-carousel-head > h2{
+    font-size:20px !important;
+    line-height:1.05 !important;
+    font-weight:900 !important;
+    font-family:Arial, Helvetica, sans-serif !important;
+    letter-spacing:.10em !important;
+    color:#fff !important;
+  }
+
+  #top.hero > section.hero-carousel .hot-rank-info .title-row .title,
+  #top.hero > section.hero-carousel .carousel-slide .title-row .title,
+  #top.hero > section.hero-carousel .carousel-slide .title{
+    font-size:18px !important;
+    line-height:1.12 !important;
+    font-weight:900 !important;
+    font-family:Arial, Helvetica, sans-serif !important;
+    letter-spacing:-.01em !important;
+    color:#fff !important;
+    opacity:1 !important;
+  }
+
+  #top.hero > section.hero-carousel .hot-rank-info .meta,
+  #top.hero > section.hero-carousel .carousel-slide .meta{
+    margin-top:6px !important;
+    font-size:13px !important;
+    line-height:1.1 !important;
+    font-weight:700 !important;
+    font-family:Arial, Helvetica, sans-serif !important;
+    letter-spacing:.01em !important;
+    color:rgba(255,255,255,.88) !important;
+    opacity:1 !important;
+  }
+
+  #top.hero > section.hero-carousel .carousel-slide .bpm-badge{
+    font-size:11px !important;
+    font-weight:800 !important;
+    color:#fff !important;
+  }
+}
