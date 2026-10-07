@@ -507,27 +507,33 @@ function ensureCartBar(){
         <span class="cart-promo" id="cart-promo"></span>
       </div>
       <div class="cart-bar-right">
-      <button class="cart-open-btn" id="cart-open" type="button" aria-label="장바구니 열기">
-  🛒 <span id="cart-open-count">0</span>
-</button>
+   
         <span class="cart-total"><span class="cart-total-old"></span><b id="cart-total-val">₩ 0</b></span>
        <button class="cart-buy-btn" id="cart-buy">결제하기 →</button>
       </div>
     </div>
   `;
   document.body.appendChild(bar);
-  bar.querySelector('#cart-open').addEventListener('click', openCheckout);
+
   bar.querySelector('#cart-buy').addEventListener('click', openCheckout);
   return bar;
 }
 
+/* === Header cart === */
+const headerCart = document.getElementById('header-cart');
+
+if (headerCart){
+  headerCart.addEventListener('click', openCheckout);
+}
 function updateCartBar(){
   const bar = ensureCartBar();
   const { n, bundles, singles, subtotal, total, discount } = calcCart();
   if (!n){ bar.classList.add('hidden'); return; }
   bar.classList.remove('hidden');
   bar.querySelector('.cart-count b').textContent = n;
-  bar.querySelector('#cart-open-count').textContent = n;
+
+  const headerCartCount = document.getElementById('header-cart-count');
+if (headerCartCount) headerCartCount.textContent = n;
   const totalEl = bar.querySelector('#cart-total-val');
   const oldEl = bar.querySelector('.cart-total-old');
   totalEl.textContent = fmt(total);
