@@ -3149,3 +3149,41 @@ body.cart-visible.player-visible{padding-bottom:0;}
     color:#fff !important;
   }
 }
+
+/* ===== HOT TOP 3 · MATCH SOUNDS LIST TITLE + BPM LAYOUT FIX ===== */
+@media (min-width: 901px){
+  /* Match the song titles used in the Sounds list */
+  #top.hero > section.hero-carousel .hot-rank-info .title-row .title,
+  #top.hero > section.hero-carousel .carousel-slide .title-row .title,
+  #top.hero > section.hero-carousel .carousel-slide .title{
+    font-family:var(--f-body) !important;
+    font-size:16px !important;
+    line-height:1.15 !important;
+    font-weight:600 !important;
+    letter-spacing:0 !important;
+    text-shadow:none !important;
+  }
+
+  /* Keep the card grid stable: title gets space, BPM stays compact */
+  #top.hero > section.hero-carousel .carousel-slide.hot-rank-item{
+    grid-template-columns:42px minmax(0,1fr) 58px 40px !important;
+    column-gap:12px !important;
+  }
+
+  #top.hero > section.hero-carousel .carousel-slide .bpm-badge{
+    grid-column:3 !important;
+    justify-self:center !important;
+    width:58px !important;
+    min-width:58px !important;
+    height:24px !important;
+    padding:0 !important;
+    margin:0 !important;
+    box-sizing:border-box !important;
+    font-family:var(--f-mono) !important;
+    font-size:10px !important;
+    line-height:1 !important;
+    font-weight:700 !important;
+    letter-spacing:0 !important;
+    white-space:nowrap !important;
+  }
+}
