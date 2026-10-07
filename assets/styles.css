@@ -2297,3 +2297,80 @@ body { padding-bottom: 0; }
   }
 }
 
+/* ===== CART OPEN BUTTON ===== */
+.cart-open-btn{
+  height:42px;
+  padding:0 15px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+
+  background:transparent;
+  border:1px solid #34343c;
+  border-radius:999px;
+
+  color:#fff;
+  font-family:'JetBrains Mono', monospace;
+  font-size:12px;
+  font-weight:600;
+
+  cursor:pointer;
+  transition:all .2s ease;
+}
+
+.cart-open-btn:hover{
+  border-color:#ff3f8f;
+  background:rgba(255,63,143,.08);
+}
+
+.cart-open-btn span{
+  min-width:19px;
+  height:19px;
+  padding:0 5px;
+
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+
+  border-radius:999px;
+  background:#ff3f8f;
+  color:#fff;
+
+  font-size:10px;
+  font-weight:700;
+}
+/* ===== GET BEATS HEADER BUTTON ===== */
+.try-now.get-beats-btn{
+  width:auto !important;
+  height:38px !important;
+  padding:0 18px !important;
+
+  display:inline-flex !important;
+  align-items:center;
+  justify-content:center;
+
+  background:transparent !important;
+  border:1px solid #ff3f8f !important;
+  border-radius:6px !important;
+
+  color:#fff !important;
+  font-family:'JetBrains Mono', monospace !important;
+  font-size:12px !important;
+  font-weight:600 !important;
+  letter-spacing:.06em;
+
+  box-shadow:none !important;
+  line-height:1 !important;
+  transition:background .2s ease,
+             border-color .2s ease,
+             color .2s ease,
+             transform .2s ease !important;
+}
+
+.try-now.get-beats-btn:hover{
+  background:#ff3f8f !important;
+  border-color:#ff3f8f !important;
+  color:#fff !important;
+  transform:translateY(-1px);
+}

@@ -507,12 +507,16 @@ function ensureCartBar(){
         <span class="cart-promo" id="cart-promo"></span>
       </div>
       <div class="cart-bar-right">
+      <button class="cart-open-btn" id="cart-open" type="button" aria-label="장바구니 열기">
+  🛒 <span id="cart-open-count">0</span>
+</button>
         <span class="cart-total"><span class="cart-total-old"></span><b id="cart-total-val">₩ 0</b></span>
-        <button class="cart-buy-btn" id="cart-buy">구매하기 →</button>
+       <button class="cart-buy-btn" id="cart-buy">결제하기 →</button>
       </div>
     </div>
   `;
   document.body.appendChild(bar);
+  bar.querySelector('#cart-open').addEventListener('click', openCheckout);
   bar.querySelector('#cart-buy').addEventListener('click', openCheckout);
   return bar;
 }
@@ -523,6 +527,7 @@ function updateCartBar(){
   if (!n){ bar.classList.add('hidden'); return; }
   bar.classList.remove('hidden');
   bar.querySelector('.cart-count b').textContent = n;
+  bar.querySelector('#cart-open-count').textContent = n;
   const totalEl = bar.querySelector('#cart-total-val');
   const oldEl = bar.querySelector('.cart-total-old');
   totalEl.textContent = fmt(total);
@@ -574,7 +579,7 @@ function ensureCheckout(){
           <div class="row total"><span>총 결제 금액</span><span id="co-total">₩ 0</span></div>
         </div>
         <div class="checkout-actions">
-          <button class="checkout-secondary" id="keep-shopping">← 더 둘러보기</button>
+          <button class="checkout-secondary" id="keep-shopping">← 곡 더 담기</button>
           <button class="checkout-pay" id="checkout-pay">결제하기 →</button>
         </div>
       </div>
