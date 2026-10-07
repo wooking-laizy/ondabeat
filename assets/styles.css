@@ -2561,3 +2561,59 @@ body.cart-visible.player-visible{padding-bottom:0;}
   .hero > .hero-carousel .carousel-nav{display:none;}
   .hero > .hero-carousel .carousel-slide{flex:0 0 100%;margin:0;}
 }
+
+/* ===== HOME HERO · HOT BEAT TOP 3 — compact bottom-right ===== */
+@media (min-width: 901px){
+  .hero > .hero-carousel{
+    left:auto !important;
+    right:48px !important;
+    bottom:28px !important;
+    width:420px !important;
+    max-width:420px !important;
+    height:auto !important;
+    padding:0 !important;
+    margin:0 !important;
+    overflow:visible !important;
+  }
+  .hero > .hero-carousel .hero-carousel-head{
+    justify-content:flex-start !important;
+    margin:0 0 7px 2px !important;
+  }
+  .hero > .hero-carousel .hero-carousel-head h2{
+    font-size:12px !important;
+    text-align:left !important;
+    letter-spacing:.12em !important;
+  }
+  .hero > .hero-carousel .carousel-viewport{
+    overflow:hidden !important;
+    border-radius:12px !important;
+  }
+  .hero > .hero-carousel .carousel-slide{
+    flex:0 0 100% !important;
+    margin:0 !important;
+    min-height:78px !important;
+    padding:12px 14px !important;
+    gap:10px !important;
+    border-radius:12px !important;
+    background:rgba(8,8,12,.58) !important;
+    background-image:none !important;
+    border:1px solid rgba(255,255,255,.13) !important;
+    -webkit-backdrop-filter:blur(14px) saturate(115%) !important;
+    backdrop-filter:blur(14px) saturate(115%) !important;
+    box-shadow:0 12px 30px rgba(0,0,0,.28) !important;
+  }
+  .hero > .hero-carousel .carousel-slide.is-active{opacity:1 !important;}
+  .hero > .hero-carousel .carousel-slide .num{
+    font-size:24px !important;
+    min-width:28px !important;
+  }
+  .hero > .hero-carousel .carousel-slide .title{font-size:17px !important;}
+  .hero > .hero-carousel .carousel-slide .meta{font-size:9px !important;}
+  .hero > .hero-carousel .bpm-badge{font-size:9px !important;padding:4px 7px !important;}
+  .hero > .hero-carousel .carousel-play{width:36px !important;height:36px !important;}
+  .hero > .hero-carousel .carousel-buy{padding:8px !important;}
+  .hero > .hero-carousel .carousel-nav{width:28px !important;height:28px !important;}
+  .hero > .hero-carousel .carousel-nav.prev{left:6px !important;}
+  .hero > .hero-carousel .carousel-nav.next{right:6px !important;}
+  .hero > .hero-carousel .carousel-dots{margin-top:6px !important;}
+}
