@@ -2618,38 +2618,122 @@ body.cart-visible.player-visible{padding-bottom:0;}
   .hero > .hero-carousel .carousel-dots{margin-top:6px !important;}
 }
 
-/* ===== HOT TOP 3 POSITION FIX — hero right-lower ===== */
+/* ===== HOME HERO · HOT BEAT TOP 3 — vertical feature card ===== */
 @media (min-width: 901px){
-  section.hero{ position:relative !important; }
-  section.hero section.hero-carousel{
-    position:absolute !important;
-    top:auto !important;
+  .hero > .hero-carousel{
     left:auto !important;
     right:5.5% !important;
-    bottom:72px !important;
-    width:460px !important;
-    max-width:34vw !important;
-    margin:0 !important;
-    padding:0 !important;
-    transform:none !important;
-    z-index:20 !important;
-    overflow:visible !important;
+    bottom:54px !important;
+    width:360px !important;
+    max-width:360px !important;
   }
-  section.hero section.hero-carousel .hero-carousel-head{
-    justify-content:flex-start !important;
-    margin:0 0 8px 0 !important;
+  .hero > .hero-carousel .hero-carousel-head{margin:0 0 10px 3px !important;}
+  .hero > .hero-carousel .hero-carousel-head h2{
+    font-size:14px !important;
+    color:#fff !important;
+    letter-spacing:.14em !important;
+    text-shadow:0 2px 12px rgba(0,0,0,.7);
   }
-  section.hero section.hero-carousel .hero-carousel-head h2{
-    margin:0 !important;
-    font-size:12px !important;
-    text-align:left !important;
-  }
-  section.hero section.hero-carousel .carousel-viewport{
-    width:100% !important;
+  .hero > .hero-carousel .carousel-viewport{
+    border-radius:22px !important;
     overflow:hidden !important;
   }
-  section.hero section.hero-carousel .carousel-slide{
-    width:100% !important;
-    max-width:100% !important;
+  .hero > .hero-carousel .carousel-slide{
+    position:relative !important;
+    flex:0 0 100% !important;
+    min-height:330px !important;
+    padding:30px 28px 24px !important;
+    display:grid !important;
+    grid-template-columns:1fr auto !important;
+    grid-template-rows:auto 1fr auto auto !important;
+    align-content:stretch !important;
+    gap:12px 14px !important;
+    border-radius:22px !important;
+    border:1px solid rgba(255,92,169,.62) !important;
+    background:
+      linear-gradient(145deg,rgba(255,47,139,.58) 0%,rgba(172,49,210,.46) 48%,rgba(72,42,183,.46) 100%),
+      rgba(10,8,16,.72) !important;
+    -webkit-backdrop-filter:blur(18px) saturate(135%) !important;
+    backdrop-filter:blur(18px) saturate(135%) !important;
+    box-shadow:0 22px 55px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.12) !important;
+    opacity:.28 !important;
+  }
+  .hero > .hero-carousel .carousel-slide.is-active{opacity:1 !important;}
+  .hero > .hero-carousel .carousel-slide .num{
+    grid-column:1 / -1 !important;
+    font-size:56px !important;
+    line-height:1 !important;
+    min-width:0 !important;
+    color:rgba(255,255,255,.28) !important;
+  }
+  .hero > .hero-carousel .carousel-slide > div:nth-child(2){
+    grid-column:1 / -1 !important;
+    align-self:start !important;
+  }
+  .hero > .hero-carousel .carousel-slide .title{
+    font-size:28px !important;
+    line-height:1.05 !important;
+    color:#fff !important;
+  }
+  .hero > .hero-carousel .carousel-slide .meta{
+    margin-top:7px !important;
+    font-size:11px !important;
+    color:rgba(255,255,255,.72) !important;
+  }
+  .hero > .hero-carousel .slide-tags{
+    display:flex !important;
+    flex-wrap:wrap !important;
+    gap:6px !important;
+    margin-top:15px !important;
+  }
+  .hero > .hero-carousel .slide-tag{
+    border-color:rgba(255,255,255,.24) !important;
+    background:rgba(0,0,0,.16) !important;
+    color:rgba(255,255,255,.84) !important;
+  }
+  .hero > .hero-carousel .bpm-badge{
+    grid-column:1 !important;
+    justify-self:start !important;
+    align-self:end !important;
+    font-size:11px !important;
+    padding:7px 10px !important;
+    background:rgba(0,0,0,.25) !important;
+    border:1px solid rgba(255,255,255,.12) !important;
+  }
+  .hero > .hero-carousel .carousel-play{
+    grid-column:2 !important;
+    justify-self:end !important;
+    align-self:end !important;
+    width:52px !important;
+    height:52px !important;
+    background:#ff3f8f !important;
+    box-shadow:0 10px 26px rgba(255,63,143,.28) !important;
+  }
+  .hero > .hero-carousel .carousel-buy{
+    grid-column:2 !important;
+    justify-self:end !important;
+    padding:10px 12px !important;
+    background:rgba(0,0,0,.24) !important;
+    border:1px solid rgba(255,255,255,.12) !important;
+  }
+  .hero > .hero-carousel .carousel-nav{
+    top:auto !important;
+    bottom:18px !important;
+    width:34px !important;
+    height:34px !important;
+    background:rgba(0,0,0,.34) !important;
+    border:1px solid rgba(255,255,255,.13) !important;
+  }
+  .hero > .hero-carousel .carousel-nav.prev{left:18px !important;}
+  .hero > .hero-carousel .carousel-nav.next{right:18px !important;}
+  .hero > .hero-carousel .carousel-dots{
+    margin-top:10px !important;
+    justify-content:center !important;
+  }
+  .carousel-now-playing{
+    font-size:9px !important;
+    color:#fff !important;
+    border-color:rgba(255,255,255,.34) !important;
+    background:rgba(0,0,0,.20) !important;
   }
 }
