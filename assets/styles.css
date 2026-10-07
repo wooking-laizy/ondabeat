@@ -3422,3 +3422,16 @@ body.cart-visible.player-visible{padding-bottom:0;}
     fill:rgba(255,45,135,.16) !important;
   }
 }
+/* ===== FIXED BOTTOM BARS SPACING ===== */
+
+body.player-visible:not(.cart-visible) {
+  padding-bottom: 76px;
+}
+
+body.cart-visible:not(.player-visible) {
+  padding-bottom: 74px;
+}
+
+body.player-visible.cart-visible {
+  padding-bottom: 150px;
+}
