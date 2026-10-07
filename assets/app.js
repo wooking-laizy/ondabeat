@@ -1062,7 +1062,7 @@ function initCarousel(){
 
       <div class="hot-rank-info">
         <div class="title-row">
-          <div class="hot-rank-title">${b.title}</div>
+          <div class="title">${b.title}</div>
           <span class="carousel-now-playing">NOW PLAYING</span>
         </div>
 
@@ -1077,15 +1077,29 @@ function initCarousel(){
 
       <div class="bpm-badge">${b.bpm} BPM</div>
 
-      <button class="carousel-play" aria-label="Play ${b.title}">
-        <svg class="play-icon" viewBox="0 0 10 12">
-          <polygon points="0,0 10,6 0,12"/>
-        </svg>
-        <svg class="pause-icon" viewBox="0 0 10 12">
-          <rect x="1" y="1" width="3" height="10"/>
-          <rect x="6" y="1" width="3" height="10"/>
-        </svg>
-      </button>
+<button class="carousel-play" aria-label="Play ${b.title}">
+  <svg class="play-icon" viewBox="0 0 10 12">
+    <polygon points="0,0 10,6 0,12"/>
+  </svg>
+
+  <svg class="pause-icon" viewBox="0 0 10 12">
+    <rect x="1" y="1" width="3" height="10"/>
+    <rect x="6" y="1" width="3" height="10"/>
+  </svg>
+</button>
+
+<button class="hot-cart-btn"
+        data-id="${b.id}"
+        aria-label="장바구니에 담기">
+  <svg viewBox="0 0 24 24"
+       fill="none"
+       stroke="currentColor"
+       stroke-width="2">
+    <circle cx="9" cy="21" r="1"/>
+    <circle cx="20" cy="21" r="1"/>
+    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+  </svg>
+</button>
 
     </div>
   `).join('');
@@ -1101,6 +1115,35 @@ function initCarousel(){
 
   // 각 곡 재생 버튼
   track.querySelectorAll('.carousel-slide').forEach(slide => {
+    const cartBtn = slide.querySelector('.hot-cart-btn');
+
+if (cartBtn) {
+  const id = String(cartBtn.dataset.id);
+
+  // 이미 장바구니에 있으면 처음부터 핑크 상태
+  cartBtn.classList.toggle('in-cart', cart.has(id));
+
+  cartBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+
+    if (cart.has(id)) {
+      cart.delete(id);
+    } else {
+      cart.add(id);
+    }
+
+    saveCart();
+    updateCartBar();
+
+    const inCart = cart.has(id);
+
+    cartBtn.classList.toggle('in-cart', inCart);
+    cartBtn.setAttribute(
+      'aria-label',
+      inCart ? '장바구니에서 빼기' : '장바구니에 담기'
+    );
+  });
+}
     const btn = slide.querySelector('.carousel-play');
 
     if (btn){
