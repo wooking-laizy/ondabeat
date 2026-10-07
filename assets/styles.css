@@ -3251,3 +3251,26 @@ body.cart-visible.player-visible{padding-bottom:0;}
     align-self:center !important;
   }
 }
+
+
+/* ===== HOT TOP 3 · GENRE MATCH + BPM LEFT ===== */
+@media (min-width: 901px){
+  /* Match Sounds .song-genre exactly */
+  #top.hero > section.hero-carousel .hot-rank-info .meta{
+    margin-top:6px !important;
+    font-family:var(--f-body) !important;
+    font-size:13px !important;
+    line-height:1.4 !important;
+    font-weight:400 !important;
+    letter-spacing:0 !important;
+    color:var(--text-dim) !important;
+    opacity:1 !important;
+    text-shadow:none !important;
+  }
+
+  /* Keep BPM at 10px, just move the whole badge left */
+  #top.hero > section.hero-carousel .carousel-slide.hot-rank-item > .bpm-badge{
+    font-size:10px !important;
+    transform:translateX(-10px) !important;
+  }
+}
