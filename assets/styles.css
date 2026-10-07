@@ -2865,3 +2865,70 @@ body.cart-visible.player-visible{padding-bottom:0;}
     color:rgba(255,255,255,.72) !important;
   }
 }
+
+
+/* ===== HOT TOP 3 · TYPOGRAPHY + VERTICAL ALIGN FINAL ===== */
+@media (min-width: 901px){
+  /* Keep horizontal position exactly as-is; move the whole HOT block downward only. */
+  html body #top.hero .hero-carousel{
+    top:54.5% !important;
+    transform:translateY(-38%) !important;
+  }
+
+  /* HOT BEAT TOP 3: slightly larger and bolder */
+  html body #top.hero .hero-carousel .hero-carousel-head h2{
+    font-size:16px !important;
+    font-weight:800 !important;
+    letter-spacing:.16em !important;
+    color:#fff !important;
+  }
+
+  /* Track titles: clearer, heavier */
+  html body #top.hero .hero-carousel .title{
+    font-size:15px !important;
+    line-height:1.15 !important;
+    font-weight:750 !important;
+    color:#fff !important;
+    letter-spacing:-.01em !important;
+  }
+
+  /* Genre: larger and easier to read */
+  html body #top.hero .hero-carousel .meta{
+    margin-top:5px !important;
+    font-size:10px !important;
+    line-height:1.2 !important;
+    font-weight:600 !important;
+    letter-spacing:.035em !important;
+    color:rgba(255,255,255,.72) !important;
+  }
+
+  /* BPM: larger + stronger type and border */
+  html body #top.hero .hero-carousel .bpm-badge{
+    min-width:54px !important;
+    padding:5px 7px !important;
+    font-size:9px !important;
+    line-height:1 !important;
+    font-weight:700 !important;
+    letter-spacing:.06em !important;
+    color:rgba(255,255,255,.88) !important;
+    border:1px solid rgba(255,255,255,.20) !important;
+  }
+
+  /* Brighter, cleaner pink play control */
+  html body #top.hero .hero-carousel .carousel-play{
+    opacity:1 !important;
+    background:linear-gradient(135deg,#ff3f8f 0%,#d82d78 100%) !important;
+    border:1px solid rgba(255,255,255,.16) !important;
+    color:#fff !important;
+    box-shadow:
+      0 0 0 1px rgba(255,63,143,.10),
+      0 5px 16px rgba(255,47,135,.22) !important;
+  }
+
+  html body #top.hero .hero-carousel .carousel-play:hover{
+    background:linear-gradient(135deg,#ff5aa0 0%,#ec3385 100%) !important;
+    box-shadow:
+      0 0 0 1px rgba(255,90,160,.16),
+      0 7px 20px rgba(255,47,135,.30) !important;
+  }
+}
