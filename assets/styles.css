@@ -2816,3 +2816,16 @@ body.cart-visible.player-visible{padding-bottom:0;}
     color:#ff3f8f !important;
   }
 }
+
+
+/* ===== HOT TOP 3 · TRANSPARENT CARD RESTORE ===== */
+@media (min-width: 901px){
+  html body #top.hero .hero-carousel .carousel-slide.hot-rank-item{
+    opacity:1 !important;
+    background:transparent !important;
+    border:1px solid rgba(255,255,255,.10) !important;
+    box-shadow:none !important;
+    backdrop-filter:none !important;
+    -webkit-backdrop-filter:none !important;
+  }
+}
