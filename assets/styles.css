@@ -2421,3 +2421,27 @@ body { padding-bottom: 0; }
   font-size:10px;
   font-weight:700;
 }
+/* ===== HEADER CART ICON ===== */
+.header-cart-icon{
+  width:17px;
+  height:17px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.header-cart-icon svg{
+  width:17px;
+  height:17px;
+  fill:none;
+  stroke:#fff;
+  stroke-width:1.8;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  opacity:.9;
+  transition:stroke .2s ease;
+}
+
+.header-cart-btn:hover .header-cart-icon svg{
+  stroke:#ff3f8f;
+}
