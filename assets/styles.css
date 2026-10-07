@@ -2617,3 +2617,39 @@ body.cart-visible.player-visible{padding-bottom:0;}
   .hero > .hero-carousel .carousel-nav.next{right:6px !important;}
   .hero > .hero-carousel .carousel-dots{margin-top:6px !important;}
 }
+
+/* ===== HOT TOP 3 POSITION FIX — hero right-lower ===== */
+@media (min-width: 901px){
+  section.hero{ position:relative !important; }
+  section.hero section.hero-carousel{
+    position:absolute !important;
+    top:auto !important;
+    left:auto !important;
+    right:5.5% !important;
+    bottom:72px !important;
+    width:460px !important;
+    max-width:34vw !important;
+    margin:0 !important;
+    padding:0 !important;
+    transform:none !important;
+    z-index:20 !important;
+    overflow:visible !important;
+  }
+  section.hero section.hero-carousel .hero-carousel-head{
+    justify-content:flex-start !important;
+    margin:0 0 8px 0 !important;
+  }
+  section.hero section.hero-carousel .hero-carousel-head h2{
+    margin:0 !important;
+    font-size:12px !important;
+    text-align:left !important;
+  }
+  section.hero section.hero-carousel .carousel-viewport{
+    width:100% !important;
+    overflow:hidden !important;
+  }
+  section.hero section.hero-carousel .carousel-slide{
+    width:100% !important;
+    max-width:100% !important;
+  }
+}
