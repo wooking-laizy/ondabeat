@@ -2818,14 +2818,50 @@ body.cart-visible.player-visible{padding-bottom:0;}
 }
 
 
-/* ===== HOT TOP 3 · TRANSPARENT CARD RESTORE ===== */
+/* ===== HOT TOP 3 · LIQUID GLASS RESTORE (FINAL) ===== */
 @media (min-width: 901px){
   html body #top.hero .hero-carousel .carousel-slide.hot-rank-item{
     opacity:1 !important;
-    background:transparent !important;
-    border:1px solid rgba(255,255,255,.10) !important;
-    box-shadow:none !important;
-    backdrop-filter:none !important;
-    -webkit-backdrop-filter:none !important;
+
+    /* Liquid Glass: image remains visible through the card */
+    background:
+      linear-gradient(
+        135deg,
+        rgba(255,255,255,.075) 0%,
+        rgba(255,255,255,.025) 42%,
+        rgba(255,255,255,.045) 100%
+      ) !important;
+
+    border:1px solid rgba(255,255,255,.14) !important;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.10),
+      inset 0 -1px 0 rgba(255,255,255,.025),
+      0 8px 24px rgba(0,0,0,.08) !important;
+
+    backdrop-filter:blur(9px) saturate(115%) !important;
+    -webkit-backdrop-filter:blur(9px) saturate(115%) !important;
+  }
+
+  /* Keep all content crisp; only the card surface is translucent */
+  html body #top.hero .hero-carousel .hot-rank-number,
+  html body #top.hero .hero-carousel .hot-rank-info,
+  html body #top.hero .hero-carousel .title,
+  html body #top.hero .hero-carousel .meta,
+  html body #top.hero .hero-carousel .bpm-badge,
+  html body #top.hero .hero-carousel .carousel-play{
+    opacity:1 !important;
+    visibility:visible !important;
+  }
+
+  html body #top.hero .hero-carousel .title{
+    color:#fff !important;
+  }
+
+  html body #top.hero .hero-carousel .meta{
+    color:rgba(255,255,255,.62) !important;
+  }
+
+  html body #top.hero .hero-carousel .bpm-badge{
+    color:rgba(255,255,255,.72) !important;
   }
 }
