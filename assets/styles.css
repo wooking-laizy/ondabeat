@@ -2162,12 +2162,12 @@ body { padding-bottom: 0; }
 .ondazine-loading,.ondazine-empty{grid-column:1/-1;padding:80px 0;text-align:center;color:var(--text-dim)}
 .ondazine-detail{max-width:1120px;margin:0 auto}
 .zine-back{display:inline-block;margin-bottom:28px;color:#aaa;font:500 11px var(--f-mono);letter-spacing:.08em;text-decoration:none}.zine-back:hover{color:var(--pink)}
-.zine-detail-head{display:grid;grid-template-columns:minmax(300px,480px) 1fr;gap:64px;align-items:center;margin-bottom:72px}
+.zine-detail-head{display:grid;grid-template-columns:minmax(320px,440px) minmax(0,1fr);gap:52px;align-items:start;margin-bottom:72px}
 .zine-detail-cover img{width:100%;height:auto;display:block}
 .zine-detail-copy h2{font-size:42px;line-height:1.18;margin:14px 0 16px;color:#fff;word-break:keep-all}
 .zine-detail-copy p{font-size:16px;line-height:1.75;color:#aaa;margin:0 0 28px;word-break:keep-all}
 .zine-instagram{display:inline-flex;padding:12px 16px;border:1px solid #34343d;color:#fff;text-decoration:none;font:600 11px var(--f-mono);letter-spacing:.06em;transition:.2s}.zine-instagram:hover{border-color:var(--pink);color:var(--pink)}
-.zine-curation{border-top:1px solid #25252d;padding-top:44px}.zine-section-label{font:700 12px var(--f-mono);letter-spacing:.12em;color:#fff;margin:0 0 12px}.zine-section-label span{color:var(--pink)}.zine-section-label.more{margin-top:46px}
-.zine-tracks-table th:first-child{width:76px}.zine-tracks-table .beat-row td:nth-child(2){min-width:280px}.zine-tracks-table .beat-row td:first-child{text-align:center}
+.zine-detail-right{min-width:0;padding-top:8px}.zine-curation{border-top:1px solid #25252d;padding-top:28px;margin-top:34px}.zine-section-label{font:700 12px var(--f-mono);letter-spacing:.12em;color:#fff;margin:0 0 12px}.zine-section-label span{color:var(--pink)}.zine-section-label.more{margin-top:46px}
+.zine-tracks-table{width:100%}.zine-tracks-table th:first-child{width:62px}.zine-tracks-table .beat-row td:nth-child(2){min-width:180px}.zine-tracks-table .beat-row td:first-child{text-align:center}.zine-tracks-table .wave-cell{min-width:100px}
 @media(max-width:900px){.ondazine-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.zine-detail-head{grid-template-columns:1fr;gap:30px}.zine-detail-cover{max-width:560px}.zine-detail-copy h2{font-size:34px}.zine-table-wrap{overflow-x:auto}.zine-tracks-table{min-width:760px}}
 @media(max-width:600px){.ondazine-inner{padding:0 20px}.ondazine-grid{grid-template-columns:1fr;gap:42px}.ondazine-open{opacity:1;transform:none}.zine-detail-copy h2{font-size:28px}.zine-detail-head{margin-bottom:52px}}

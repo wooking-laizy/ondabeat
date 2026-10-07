@@ -37,6 +37,7 @@ const CACHE_KEY = 'onda_beats_supabase_cache_v1';
 function normaliseSupabaseRow(r){
   return {
     id: String(r.beat_id || r.id || ''),
+    db_id: String(r.id || ''),
     title: r.title || '',
     genre: r.genre || '',
     bpm: r.bpm ?? '',
@@ -1085,12 +1086,10 @@ async function initOndazine(){
       const z=zines.find(x=>String(x.id)===String(id));
       if(!z){detail.hidden=false;detail.innerHTML='<div class="ondazine-empty">ONDAZINE을 찾을 수 없습니다.</div>';list.hidden=true;return;}
       list.hidden=true; detail.hidden=false;
-      const f=BEATS.find(b=>String(b.id)===String(z.featured_sound_id));
-      const p1=BEATS.find(b=>String(b.id)===String(z.more_sound_1_id));
-      const p2=BEATS.find(b=>String(b.id)===String(z.more_sound_2_id));
-      detail.innerHTML=`<a class="zine-back" href="ondazine.html">← ALL ONDAZINE</a><article class="zine-detail-head"><div class="zine-detail-cover"><img src="${esc(z.cover_url||'')}" alt="${esc(z.title)}"></div><div class="zine-detail-copy"><span class="zine-vol">ONDA ZINE VOL.${esc(z.issue_no||'—')}</span><h2>${esc(z.title)}</h2>${z.subtitle?`<p>${esc(z.subtitle)}</p>`:''}${z.instagram_url?`<a class="zine-instagram" href="${esc(z.instagram_url)}" target="_blank" rel="noopener">READ FULL STORY ON INSTAGRAM ↗</a>`:''}</div></article>
-      <section class="zine-curation"><div class="zine-section-label">RECOMMENDED TRACK <span>[ ${esc(moodLabel(f?.mood))} ]</span></div><div class="zine-table-wrap"><table class="beats-table zine-tracks-table"><thead><tr><th></th><th>song</th><th class="wave"></th><th class="genre">genre</th><th class="bpm">bpm</th><th>buy</th></tr></thead><tbody>${zineSoundRow(f)}</tbody></table></div>
-      <div class="zine-section-label more">MORE PICKS FOR YOU</div><div class="zine-table-wrap"><table class="beats-table zine-tracks-table"><tbody>${zineSoundRow(p1)}${zineSoundRow(p2)}</tbody></table></div></section>`;
+      const f=BEATS.find(b=>String(b.db_id||b.id)===String(z.featured_sound_id));
+      const p1=BEATS.find(b=>String(b.db_id||b.id)===String(z.more_sound_1_id));
+      const p2=BEATS.find(b=>String(b.db_id||b.id)===String(z.more_sound_2_id));
+      detail.innerHTML=`<a class="zine-back" href="ondazine.html">← ALL ONDAZINE</a><article class="zine-detail-head"><div class="zine-detail-cover"><img src="${esc(z.cover_url||'')}" alt="${esc(z.title)}"></div><div class="zine-detail-right"><div class="zine-detail-copy"><span class="zine-vol">ONDA ZINE VOL.${esc(z.issue_no||'—')}</span><h2>${esc(z.title)}</h2>${z.subtitle?`<p>${esc(z.subtitle)}</p>`:''}${z.instagram_url?`<a class="zine-instagram" href="${esc(z.instagram_url)}" target="_blank" rel="noopener">READ FULL STORY ON INSTAGRAM ↗</a>`:''}</div><section class="zine-curation"><div class="zine-section-label">RECOMMENDED TRACK <span>[ ${esc(moodLabel(f?.mood))} ]</span></div><div class="zine-table-wrap"><table class="beats-table zine-tracks-table"><thead><tr><th></th><th>song</th><th class="wave"></th><th class="genre">genre</th><th class="bpm">bpm</th><th>buy</th></tr></thead><tbody>${zineSoundRow(f)}</tbody></table></div><div class="zine-section-label more">MORE PICKS FOR YOU</div><div class="zine-table-wrap"><table class="beats-table zine-tracks-table"><tbody>${zineSoundRow(p1)}${zineSoundRow(p2)}</tbody></table></div></section></div></article>`;
       bindZineRows(detail);
     } else {
       detail.hidden=true; list.hidden=false;
