@@ -3322,3 +3322,24 @@ body.cart-visible.player-visible{padding-bottom:0;}
     font-weight:400 !important;
   }
 }
+
+
+/* ===== HOME HOT TOP 3 · FINAL DISPLAY TYPE ===== */
+@media (min-width: 901px){
+  #top.hero > section.hero-carousel .hero-carousel-head h2{
+    font-family:var(--f-title) !important;
+    font-size:20px !important;
+    line-height:1.1 !important;
+    font-weight:400 !important;
+    letter-spacing:.08em !important;
+  }
+
+  #top.hero > section.hero-carousel .hot-rank-title,
+  #top.hero > section.hero-carousel .hot-rank-info .title-row .hot-rank-title{
+    font-family:var(--f-title) !important;
+    font-size:18px !important;
+    line-height:1.1 !important;
+    font-weight:400 !important;
+    letter-spacing:.02em !important;
+  }
+}
