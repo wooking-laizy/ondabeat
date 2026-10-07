@@ -418,10 +418,10 @@ function togglePlay(el, id, src){
 if (audio) audio.addEventListener('ended', () => { stopCurrent(); clearPlayerState(); const bar = document.getElementById('player-bar'); if (bar) bar.classList.remove('is-playing'); syncBottomBars(); });
 
 /* ========== SOUNDS TABLE (if present) ========== */
-const beatsBody = document.getElementById('beats-body');
-const moodBtns = document.querySelectorAll('.filter-btn');
-const tagsWrap = document.getElementById('tag-filters');
-const searchInput = document.getElementById('beat-search');
+let beatsBody = document.getElementById('beats-body');
+let moodBtns = document.querySelectorAll('.filter-btn');
+let tagsWrap = document.getElementById('tag-filters');
+let searchInput = document.getElementById('beat-search');
 
 let activeMood = 'all';
 let activeTags = new Set();
@@ -593,11 +593,16 @@ function ensureCartBar(){
 }
 
 /* === Header cart === */
-const headerCart = document.getElementById('header-cart');
+let headerCart = document.getElementById('header-cart');
 
-if (headerCart){
-  headerCart.addEventListener('click', openCheckout);
+function bindHeaderCart(){
+  headerCart = document.getElementById('header-cart');
+  if (headerCart && !headerCart.dataset.bound){
+    headerCart.dataset.bound = '1';
+    headerCart.addEventListener('click', openCheckout);
+  }
 }
+bindHeaderCart();
 function updateCartBar(){
   const bar = ensureCartBar();
   const { n, bundles, singles, subtotal, total, discount } = calcCart();
@@ -1027,8 +1032,8 @@ function initSoundsUI(){
 }
 
 /* ========== HOT BEAT CAROUSEL (if present) ========== */
-const track = document.getElementById('hotTrack');
-const dotsWrap = document.getElementById('hotDots');
+let track = document.getElementById('hotTrack');
+let dotsWrap = document.getElementById('hotDots');
 
 function initCarousel(){
   if (!track || !dotsWrap) return;
@@ -1148,20 +1153,112 @@ async function initOndazine(){
  }catch(err){console.error(err);list.innerHTML='<div class="ondazine-empty">ONDAZINE을 불러오지 못했습니다.</div>';}
 }
 
-/* ========== INIT — load data then render ========== */
-loadBeats().then(() => {
+/* ========== PAGE BINDINGS + SEAMLESS INTERNAL NAVIGATION ========== */
+function refreshPageRefs(){
+  beatsBody = document.getElementById('beats-body');
+  moodBtns = document.querySelectorAll('.filter-btn');
+  tagsWrap = document.getElementById('tag-filters');
+  searchInput = document.getElementById('beat-search');
+  track = document.getElementById('hotTrack');
+  dotsWrap = document.getElementById('hotDots');
+  currentEl = null; // page DOM may have been replaced; audio/currentId stay alive
+}
+
+function bindFaq(){
+  document.querySelectorAll('.faq-q').forEach(q => {
+    if (q.dataset.bound) return;
+    q.dataset.bound = '1';
+    q.addEventListener('click', () => {
+      const item = q.closest('.faq-item');
+      const wasOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      if (!wasOpen) item.classList.add('open');
+    });
+  });
+}
+
+function initCurrentPage(){
+  refreshPageRefs();
+  activeMood = 'all';
+  activeTags = new Set();
+  searchQuery = '';
+  currentPage = 1;
+  bindHeaderCart();
   initSoundsUI();
   initCarousel();
   initOndazine();
+  bindFaq();
   updateCartBar();
+  syncBottomBars();
+
+  // Reflect the still-playing track in newly inserted page controls.
+  if (currentId){
+    document.querySelectorAll(`[data-id="${CSS.escape(String(currentId))}"]`).forEach(n => n.classList.add('playing'));
+  }
+}
+
+const SPA_KEEP_IDS = new Set(['audio-player','player-bar','cart-bar','checkout-modal']);
+let spaNavigating = false;
+
+function isInternalPageLink(a){
+  if (!a || a.target === '_blank' || a.hasAttribute('download')) return false;
+  const raw = a.getAttribute('href') || '';
+  if (!raw || raw.startsWith('#') || raw.startsWith('mailto:') || raw.startsWith('tel:') || raw.startsWith('javascript:')) return false;
+  let u;
+  try { u = new URL(a.href, location.href); } catch(e){ return false; }
+  if (u.origin !== location.origin) return false;
+  return /(?:^|\/)(?:index|sounds|ondazine|pricing|qna)\.html$/.test(u.pathname) || u.pathname === '/' || u.pathname.endsWith('/');
+}
+
+async function navigateSpa(url, push = true){
+  if (spaNavigating) return;
+  spaNavigating = true;
+  try{
+    const u = new URL(url, location.href);
+    const res = await fetch(u.href, { cache:'no-store' });
+    if (!res.ok) throw new Error(`Navigation ${res.status}`);
+    const html = await res.text();
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+
+    // Keep the live audio/player/cart/checkout nodes. Replace only page content.
+    [...document.body.children].forEach(node => {
+      if (node.tagName === 'SCRIPT') return;
+      if (node.id && SPA_KEEP_IDS.has(node.id)) return;
+      node.remove();
+    });
+
+    const anchor = document.getElementById('audio-player');
+    [...doc.body.children].forEach(node => {
+      if (node.tagName === 'SCRIPT' || node.id === 'audio-player') return;
+      document.body.insertBefore(document.importNode(node, true), anchor);
+    });
+
+    document.title = doc.title || document.title;
+    document.body.className = doc.body.className;
+    if (push) history.pushState({ondaSpa:true}, '', u.href);
+    window.scrollTo(0, 0);
+    initCurrentPage();
+  }catch(err){
+    console.warn('[ONDA] seamless navigation failed; using normal navigation', err);
+    location.href = url;
+  }finally{
+    spaNavigating = false;
+  }
+}
+
+document.addEventListener('click', e => {
+  if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+  const a = e.target.closest('a[href]');
+  if (!isInternalPageLink(a)) return;
+  e.preventDefault();
+  navigateSpa(a.href, true);
 });
 
-/* ========== FAQ (if present) ========== */
-document.querySelectorAll('.faq-q').forEach(q => {
-  q.addEventListener('click', () => {
-    const item = q.closest('.faq-item');
-    const wasOpen = item.classList.contains('open');
-    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
-    if (!wasOpen) item.classList.add('open');
-  });
+window.addEventListener('popstate', () => navigateSpa(location.href, false));
+
+/* ========== INIT — load data then render ========== */
+loadBeats().then(() => {
+  initCurrentPage();
+  // Fallback only for hard reload/direct entry. SPA navigation itself never destroys audio.
+  restorePlayerState();
 });
