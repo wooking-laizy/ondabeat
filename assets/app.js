@@ -1083,13 +1083,40 @@ async function initOndazine(){
     const zines=await fetchZines();
     const id=new URLSearchParams(location.search).get('id');
     if(id){
+  document.body.classList.add('ondazine-detail-mode');
       const z=zines.find(x=>String(x.id)===String(id));
-      if(!z){detail.hidden=false;detail.innerHTML='<div class="ondazine-empty">ONDAZINE을 찾을 수 없습니다.</div>';list.hidden=true;return;}
-      list.hidden=true; detail.hidden=false;
-      const f=BEATS.find(b=>String(b.db_id||b.id)===String(z.featured_sound_id));
-      const p1=BEATS.find(b=>String(b.db_id||b.id)===String(z.more_sound_1_id));
-      const p2=BEATS.find(b=>String(b.db_id||b.id)===String(z.more_sound_2_id));
-      detail.innerHTML=`<a class="zine-back" href="ondazine.html">← ALL ONDAZINE</a><article class="zine-detail-head"><div class="zine-detail-cover"><img src="${esc(z.cover_url||'')}" alt="${esc(z.title)}"></div><div class="zine-detail-right"><div class="zine-detail-copy"><span class="zine-vol">ONDA ZINE VOL.${esc(z.issue_no||'—')}</span><h2>${esc(z.title)}</h2>${z.subtitle?`<p>${esc(z.subtitle)}</p>`:''}${z.instagram_url?`<a class="zine-instagram" href="${esc(z.instagram_url)}" target="_blank" rel="noopener">READ FULL STORY ON INSTAGRAM ↗</a>`:''}</div><section class="zine-curation"><div class="zine-section-label">RECOMMENDED TRACK <span>[ ${esc(moodLabel(f?.mood))} ]</span></div><div class="zine-table-wrap"><table class="beats-table zine-tracks-table"><thead><tr><th></th><th>song</th><th class="wave"></th><th class="genre">genre</th><th class="bpm">bpm</th><th>buy</th></tr></thead><tbody>${zineSoundRow(f)}</tbody></table></div><div class="zine-section-label more">MORE PICKS FOR YOU</div><div class="zine-table-wrap"><table class="beats-table zine-tracks-table"><tbody>${zineSoundRow(p1)}${zineSoundRow(p2)}</tbody></table></div></section></div></article>`;
+      if(!z){detail.hidden=false;detail.innerHTML=`<a class="zine-back" href="ondazine.html">← ALL ONDAZINE</a>
+<article class="zine-product-layout">
+  <a class="zine-product-cover" href="${esc(z.instagram_url||'#')}" ${z.instagram_url?'target="_blank" rel="noopener"':''} aria-label="View this ONDAZINE on Instagram">
+    <img src="${esc(z.cover_url||'')}" alt="${esc(z.title)}">
+    ${z.instagram_url?'<span class="zine-cover-hover">VIEW ON INSTAGRAM ↗</span>':''}
+  </a>
+  <div class="zine-product-info">
+    <span class="zine-vol">ONDA ZINE VOL.${esc(z.issue_no||'—')}</span>
+    <h2>${esc(z.title)}</h2>
+    ${z.subtitle?`<p class="zine-subtitle">${esc(z.subtitle)}</p>`:''}
+
+    <section class="zine-featured-product">
+      <div class="zine-product-kicker">RECOMMENDED TRACK <span>[ ${esc(moodLabel(f?.mood||''))} ]</span></div>
+      ${f?`<div class="zine-featured-name">${esc(f.title)}</div>
+      <div class="zine-featured-meta">${esc(f.genre||'—')} · ${esc(f.bpm||'—')} BPM</div>
+      ${f.tags?`<div class="zine-featured-tags">${esc(String(f.tags).split(',').map(v=>v.trim()).filter(Boolean).join(' · '))}</div>`:''}
+      <div class="zine-buy-actions">
+        <button type="button" class="zine-preview-btn" data-id="${esc(f.id)}" data-src="${esc(f.preview||'')}" onclick="playTrack(this)">▶ PREVIEW</button>
+        <button type="button" class="zine-cart-btn" data-id="${esc(f.id)}" onclick="addToCart(this)">ADD TO CART +</button>
+      </div>`:'<div class="zine-missing-track">Track unavailable</div>'}
+    </section>
+
+    <section class="zine-more-products">
+      <div class="zine-product-kicker">MORE PICKS FOR YOU</div>
+      ${[p1,p2].filter(Boolean).map(b=>`<div class="zine-mini-product">
+        <div class="zine-mini-main"><strong>${esc(b.title)}</strong><span>${esc(b.genre||'—')} · ${esc(b.bpm||'—')} BPM</span></div>
+        <button type="button" class="zine-mini-preview" data-id="${esc(b.id)}" data-src="${esc(b.preview||'')}" onclick="playTrack(this)">▶</button>
+        <button type="button" class="zine-mini-cart" data-id="${esc(b.id)}" onclick="addToCart(this)">ADD TO CART</button>
+      </div>`).join('')}
+    </section>
+  </div>
+</article>`;
       bindZineRows(detail);
     } else {
       detail.hidden=true; list.hidden=false;
@@ -1114,3 +1141,24 @@ document.querySelectorAll('.faq-q').forEach(q => {
     if (!wasOpen) item.classList.add('open');
   });
 });
+
+function playTrack(btn){
+  const id=btn?.dataset?.id;
+  const rowBtn=id?document.querySelector(`.beat-row[data-id="${CSS.escape(String(id))}"] .play-btn`):null;
+  if(rowBtn){ rowBtn.click(); return; }
+  const src=btn?.dataset?.src;
+  if(!src)return;
+  if(window.__zineAudio && !window.__zineAudio.paused){window.__zineAudio.pause();}
+  window.__zineAudio=new Audio(src);
+  window.__zineAudio.play();
+}
+
+function addToCart(btn){
+  const id=btn?.dataset?.id;
+  const beat=(window.BEATS||[]).find(b=>String(b.id)===String(id)||String(b.db_id)===String(id));
+  if(!beat)return;
+  const cartButton=document.querySelector(`.beat-row[data-id="${CSS.escape(String(beat.id))}"] .cart-btn`);
+  if(cartButton){cartButton.click();return;}
+  if(!beat.gumroad || beat.gumroad==='#'){alert('Purchase link is not registered for this track yet.');return;}
+  window.open(beat.gumroad,'_blank','noopener');
+}
