@@ -2453,3 +2453,22 @@ body.cart-visible.player-visible{padding-bottom:0;}
 @media(max-width:700px){
   body.cart-visible.player-visible .player-bar{bottom:112px;}
 }
+
+
+/* ===== CART-ONLY TRACK SELECTION ===== */
+.buy-btn{
+  transition: color .2s ease, transform .2s ease, opacity .2s ease;
+}
+.buy-btn.in-cart{
+  color: var(--pink) !important;
+  opacity:1 !important;
+}
+.buy-btn.in-cart svg{
+  fill: rgba(255,63,143,.18);
+  stroke: var(--pink);
+}
+.buy-btn:hover{
+  color:var(--pink);
+  transform:translateY(-1px);
+}
+\n\n/* ===== CART-ONLY SELECTION + PERSISTENT PLAYER ===== */\n.beats-table .buy-btn.in-cart{\n  color:#ff3f8f;\n  background:rgba(255,63,143,.10);\n  border-color:rgba(255,63,143,.45);\n}\n.beats-table .buy-btn.in-cart svg{\n  stroke:#ff3f8f;\n}\nbody.player-visible.cart-visible .player-bar{\n  bottom:74px;\n}\nbody.player-visible.cart-visible .cart-bar{\n  bottom:0;\n}\nbody.player-visible.cart-visible{\n  padding-bottom:150px;\n}\nbody.player-visible:not(.cart-visible){\n  padding-bottom:76px;\n}\nbody.cart-visible:not(.player-visible){\n  padding-bottom:74px;\n}\n@media (max-width:700px){\n  body.player-visible.cart-visible .player-bar{ bottom:86px; }\n  body.player-visible.cart-visible{ padding-bottom:170px; }\n}\n

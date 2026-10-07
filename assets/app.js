@@ -158,6 +158,61 @@ let currentMeta = '';
 
 if (audio) audio.volume = 0.85;
 
+/* Persist the preview player across normal page navigation.
+   A full document navigation cannot keep the same <audio> element alive,
+   so we save its state and resume the same preview on the next ONDA page. */
+const PLAYER_STATE_KEY = 'onda_player_state_v1';
+let restoringPlayerState = false;
+
+function savePlayerState(){
+  if (!audio || !audio.src || !currentId) return;
+  try{
+    sessionStorage.setItem(PLAYER_STATE_KEY, JSON.stringify({
+      id: currentId,
+      src: audio.currentSrc || audio.src,
+      title: currentTitle,
+      meta: currentMeta,
+      time: Math.min(audio.currentTime || 0, PREVIEW_LIMIT - 0.05),
+      playing: !audio.paused && !audio.ended,
+      savedAt: Date.now()
+    }));
+  }catch(e){}
+}
+
+function clearPlayerState(){
+  try{ sessionStorage.removeItem(PLAYER_STATE_KEY); }catch(e){}
+}
+
+function restorePlayerState(){
+  if (!audio) return;
+  let state = null;
+  try{ state = JSON.parse(sessionStorage.getItem(PLAYER_STATE_KEY) || 'null'); }catch(e){}
+  if (!state || !state.src || !state.id) return;
+
+  restoringPlayerState = true;
+  currentId = String(state.id);
+  currentTitle = state.title || '';
+  currentMeta = state.meta || '';
+  audio.src = state.src;
+  showPlayer(currentTitle || 'Now playing', currentMeta || '');
+
+  const resume = () => {
+    audio.currentTime = Math.min(Number(state.time) || 0, PREVIEW_LIMIT - 0.05);
+    if (state.playing){
+      audio.play().catch(() => {
+        // Some browsers require a click after a page navigation.
+        // The player stays visible so the user can resume immediately.
+      });
+    }
+    restoringPlayerState = false;
+    syncBottomBars();
+  };
+  if (audio.readyState >= 1) resume();
+  else audio.addEventListener('loadedmetadata', resume, { once:true });
+}
+
+window.addEventListener('pagehide', savePlayerState);
+
 // Clean up any stale static rows from sounds.html that aren't inside #beats-body
 (function clearStaleRows(){
   const tbody = document.getElementById('beats-body');
@@ -174,7 +229,14 @@ if (audio) audio.volume = 0.85;
 })();
 
 /* ========== STICKY PLAYER BAR ========== */
-const PREVIEW_LIMIT = 60; // seconds — 1분 미리듣기 제한
+const PREVIEW_LIMIT = 60;
+function syncBottomBars(){
+  const player = document.getElementById('player-bar');
+  const cartBar = document.getElementById('cart-bar');
+  document.body.classList.toggle('player-visible', !!player && !player.classList.contains('hidden'));
+  document.body.classList.toggle('cart-visible', !!cartBar && !cartBar.classList.contains('hidden'));
+}
+ // seconds — 1분 미리듣기 제한
 function syncBottomBars(){
   const player = document.getElementById('player-bar');
   const cartBar = document.getElementById('cart-bar');
@@ -264,13 +326,14 @@ function ensurePlayerBar(){
     thumb.style.left = pct + '%';
     cur.textContent = fmt(audio.currentTime);
     dur.textContent = fmt(audio.duration);
+    if (Math.floor(audio.currentTime) % 2 === 0) savePlayerState();
   });
   audio.addEventListener('loadedmetadata', () => {
     dur.textContent = fmt(audio.duration);
     updateLimitMarker();
   });
-  audio.addEventListener('play', () => bar.classList.add('is-playing'));
-  audio.addEventListener('pause', () => bar.classList.remove('is-playing'));
+  audio.addEventListener('play', () => { bar.classList.add('is-playing'); savePlayerState(); syncBottomBars(); });
+  audio.addEventListener('pause', () => { bar.classList.remove('is-playing'); if (!restoringPlayerState) savePlayerState(); syncBottomBars(); });
 
   function seekFromEvent(e){
     const rect = track.getBoundingClientRect();
@@ -296,6 +359,7 @@ function showPlayer(title, meta){
   syncBottomBars();
   bar.querySelector('.pb-title').textContent = title || '';
   bar.querySelector('.pb-sub').textContent = meta || '';
+  syncBottomBars();
 }
 
 function waveHtml(){
@@ -348,9 +412,10 @@ function togglePlay(el, id, src){
   const meta  = beat ? `${beat.genre} · ${beat.bpm} BPM` : (el.querySelector('.meta')?.textContent || '');
   currentTitle = title; currentMeta = meta;
   showPlayer(title, meta);
+  savePlayerState();
 }
 
-if (audio) audio.addEventListener('ended', () => { stopCurrent(); const bar = document.getElementById('player-bar'); if (bar) bar.classList.remove('is-playing'); });
+if (audio) audio.addEventListener('ended', () => { stopCurrent(); clearPlayerState(); const bar = document.getElementById('player-bar'); if (bar) bar.classList.remove('is-playing'); syncBottomBars(); });
 
 /* ========== SOUNDS TABLE (if present) ========== */
 const beatsBody = document.getElementById('beats-body');
@@ -562,12 +627,6 @@ function updateCartBar(){
     const more = 3 - n;
     promoEl.textContent = more > 0 ? `· ${more}곡 더 담으면 묶음 할인 적용 (-₩ 14,400)` : '';
   }
-  // sync header check-all
-  const allCheck = document.getElementById('check-all');
-  if (allCheck){
-    const visible = [...beatsBody.querySelectorAll('.row-check')];
-    allCheck.checked = visible.length > 0 && visible.every(c => c.checked);
-  }
 }
 
 /* === Checkout modal === */
@@ -750,7 +809,7 @@ ${tracksList}
     cart.clear();
     saveCart();
     updateCartBar();
-    if (beatsBody) beatsBody.querySelectorAll('.row-check').forEach(c => c.checked = false);
+    if (beatsBody) beatsBody.querySelectorAll('.buy-btn').forEach(b => { b.classList.remove('in-cart'); b.setAttribute('aria-pressed','false'); b.setAttribute('aria-label','장바구니에 담기'); });
     closeCheckout();
     goToStep(m, 'cart');
   });
@@ -805,9 +864,8 @@ function renderCheckout(){
         saveCart();
         renderCheckout();
         updateCartBar();
-        // uncheck row
-        const row = beatsBody && beatsBody.querySelector(`.row-check[data-id="${btn.dataset.id}"]`);
-        if (row) row.checked = false;
+        const rowBtn = beatsBody && beatsBody.querySelector(`.buy-btn[data-id="${btn.dataset.id}"]`);
+        if (rowBtn){ rowBtn.classList.remove('in-cart'); rowBtn.setAttribute('aria-pressed','false'); rowBtn.setAttribute('aria-label','장바구니에 담기'); }
       });
     });
   }
@@ -846,12 +904,6 @@ function renderBeats(beats){
   if (!beatsBody) return;
   beatsBody.innerHTML = beats.map(b => `
     <tr class="beat-row" data-id="${b.id}" data-src="${b.preview}" data-mood="${b.mood}">
-      <td class="check-cell">
-        <label class="checkbox">
-          <input type="checkbox" class="row-check" data-id="${b.id}" ${cart.has(b.id) ? 'checked' : ''}/>
-          <span class="checkbox-box"></span>
-        </label>
-      </td>
       <td>
         <button class="play-btn" aria-label="Play ${b.title}">
           <svg class="play-icon" viewBox="0 0 10 12"><polygon points="0,0 10,6 0,12"/></svg>
@@ -866,7 +918,7 @@ function renderBeats(beats){
       <td class="genre-cell"><span class="song-genre">${b.genre}</span></td>
       <td><span class="song-bpm">${b.bpm}</span></td>
       <td style="text-align:center;">
-        <button class="dl-link buy-btn" data-id="${b.id}" aria-label="장바구니에 담기">
+        <button class="dl-link buy-btn ${cart.has(b.id) ? 'in-cart' : ''}" data-id="${b.id}" aria-label="${cart.has(b.id) ? '장바구니에서 빼기' : '장바구니에 담기'}" aria-pressed="${cart.has(b.id) ? 'true' : 'false'}">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
         </button>
       </td>
@@ -884,26 +936,18 @@ function renderBeats(beats){
       togglePlay(row, row.dataset.id, row.dataset.src);
     });
   });
-  // checkbox toggles cart
-  beatsBody.querySelectorAll('.row-check').forEach(cb => {
-    cb.addEventListener('change', () => {
-      if (cb.checked) cart.add(cb.dataset.id);
-      else cart.delete(cb.dataset.id);
-      saveCart();
-      updateCartBar();
-    });
-  });
-  // buy button = add to cart + open checkout
+  // cart button = toggle cart without interrupting browsing
   beatsBody.querySelectorAll('.buy-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-      cart.add(btn.dataset.id);
+      const id = String(btn.dataset.id);
+      if (cart.has(id)) cart.delete(id);
+      else cart.add(id);
       saveCart();
-      // also tick the row's checkbox
-      const row = btn.closest('.beat-row');
-      const cb = row.querySelector('.row-check');
-      if (cb) cb.checked = true;
       updateCartBar();
-      openCheckout();
+      const inCart = cart.has(id);
+      btn.classList.toggle('in-cart', inCart);
+      btn.setAttribute('aria-pressed', inCart ? 'true' : 'false');
+      btn.setAttribute('aria-label', inCart ? '장바구니에서 빼기' : '장바구니에 담기');
     });
   });
 
@@ -913,7 +957,7 @@ function renderBeats(beats){
   }
 
   if (!beats.length){
-    beatsBody.innerHTML = `<tr><td colspan="7" class="empty-state">검색 결과가 없습니다. 다른 무드나 태그로 시도해 보세요.</td></tr>`;
+    beatsBody.innerHTML = `<tr><td colspan="6" class="empty-state">검색 결과가 없습니다. 다른 무드나 태그로 시도해 보세요.</td></tr>`;
   }
 }
 
@@ -976,20 +1020,6 @@ function initSoundsUI(){
     });
   }
 
-  // check-all toggle
-  const checkAll = document.getElementById('check-all');
-  if (checkAll){
-    checkAll.addEventListener('change', () => {
-      const visibleChecks = beatsBody.querySelectorAll('.row-check');
-      visibleChecks.forEach(cb => {
-        cb.checked = checkAll.checked;
-        if (checkAll.checked) cart.add(cb.dataset.id);
-        else cart.delete(cb.dataset.id);
-      });
-      saveCart();
-      updateCartBar();
-    });
-  }
 
   filteredBeats = BEATS;
   currentPage = 1;
