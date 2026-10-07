@@ -2445,3 +2445,11 @@ body { padding-bottom: 0; }
 .header-cart-btn:hover .header-cart-icon svg{
   stroke:#ff3f8f;
 }
+
+/* ===== GLOBAL HEADER CART + STACKED BOTTOM BARS ===== */
+body.cart-visible.player-visible .player-bar{bottom:76px;}
+body.cart-visible.player-visible .cart-bar{bottom:0;}
+body.cart-visible.player-visible{padding-bottom:0;}
+@media(max-width:700px){
+  body.cart-visible.player-visible .player-bar{bottom:112px;}
+}

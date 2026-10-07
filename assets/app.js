@@ -175,6 +175,12 @@ if (audio) audio.volume = 0.85;
 
 /* ========== STICKY PLAYER BAR ========== */
 const PREVIEW_LIMIT = 60; // seconds — 1분 미리듣기 제한
+function syncBottomBars(){
+  const player = document.getElementById('player-bar');
+  const cartBar = document.getElementById('cart-bar');
+  document.body.classList.toggle('player-visible', !!player && !player.classList.contains('hidden'));
+  document.body.classList.toggle('cart-visible', !!cartBar && !cartBar.classList.contains('hidden'));
+}
 function ensurePlayerBar(){
   if (document.getElementById('player-bar')) return document.getElementById('player-bar');
   const bar = document.createElement('div');
@@ -226,6 +232,7 @@ function ensurePlayerBar(){
     if (audio) audio.pause();
     bar.classList.add('hidden');
     stopCurrent();
+    syncBottomBars();
   });
 
   function fmt(s){
@@ -286,6 +293,7 @@ function ensurePlayerBar(){
 function showPlayer(title, meta){
   const bar = ensurePlayerBar();
   bar.classList.remove('hidden');
+  syncBottomBars();
   bar.querySelector('.pb-title').textContent = title || '';
   bar.querySelector('.pb-sub').textContent = meta || '';
 }
@@ -528,12 +536,16 @@ if (headerCart){
 function updateCartBar(){
   const bar = ensureCartBar();
   const { n, bundles, singles, subtotal, total, discount } = calcCart();
-  if (!n){ bar.classList.add('hidden'); return; }
-  bar.classList.remove('hidden');
-  bar.querySelector('.cart-count b').textContent = n;
-
   const headerCartCount = document.getElementById('header-cart-count');
-if (headerCartCount) headerCartCount.textContent = n;
+  if (headerCartCount) headerCartCount.textContent = n;
+  if (!n){
+    bar.classList.add('hidden');
+    syncBottomBars();
+    return;
+  }
+  bar.classList.remove('hidden');
+  syncBottomBars();
+  bar.querySelector('.cart-count b').textContent = n;
   const totalEl = bar.querySelector('#cart-total-val');
   const oldEl = bar.querySelector('.cart-total-old');
   totalEl.textContent = fmt(total);
@@ -1111,6 +1123,7 @@ loadBeats().then(() => {
   initSoundsUI();
   initCarousel();
   initOndazine();
+  updateCartBar();
 });
 
 /* ========== FAQ (if present) ========== */
