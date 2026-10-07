@@ -2728,3 +2728,38 @@ body.cart-visible.player-visible{padding-bottom:0;}
     right:max(40px, calc((100vw - 1200px) / 2)) !important;
   }
 }
+
+
+/* ===== HOT TOP 3 · RIGHT EDGE = HEADER CART RIGHT EDGE ===== */
+@media (min-width: 901px){
+  html body #top.hero .hero-carousel,
+  html body .hero#top .hero-carousel{
+    position:absolute !important;
+    left:auto !important;
+    right:max(40px, calc((100vw - 1280px) / 2 + 40px)) !important;
+    top:50% !important;
+    bottom:auto !important;
+    width:470px !important;
+    max-width:470px !important;
+    margin:0 !important;
+    transform:translateY(-38%) !important;
+  }
+
+  html body #top.hero .hero-carousel .carousel-viewport,
+  html body #top.hero .hero-carousel #hotTrack{
+    width:100% !important;
+    max-width:100% !important;
+  }
+
+  html body #top.hero .hero-carousel #hotTrack{
+    transform:none !important;
+  }
+
+  html body #top.hero .hero-carousel .carousel-slide.hot-rank-item{
+    width:100% !important;
+    min-width:100% !important;
+    max-width:100% !important;
+    margin-left:0 !important;
+    margin-right:0 !important;
+  }
+}
