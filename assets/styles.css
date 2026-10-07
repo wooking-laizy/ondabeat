@@ -3305,3 +3305,20 @@ body.cart-visible.player-visible{padding-bottom:0;}
   display:inline-block !important;
   text-align:center !important;
 }
+
+
+/* ===== HOME HOT TOP 3 · TITLE FONT ONLY ===== */
+@media (min-width: 901px){
+  /* HOT BEAT TOP 3 */
+  #top.hero > section.hero-carousel .hero-carousel-head h2{
+    font-family:var(--f-title) !important;
+    font-weight:400 !important;
+  }
+
+  /* HOT beat song titles only */
+  #top.hero > section.hero-carousel .hot-rank-title,
+  #top.hero > section.hero-carousel .hot-rank-info .title-row .hot-rank-title{
+    font-family:var(--f-title) !important;
+    font-weight:400 !important;
+  }
+}
