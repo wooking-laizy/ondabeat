@@ -3772,3 +3772,62 @@ body.cart-visible.player-visible{padding-bottom:0;}
     box-shadow:inset 0 1px 0 rgba(255,255,255,.24),0 9px 24px rgba(0,0,0,.18),0 0 18px rgba(255,63,143,.08) !important;
   }
 }
+
+
+/* ===== HOT BEAT TOP 3 · TITLE RESTORE + LEFT ALIGN FINAL ===== */
+@media (min-width: 901px){
+  /* Move the whole HOT block left while keeping it on the right half of the hero. */
+  #top.hero > section.hero-carousel{
+    right:clamp(210px, 15vw, 270px) !important;
+    width:min(480px, 37vw) !important;
+    max-width:480px !important;
+  }
+
+  /* Explicitly restore the text area that older carousel rules collapsed. */
+  #top.hero > section.hero-carousel .carousel-slide > div:first-child,
+  #top.hero > section.hero-carousel .hot-rank-main{
+    overflow:visible !important;
+  }
+
+  #top.hero > section.hero-carousel .carousel-slide > div:first-child > div:not(.num),
+  #top.hero > section.hero-carousel .hot-rank-main > div:not(.hot-rank-number){
+    display:block !important;
+    min-width:0 !important;
+    width:100% !important;
+    max-width:none !important;
+    opacity:1 !important;
+    visibility:visible !important;
+    overflow:hidden !important;
+  }
+
+  #top.hero > section.hero-carousel .title-row{
+    display:flex !important;
+    width:100% !important;
+    min-width:0 !important;
+    opacity:1 !important;
+    visibility:visible !important;
+  }
+
+  #top.hero > section.hero-carousel .title{
+    display:block !important;
+    width:auto !important;
+    max-width:100% !important;
+    height:auto !important;
+    margin:0 !important;
+    opacity:1 !important;
+    visibility:visible !important;
+    overflow:hidden !important;
+    text-overflow:ellipsis !important;
+    white-space:nowrap !important;
+    color:#fff !important;
+    font-size:17px !important;
+    line-height:1.15 !important;
+    font-weight:800 !important;
+  }
+
+  #top.hero > section.hero-carousel .meta{
+    display:block !important;
+    opacity:1 !important;
+    visibility:visible !important;
+  }
+}
