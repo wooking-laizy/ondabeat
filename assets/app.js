@@ -45,7 +45,8 @@ function normaliseSupabaseRow(r){
     tags: (r.tags || '').split(/[;,|]/).map(s => s.trim()).filter(Boolean),
     preview: r.audio_url || r.preview_url || '',
     gumroad: r.gumroad || '#',
-    hot: Boolean(r.hot)
+    hot: r.hot_rank != null,
+hot_rank: r.hot_rank == null ? null : Number(r.hot_rank)
   };
 }
 
@@ -978,7 +979,7 @@ const dotsWrap = document.getElementById('hotDots');
 
 function initCarousel(){
   if (!track || !dotsWrap) return;
-  const hotBeats = BEATS.filter(b => b.hot);
+const hotBeats = BEATS.filter(b => b.hot_rank != null).sort((a, b) => a.hot_rank - b.hot_rank).slice(0, 3);
   let hotIdx = 0;
 
   track.innerHTML = hotBeats.map((b, i) => `
