@@ -2472,3 +2472,92 @@ body.cart-visible.player-visible{padding-bottom:0;}
   transform:translateY(-1px);
 }
 \n\n/* ===== CART-ONLY SELECTION + PERSISTENT PLAYER ===== */\n.beats-table .buy-btn.in-cart{\n  color:#ff3f8f;\n  background:rgba(255,63,143,.10);\n  border-color:rgba(255,63,143,.45);\n}\n.beats-table .buy-btn.in-cart svg{\n  stroke:#ff3f8f;\n}\nbody.player-visible.cart-visible .player-bar{\n  bottom:74px;\n}\nbody.player-visible.cart-visible .cart-bar{\n  bottom:0;\n}\nbody.player-visible.cart-visible{\n  padding-bottom:150px;\n}\nbody.player-visible:not(.cart-visible){\n  padding-bottom:76px;\n}\nbody.cart-visible:not(.player-visible){\n  padding-bottom:74px;\n}\n@media (max-width:700px){\n  body.player-visible.cart-visible .player-bar{ bottom:86px; }\n  body.player-visible.cart-visible{ padding-bottom:170px; }\n}\n
+
+/* ===== HOME HERO · HOT BEAT TOP 3 OVERLAY ===== */
+.hero > .hero-carousel{
+  position:absolute;
+  right:max(40px, calc((100vw - 1280px)/2 + 40px));
+  bottom:38px;
+  width:min(520px, 43vw);
+  margin:0;
+  padding:0;
+  z-index:6;
+  overflow:visible;
+}
+.hero > .hero-carousel .hero-carousel-head{
+  justify-content:flex-start;
+  margin:0 0 10px;
+  text-align:left;
+}
+.hero > .hero-carousel .hero-carousel-head h2{
+  font-family:var(--f-mono);
+  font-size:11px !important;
+  font-weight:700;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:rgba(255,255,255,.78);
+}
+.hero > .hero-carousel .carousel-viewport{
+  overflow:hidden !important;
+  border-radius:16px;
+}
+.hero > .hero-carousel .carousel-track{align-items:stretch;}
+.hero > .hero-carousel .carousel-slide{
+  flex:0 0 100%;
+  margin:0;
+  grid-template-columns:minmax(0,1fr) auto auto auto;
+  gap:14px;
+  padding:16px 18px;
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:16px;
+  background:rgba(10,10,14,.48);
+  -webkit-backdrop-filter:blur(18px) saturate(125%);
+  backdrop-filter:blur(18px) saturate(125%);
+  opacity:.34;
+  box-shadow:0 16px 40px rgba(0,0,0,.22) !important;
+}
+.hero > .hero-carousel .carousel-slide.is-active{opacity:1;}
+.hero > .hero-carousel .carousel-slide .num{
+  font-size:30px;
+  min-width:34px;
+  color:rgba(255,255,255,.28);
+}
+.hero > .hero-carousel .carousel-slide .title{font-size:19px;}
+.hero > .hero-carousel .carousel-slide .meta{font-size:10px;color:rgba(255,255,255,.58);}
+.hero > .hero-carousel .slide-tags{display:none;}
+.hero > .hero-carousel .bpm-badge{font-size:10px;padding:5px 8px;background:rgba(0,0,0,.28);}
+.hero > .hero-carousel .carousel-play{width:40px;height:40px;background:rgba(0,0,0,.62);}
+.hero > .hero-carousel .carousel-buy{padding:9px 10px;background:rgba(0,0,0,.32);}
+.hero > .hero-carousel .carousel-nav{width:32px;height:32px;background:rgba(0,0,0,.42);}
+.hero > .hero-carousel .carousel-nav.prev{left:8px;}
+.hero > .hero-carousel .carousel-nav.next{right:8px;}
+.hero > .hero-carousel .carousel-dots{margin-top:9px;gap:6px;}
+.hero > .hero-carousel .carousel-dots span{width:6px;height:6px;background:rgba(255,255,255,.25);}
+.hero > .hero-carousel .carousel-dots span.on{width:18px;background:var(--pink);}
+.carousel-slide .title-row{display:flex;align-items:center;gap:8px;min-width:0;}
+.carousel-now-playing{
+  display:none;
+  flex-shrink:0;
+  font:700 8px var(--f-mono);
+  letter-spacing:.10em;
+  color:#ff8db8;
+  border:1px solid rgba(255,63,143,.42);
+  background:rgba(255,63,143,.12);
+  border-radius:999px;
+  padding:3px 6px;
+}
+.carousel-slide.playing .carousel-now-playing{display:inline-flex;}
+
+@media(max-width:900px){
+  .hero > .hero-carousel{right:20px;bottom:24px;width:min(430px,52vw);padding:0;margin:0;}
+  .hero > .hero-carousel .carousel-slide{grid-template-columns:minmax(0,1fr) auto auto;padding:13px 14px;gap:10px;}
+  .hero > .hero-carousel .bpm-badge,.hero > .hero-carousel .carousel-buy{display:none;}
+}
+@media(max-width:600px){
+  .hero{height:520px;}
+  .hero-copy{bottom:190px;}
+  .hero > .hero-carousel{left:14px;right:14px;bottom:18px;width:auto;padding:0;margin:0;}
+  .hero > .hero-carousel .hero-carousel-head{margin-bottom:7px;}
+  .hero > .hero-carousel .carousel-nav{display:none;}
+  .hero > .hero-carousel .carousel-slide{flex:0 0 100%;margin:0;}
+}

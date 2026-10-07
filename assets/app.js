@@ -1045,7 +1045,7 @@ const hotBeats = BEATS.filter(b => b.hot_rank != null).sort((a, b) => a.hot_rank
       <div style="display:flex;align-items:center;gap:24px;min-width:0;">
         <div class="num">0${i+1}</div>
         <div>
-          <div class="title">${b.title}</div>
+          <div class="title-row"><div class="title">${b.title}</div><span class="carousel-now-playing">NOW PLAYING</span></div>
           <div class="meta">${b.genre}</div>
           <div class="slide-tags">${(b.tags || []).map(t => `<span class="slide-tag">${t}</span>`).join('')}</div>
         </div>
@@ -1076,6 +1076,10 @@ const hotBeats = BEATS.filter(b => b.hot_rank != null).sort((a, b) => a.hot_rank
     track.style.transform = `translateX(${shiftPx}px)`;
     dotsWrap.querySelectorAll('span').forEach((d, idx) => d.classList.toggle('on', idx === hotIdx));
     slides.forEach((s, idx) => s.classList.toggle('is-active', idx === hotIdx));
+    // Changing carousel slides must never interrupt the shared audio player.
+    if (currentId){
+      slides.forEach(s => s.classList.toggle('playing', s.dataset.id === currentId && !audio.paused));
+    }
   }
   window.addEventListener('resize', () => goToSlide(hotIdx));
 
