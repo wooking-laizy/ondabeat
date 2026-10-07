@@ -1047,10 +1047,63 @@ function initCarousel(){
   goToSlide(0);
 }
 
+
+/* ========== ONDAZINE ========== */
+const ONDAZINE_URL = `${SUPABASE_URL}/rest/v1/ondazine?select=*&published=eq.true&order=issue_no.desc`;
+
+function esc(v=''){
+  return String(v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function moodLabel(v=''){
+  return ({dark:'Dark & Heavy',chill:'Chill & Groovy',bouncy:'Bouncy & Hype',sensual:'Sensual & Deep',raw:'Raw & Gritty'})[String(v).toLowerCase()] || v || '—';
+}
+async function fetchZines(){
+  const res=await fetch(ONDAZINE_URL,{headers:{apikey:SUPABASE_ANON_KEY,Authorization:`Bearer ${SUPABASE_ANON_KEY}`}});
+  if(!res.ok) throw new Error(`ONDAZINE ${res.status}`);
+  return await res.json();
+}
+function zineSoundRow(b){
+  if(!b) return '';
+  return `<tr class="beat-row zine-beat-row" data-id="${esc(b.id)}" data-src="${esc(b.preview)}" data-mood="${esc(b.mood)}">
+    <td><button class="play-btn" aria-label="Play ${esc(b.title)}"><svg class="play-icon" viewBox="0 0 10 12"><polygon points="0,0 10,6 0,12"/></svg><svg class="pause-icon" viewBox="0 0 10 12"><rect x="1" y="1" width="3" height="10"/><rect x="6" y="1" width="3" height="10"/></svg></button></td>
+    <td><span class="song-title">${esc(b.title)}</span><div class="song-tags">${(b.tags||[]).map(t=>`<span class="song-tag">${esc(t)}</span>`).join('')}</div></td>
+    <td class="wave-cell"><div class="wave">${waveHtml()}</div></td><td class="genre-cell"><span class="song-genre">${esc(b.genre)}</span></td><td><span class="song-bpm">${esc(b.bpm)}</span></td>
+    <td style="text-align:center"><button class="dl-link zine-buy-btn" data-id="${esc(b.id)}" aria-label="장바구니에 담기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg></button></td></tr>`;
+}
+function bindZineRows(scope){
+  scope.querySelectorAll('.zine-beat-row .play-btn').forEach(btn=>btn.onclick=()=>{const row=btn.closest('.beat-row');togglePlay(row,row.dataset.id,row.dataset.src)});
+  scope.querySelectorAll('.zine-beat-row .song-title').forEach(t=>t.onclick=()=>{const row=t.closest('.beat-row');togglePlay(row,row.dataset.id,row.dataset.src)});
+  scope.querySelectorAll('.zine-buy-btn').forEach(btn=>btn.onclick=()=>{cart.add(String(btn.dataset.id));saveCart();updateCartBar();openCheckout();});
+}
+async function initOndazine(){
+  const list=document.getElementById('ondazine-list'), detail=document.getElementById('ondazine-detail');
+  if(!list||!detail) return;
+  try{
+    const zines=await fetchZines();
+    const id=new URLSearchParams(location.search).get('id');
+    if(id){
+      const z=zines.find(x=>String(x.id)===String(id));
+      if(!z){detail.hidden=false;detail.innerHTML='<div class="ondazine-empty">ONDAZINE을 찾을 수 없습니다.</div>';list.hidden=true;return;}
+      list.hidden=true; detail.hidden=false;
+      const f=BEATS.find(b=>String(b.id)===String(z.featured_sound_id));
+      const p1=BEATS.find(b=>String(b.id)===String(z.more_sound_1_id));
+      const p2=BEATS.find(b=>String(b.id)===String(z.more_sound_2_id));
+      detail.innerHTML=`<a class="zine-back" href="ondazine.html">← ALL ONDAZINE</a><article class="zine-detail-head"><div class="zine-detail-cover"><img src="${esc(z.cover_url||'')}" alt="${esc(z.title)}"></div><div class="zine-detail-copy"><span class="zine-vol">ONDA ZINE VOL.${esc(z.issue_no||'—')}</span><h2>${esc(z.title)}</h2>${z.subtitle?`<p>${esc(z.subtitle)}</p>`:''}${z.instagram_url?`<a class="zine-instagram" href="${esc(z.instagram_url)}" target="_blank" rel="noopener">READ FULL STORY ON INSTAGRAM ↗</a>`:''}</div></article>
+      <section class="zine-curation"><div class="zine-section-label">RECOMMENDED TRACK <span>[ ${esc(moodLabel(f?.mood))} ]</span></div><div class="zine-table-wrap"><table class="beats-table zine-tracks-table"><thead><tr><th></th><th>song</th><th class="wave"></th><th class="genre">genre</th><th class="bpm">bpm</th><th>buy</th></tr></thead><tbody>${zineSoundRow(f)}</tbody></table></div>
+      <div class="zine-section-label more">MORE PICKS FOR YOU</div><div class="zine-table-wrap"><table class="beats-table zine-tracks-table"><tbody>${zineSoundRow(p1)}${zineSoundRow(p2)}</tbody></table></div></section>`;
+      bindZineRows(detail);
+    } else {
+      detail.hidden=true; list.hidden=false;
+      list.innerHTML=zines.length?zines.map(z=>`<a class="ondazine-card" href="ondazine.html?id=${encodeURIComponent(z.id)}"><div class="ondazine-cover"><img src="${esc(z.cover_url||'')}" alt="${esc(z.title)}"><span class="ondazine-open">READ & LISTEN ↗</span></div><div class="ondazine-card-copy"><span>ONDA ZINE VOL.${esc(z.issue_no||'—')}</span><h2>${esc(z.title)}</h2>${z.subtitle?`<p>${esc(z.subtitle)}</p>`:''}</div></a>`).join(''):'<div class="ondazine-empty">아직 등록된 ONDAZINE이 없습니다.</div>';
+    }
+  }catch(err){console.error(err);list.innerHTML='<div class="ondazine-empty">ONDAZINE을 불러오지 못했습니다.</div>';}
+}
+
 /* ========== INIT — load data then render ========== */
 loadBeats().then(() => {
   initSoundsUI();
   initCarousel();
+  initOndazine();
 });
 
 /* ========== FAQ (if present) ========== */
