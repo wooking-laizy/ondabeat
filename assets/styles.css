@@ -4155,17 +4155,12 @@ body.cart-visible.player-visible{padding-bottom:0;}
     transform: none !important;
   }
 
-  #top.hero > section.hero-carousel .carousel-play{
-    grid-column: 4 !important;
-    grid-row: 1 !important;
-    position: static !important;
-    inset: auto !important;
-    justify-self: end !important;
-    width: 38px !important;
-    height: 38px !important;
-    min-width: 38px !important;
-    min-height: 38px !important;
-    margin: 0 !important;
-    transform: none !important;
-  }
+  #top.hero > section.hero-carousel{
+  left: auto !important;
+  right: 250px !important;
+  top: 54% !important;
+  bottom: auto !important;
+  width: 480px !important;
+  max-width: 480px !important;
+  transform: translateY(-42%) !important;
 }
