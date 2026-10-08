@@ -1008,7 +1008,12 @@
 
     .cart-bar-inner { padding: 0 14px; }
     .checkout-card { padding: 24px 20px; max-height: 90vh; }
-    .checkout-head h3 { font-size: 26px; }
+    .checkout-head h3 {
+   font-family: 'Pretendard', sans-serif !important;
+  font-size: 26px;
+  font-weight: 800 !important;
+  letter-spacing: -0.03em;
+}
   }
 
 
@@ -1833,7 +1838,11 @@ font-weight: 1000;
 }
 .checkout-close:hover { background: rgba(255,255,255,0.08); }
 .checkout-list {
+  overflow-x: hidden;
   overflow-y: visible;
+  min-width: 0;
+  margin: 0 -6px 18px;
+  padding: 0 6px;
   margin: 0 -6px 18px;
   padding: 0 6px;
 }
@@ -1967,6 +1976,8 @@ font-weight: 1000;
   flex-direction: column;
   flex: 1 1 auto;
   min-height: 0;
+  min-width: 0;
+  overflow-x: hidden;
   overflow-y: auto;
   padding-right: 4px;
 }
@@ -1975,7 +1986,12 @@ font-weight: 1000;
   background: rgba(255,255,255,0.15);
   border-radius: 3px;
 }
-.checkout-card { position: relative; }
+.checkout-card { position: relative; width: 100%;
+  max-width: 520px;
+  max-height: 88vh;
+  box-sizing: border-box;
+  min-width: 0;}
+
 .checkout-card > .checkout-close {
   position: absolute;
   top: 20px; right: 20px;
@@ -3887,3 +3903,27 @@ body.sounds-page .beats-table .song-tags {
 }
 
 @media (min-width: 901px) { body.sounds-page .mobile-song-genre { display: none; } }
+
+/* Cart-only preview and mobile sizing. No changes to global header/hero styles. */
+.checkout-head h3 { font-family: var(--f-body); font-weight: 800; letter-spacing: -0.03em; }
+.checkout-item { min-width: 0; }
+.checkout-item .ci-info { display: block; text-align: left; background: none; border: 0; padding: 0; min-width: 0; cursor: pointer; }
+.checkout-item .ci-title { display: block; }
+.checkout-item .ci-meta { display: block; }
+.ci-preview { display: flex; align-items: center; justify-content: center; flex: 0 0 40px; width: 40px; height: 40px; border-radius: 12px; border: 1px solid var(--pink); color: var(--pink); font-size: 15px; }
+.ci-preview:hover, .ci-is-playing .ci-preview { background: rgba(255,45,135,.14); }
+.checkout-item .ci-price { flex-shrink: 0; white-space: nowrap; }
+.checkout-actions { min-width: 0; }
+.checkout-actions .checkout-pay, .checkout-actions .checkout-secondary { min-width: 0; }
+@media (max-width: 900px) {
+  .checkout-head h3 { font-size: 26px; }
+  .checkout-modal { padding: 14px; }
+  .checkout-card { width: 100%; min-width: 0; max-width: 520px; padding: 24px 18px; }
+  .checkout-step:not(.hidden) { min-width: 0; padding-right: 0; overflow-x: clip; }
+  .checkout-list { min-width: 0; margin-left: 0; margin-right: 0; padding-left: 0; padding-right: 0; }
+  .checkout-item { gap: 8px; }
+  .ci-preview { flex-basis: 38px; width: 38px; height: 38px; }
+  .checkout-actions { gap: 8px; }
+  .checkout-actions .checkout-secondary { padding: 14px 10px; font-size: 12px; }
+  .checkout-actions .checkout-pay { padding: 14px 8px; font-size: 13px; }
+}

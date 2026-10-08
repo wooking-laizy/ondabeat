@@ -847,9 +847,29 @@ ${tracksList}
 }
 
 function goToStep(modal, step){
+  // Stop the shared preview audio when entering payment or confirmation.
+  if (step === 'pay' || step === 'done') {
+    if (audio && !audio.paused) audio.pause();
+  }
   modal.querySelectorAll('.checkout-step').forEach(el => {
     el.classList.toggle('hidden', el.dataset.step !== step);
   });
+}
+
+function syncCheckoutPreview(){
+  const list = document.getElementById('checkout-list');
+  if (!list) return;
+  list.querySelectorAll('.checkout-item').forEach(row => {
+    const playing = !!audio && !audio.paused && currentId === row.dataset.id;
+    row.classList.toggle('ci-is-playing', playing);
+    const icon = row.querySelector('.ci-play-symbol');
+    if (icon) icon.textContent = playing ? 'Ⅱ' : '▶';
+    const btn = row.querySelector('.ci-preview');
+    if (btn) btn.setAttribute('aria-pressed', String(playing));
+  });
+}
+if (audio){
+  ['play', 'pause', 'ended', 'error'].forEach(name => audio.addEventListener(name, syncCheckoutPreview));
 }
 
 function renderCheckout(){
@@ -860,15 +880,27 @@ function renderCheckout(){
     list.innerHTML = `<div class="checkout-empty">장바구니가 비어있습니다.</div>`;
   } else {
     list.innerHTML = items.map(b => `
-      <div class="checkout-item">
-        <div class="ci-info">
-          <div class="ci-title">${b.title}</div>
-          <div class="ci-meta">${b.genre} · ${b.bpm} BPM · ${b.tags.join(' / ')}</div>
-        </div>
+      <div class="checkout-item" data-id="${esc(String(b.id))}">
+        <button type="button" class="ci-preview" data-id="${esc(String(b.id))}" aria-label="${esc(b.title)} 미리듣기" aria-pressed="false">
+          <span class="ci-play-symbol" aria-hidden="true">▶</span>
+        </button>
+        <button type="button" class="ci-info ci-preview-title" data-id="${esc(String(b.id))}" aria-label="${esc(b.title)} 미리듣기">
+          <span class="ci-title">${esc(b.title)}</span>
+          <span class="ci-meta">${esc(b.genre || '—')} · ${esc(String(b.bpm || '—'))} BPM</span>
+        </button>
         <div class="ci-price">${fmt(SINGLE_PRICE)}</div>
-        <button class="ci-remove" data-id="${b.id}" aria-label="제거">×</button>
+        <button class="ci-remove" data-id="${esc(String(b.id))}" aria-label="제거">×</button>
       </div>
     `).join('');
+    list.querySelectorAll('.ci-preview, .ci-preview-title').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const beat = BEATS.find(b => String(b.id) === btn.dataset.id);
+        if (!beat || !beat.preview) return;
+        togglePlay(btn.closest('.checkout-item'), String(beat.id), beat.preview);
+        syncCheckoutPreview();
+      });
+    });
+    syncCheckoutPreview();
     list.querySelectorAll('.ci-remove').forEach(btn => {
       btn.addEventListener('click', () => {
         cart.delete(btn.dataset.id);
