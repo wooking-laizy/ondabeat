@@ -486,7 +486,7 @@ function ensurePagination(){
         cursor:default;
       }
       @media (max-width:640px){
-        .beats-pagination{ gap:5px; margin-top:24px; }
+        .beats-pagination{ gap:5px; margin-top:14px; margin-bottom:0; }
         .beats-pagination button{
           min-width:34px;
           height:34px;
@@ -604,6 +604,12 @@ function bindHeaderCart(){
 }
 bindHeaderCart();
 function updateCartBar(){
+  document.querySelectorAll('.hot-cart-btn, .beats-table .buy-btn').forEach(btn => {
+    const selected = cart.has(String(btn.dataset.id));
+    btn.classList.toggle('in-cart', selected);
+    btn.setAttribute('aria-pressed', String(selected));
+  });
+
   const bar = ensureCartBar();
   const { n, bundles, singles, subtotal, total, discount } = calcCart();
   const headerCartCount = document.getElementById('header-cart-count');
@@ -915,8 +921,8 @@ function renderBeats(beats){
           <svg class="pause-icon" viewBox="0 0 10 12"><rect x="1" y="1" width="3" height="10"/><rect x="6" y="1" width="3" height="10"/></svg>
         </button>
       </td>
-      <td>
-        <span class="song-title">${b.title}</span>
+      <td class="song-cell">
+        <div class="song-copy"><span class="song-title">${b.title}</span><span class="mobile-song-genre">${b.genre}</span></div>
         <div class="song-tags">${b.tags.map(t => `<span class="song-tag">${t}</span>`).join('')}</div>
       </td>
       <td class="wave-cell"><div class="wave">${waveHtml()}</div></td>
@@ -1104,8 +1110,25 @@ function initCarousel(){
     </div>
   `).join('');
 
-  // 기존 점/화살표는 세로 TOP3에서는 사용하지 않음
-  if (dotsWrap) dotsWrap.innerHTML = '';
+  // Mobile-only: swipeable peek cards; desktop retains the vertical ranking.
+  if (dotsWrap) dotsWrap.innerHTML = hotBeats.map((_, i) => `<span class="${i === 0 ? 'on' : ''}"></span>`).join('');
+  const syncMobileHot = () => {
+    if (!window.matchMedia('(max-width: 900px)').matches) return;
+    const slides = [...track.querySelectorAll('.carousel-slide')];
+    if (!slides.length) return;
+    const center = track.scrollLeft + track.clientWidth / 2;
+    let active = 0;
+    let min = Infinity;
+    slides.forEach((slide, i) => {
+      const distance = Math.abs(slide.offsetLeft + slide.offsetWidth / 2 - track.offsetLeft - center);
+      if (distance < min) { min = distance; active = i; }
+    });
+    slides.forEach((slide, i) => slide.classList.toggle('is-active', i === active));
+    dotsWrap?.querySelectorAll('span').forEach((dot, i) => dot.classList.toggle('on', i === active));
+  };
+  track.addEventListener('scroll', syncMobileHot, {passive:true});
+  window.addEventListener('resize', syncMobileHot);
+  requestAnimationFrame(syncMobileHot);
 
   const prev = document.getElementById('hotPrev');
   const next = document.getElementById('hotNext');
@@ -1117,6 +1140,9 @@ function initCarousel(){
   track.querySelectorAll('.carousel-slide').forEach(slide => {
     slide.addEventListener('click', (e) => {
   if (e.target.closest('.carousel-play, .hot-cart-btn')) return;
+  if (window.matchMedia('(max-width: 900px)').matches) {
+    slide.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
+  }
 
   togglePlay(
     slide,
@@ -1224,6 +1250,136 @@ async function initOndazine(){
 }
 
 /* ========== PAGE BINDINGS + SEAMLESS INTERNAL NAVIGATION ========== */
+  /* ===== MOBILE HEADER / SIDE MENU ===== */
+function bindMobileMenu(){
+
+  const nav = document.querySelector('.gnb .nav');
+  const gnb = document.querySelector('.gnb');
+
+  if (!nav || !gnb) return;
+
+  // 햄버거가 없는 페이지면 생성
+  if (!document.getElementById('mobile-menu-btn')) {
+    nav.insertAdjacentHTML('beforeend', `
+      <button class="mobile-menu-btn" id="mobile-menu-btn"
+              type="button" aria-label="메뉴 열기">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    `);
+  }
+
+  // 모바일 사이드 메뉴가 없는 페이지면 생성
+  if (!document.getElementById('mobile-side-menu')) {
+    gnb.insertAdjacentHTML('afterend', `
+      <div class="mobile-menu-overlay" id="mobile-menu-overlay"></div>
+
+      <aside class="mobile-side-menu" id="mobile-side-menu">
+        <div class="mobile-menu-head">
+          <img src="assets/logo.png"
+               alt="ONDA beat"
+               class="mobile-menu-logo">
+
+          <button class="mobile-menu-close"
+                  id="mobile-menu-close"
+                  type="button"
+                  aria-label="메뉴 닫기">×</button>
+        </div>
+
+        <nav class="mobile-menu-nav">
+          <a href="sounds.html">SOUNDS</a>
+          <a href="ondazine.html">ONDAZINE</a>
+          <a href="pricing.html">PRICING</a>
+          <a href="qna.html">QnA</a>
+          <a href="sounds.html" class="mobile-get-beats">GET BEATS ↗</a>
+        </nav>
+      </aside>
+    `);
+  }
+
+  const menuBtn = document.getElementById('mobile-menu-btn');
+  const closeBtn = document.getElementById('mobile-menu-close');
+  const overlay = document.getElementById('mobile-menu-overlay');
+  const sideMenu = document.getElementById('mobile-side-menu');
+
+  if (!menuBtn || !overlay || !sideMenu) return;
+
+  menuBtn.setAttribute('aria-controls', 'mobile-side-menu');
+  menuBtn.setAttribute('aria-expanded', String(sideMenu.classList.contains('open')));
+  sideMenu.setAttribute('aria-hidden', String(!sideMenu.classList.contains('open')));
+
+  function openMenu(){
+    sideMenu.classList.add('open');
+    overlay.classList.add('open');
+    document.body.classList.add('mobile-menu-open');
+    menuBtn.setAttribute('aria-expanded', 'true');
+    sideMenu.setAttribute('aria-hidden', 'false');
+  }
+
+  function closeMenu(){
+    sideMenu.classList.remove('open');
+    overlay.classList.remove('open');
+    document.body.classList.remove('mobile-menu-open');
+    menuBtn.setAttribute('aria-expanded', 'false');
+    sideMenu.setAttribute('aria-hidden', 'true');
+  }
+
+  // 현재 DOM에서 한 번만 연결
+  if (!menuBtn.dataset.bound) {
+    menuBtn.dataset.bound = '1';
+    menuBtn.addEventListener('click', openMenu);
+  }
+
+  if (closeBtn && !closeBtn.dataset.bound) {
+    closeBtn.dataset.bound = '1';
+    closeBtn.addEventListener('click', closeMenu);
+  }
+
+  if (!overlay.dataset.bound) {
+    overlay.dataset.bound = '1';
+    overlay.addEventListener('click', closeMenu);
+  }
+
+  if (!menuBtn.dataset.escapeBound) {
+    menuBtn.dataset.escapeBound = '1';
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && sideMenu.classList.contains('open')) closeMenu();
+    });
+  }
+
+  sideMenu.querySelectorAll('a').forEach(link => {
+    if (link.dataset.bound) return;
+    link.dataset.bound = '1';
+    link.addEventListener('click', closeMenu);
+  });
+}
+
+/* Mobile search icon: opens SOUNDS and focuses its search field. */
+function bindMobileSearch(){
+  const link = document.querySelector('.gnb .nav a.get-beats-btn');
+  if (!link) return;
+  link.setAttribute('aria-label', '음악 검색');
+  link.setAttribute('title', '음악 검색');
+  if (!link.querySelector('.mobile-search-icon')) {
+    link.insertAdjacentHTML('beforeend', '<svg class="mobile-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg>');
+  }
+  if (!link.dataset.searchBound) {
+    link.dataset.searchBound = '1';
+    link.addEventListener('click', (e) => {
+      if (window.innerWidth > 900) return;
+      const field = document.getElementById('beat-search');
+      if (field) {
+        e.preventDefault();
+        field.scrollIntoView({behavior:'smooth', block:'center'});
+        field.focus({preventScroll:true});
+      } else {
+        try { sessionStorage.setItem('onda_focus_search', '1'); } catch(err) {}
+      }
+    });
+  }
+}
+
 function refreshPageRefs(){
   beatsBody = document.getElementById('beats-body');
   moodBtns = document.querySelectorAll('.filter-btn');
@@ -1247,6 +1403,37 @@ function bindFaq(){
   });
 }
 
+/* Mobile-only: show HOT BEAT below the hero, without changing desktop markup. */
+function positionMobileHotBeats(){
+  const hero = document.getElementById('top');
+  const hot = document.querySelector('.hero-carousel');
+  if (!hero || !hot) return;
+  if (window.matchMedia('(max-width: 900px)').matches){
+    if (hot.parentElement === hero) hero.insertAdjacentElement('afterend', hot);
+  } else if (hot.parentElement !== hero){
+    hero.appendChild(hot);
+  }
+}
+window.addEventListener('resize', positionMobileHotBeats);
+
+function bindMobileDanceStyles(){
+  const row = document.querySelector('body.sounds-page .tag-filters-row');
+  const toggle = row?.querySelector('.dance-style-toggle');
+  if (!row || !toggle || toggle.dataset.bound) return;
+  toggle.dataset.bound = '1';
+  toggle.addEventListener('click', () => {
+    const open = row.classList.toggle('is-open');
+    toggle.setAttribute('aria-expanded', String(open));
+  });
+  row.querySelector('.tag-filters')?.addEventListener('click', () => {
+    requestAnimationFrame(() => {
+      const chosen = [...row.querySelectorAll('.tag-chip.on')].map(el => el.textContent.trim());
+      const status = toggle.querySelector('.dance-style-status');
+      if (status) status.textContent = chosen.length ? (chosen.length === 1 ? chosen[0] : chosen.length + ' selected') : 'All styles';
+    });
+  });
+}
+
 function initCurrentPage(){
   refreshPageRefs();
   activeMood = 'all';
@@ -1254,8 +1441,21 @@ function initCurrentPage(){
   searchQuery = '';
   currentPage = 1;
   bindHeaderCart();
+  bindMobileMenu();
+  bindMobileSearch();
   initSoundsUI();
+  bindMobileDanceStyles();
+  if (searchInput && window.innerWidth <= 900) {
+    try {
+      if (sessionStorage.getItem('onda_focus_search') === '1') {
+        sessionStorage.removeItem('onda_focus_search');
+        searchInput.scrollIntoView({block:'center'});
+        searchInput.focus({preventScroll:true});
+      }
+    } catch(err) {}
+  }
   initCarousel();
+  positionMobileHotBeats();
   initOndazine();
   bindFaq();
   updateCartBar();

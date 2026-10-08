@@ -29,9 +29,35 @@
         <span class="header-cart-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="20" r="1"></circle><circle cx="19" cy="20" r="1"></circle><path d="M3 4h2l2.4 10.2a2 2 0 0 0 2 1.5h8.7a2 2 0 0 0 2-1.6L22 8H7"></path></svg></span>
         <span class="header-cart-count" id="header-cart-count">0</span>
       </button>
+      <button class="mobile-menu-btn" id="mobile-menu-btn" type="button" aria-label="메뉴 열기" aria-controls="mobile-side-menu" aria-expanded="false">
+  <span></span>
+  <span></span>
+  <span></span>
+</button>
     </nav>
   </div>
 </header>
+<!-- Mobile Side Menu -->
+<div class="mobile-menu-overlay" id="mobile-menu-overlay"></div>
+
+<aside class="mobile-side-menu" id="mobile-side-menu" aria-hidden="true">
+  <div class="mobile-menu-head">
+    <img src="assets/logo.png" alt="ONDA beat" class="mobile-menu-logo">
+
+    <button class="mobile-menu-close" id="mobile-menu-close" type="button" aria-label="메뉴 닫기">
+      ×
+    </button>
+  </div>
+
+  <nav class="mobile-menu-nav">
+    <a href="sounds.html">SOUNDS</a>
+    <a href="ondazine.html">ONDAZINE</a>
+    <a href="pricing.html">PRICING</a>
+    <a href="qna.html">QnA</a>
+
+    <a href="sounds.html" class="mobile-get-beats">GET BEATS ↗</a>
+  </nav>
+</aside>
 
 <!-- Sticky banner -->
 <div class="banner">

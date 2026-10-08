@@ -311,10 +311,24 @@
   .carousel-slide.playing .carousel-play {
     background: #fff;
   }
-  .carousel-slide.playing .carousel-play svg { fill: var(--pink); }
-  .carousel-slide.playing .carousel-play svg.pause-icon { display: block; }
-  .carousel-slide.playing .carousel-play svg.play-icon { display: none; }
-  .carousel-play .pause-icon { display: none; }
+  .carousel-slide.playing .carousel-play svg {
+  fill: #fff !important;
+}
+
+.carousel-slide.playing .carousel-play svg.pause-icon {
+  display: block;
+  width: 10px !important;
+  height: 12px !important;
+  transform: translateX(-1.5px) !important;
+}
+
+.carousel-slide.playing .carousel-play svg.play-icon {
+  display: none;
+}
+
+.carousel-play .pause-icon {
+  display: none;
+}
   .carousel-buy {
     display: inline-flex;
     align-items: center;
@@ -434,7 +448,7 @@
   .beats-table th.genre { width: 180px; }
   .beats-table td.genre-cell { max-width: 180px; padding-right: 20px; }
   .beats-table td.wave-cell { text-align: center; }
-  .beats-table td:nth-child(6) { text-align: center; }
+  .beats-table td:nth-child(5) { text-align: center; }
   .beats-table td:last-child { text-align: center; }
 
   .beat-row {
@@ -943,7 +957,7 @@
 
     .hero-carousel { padding: 40px 14px 68px; margin-top: 28px; }
     .hero-carousel-head { margin-bottom: 32px; }
-    .home-links { padding: 56px 0 80px; }
+    .home-links { padding: 36px 0 64px; }
     .hero-carousel-head h2 { font-size: 24px; }
     .carousel-nav { display: none; }
     .carousel-slide { flex: 0 0 88%; margin: 0 1.5%; padding: 18px 16px; gap: 12px; }
@@ -1094,7 +1108,7 @@
 }
 .home-link-arrow {
   position: absolute;
-  left: 28px; bottom: 28px;
+  left: 35px; bottom: 28px;
   font-family: var(--f-mono);
   font-size: 12px;
   color: var(--pink);
@@ -1110,6 +1124,81 @@
 }
 @media (max-width: 600px) {
   .home-links-inner { grid-template-columns: 1fr; }
+}
+
+/* Home navigation cards: compact phone layout, desktop untouched. */
+@media (max-width: 600px) {
+  html body .home-links {
+    padding: 5px 0 64px;
+  }
+  html body .home-links-inner {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+    padding: 0 20px;
+  }
+  html body .home-link-card {
+    min-height: 0;
+    padding: 22px 22px 24px;
+    border-radius: 17px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+  }
+  html body .home-link-card .section-kicker {
+    font-size: 10px;
+    line-height: 1.3;
+    letter-spacing: .16em;
+    margin: 0 0 13px;
+  }
+  html body .home-link-card h3 {
+    font-size: 24px;
+    line-height: 1.14;
+    letter-spacing: -.015em;
+    margin: 0 0 10px;
+  }
+  html body .home-link-card p {
+    font-size: 12px;
+    line-height: 1.5;
+    margin: 0 0 19px;
+  }
+  html body .home-link-card .home-link-arrow {
+    position: static;
+    display: block;
+    align-self: flex-start;
+    font-size: 11px;
+    line-height: 1.4;
+    letter-spacing: .055em;
+    margin-top: auto;
+  }
+  html body .home-link-pricing .price-line {
+    font-family: 'Pretendard', sans-serif;
+    font-size: 22px;
+    font-weight: 1000;
+    letter-spacing: -0.04em;
+    line-height: 1.2;
+    margin-bottom: 0;
+}
+  html body .home-link-pricing .promo-line {
+    gap: 9px;
+    padding: 11px 12px;
+    margin: 0 0 12px;
+    border-radius: 12px;
+  }
+  html body .home-link-pricing .promo-pill {
+    font-size: 8px;
+    padding: 4px 7px;
+  }
+  html body .home-link-pricing .promo-text {
+    font-size: 11px;
+    line-height: 1.45;
+  }
+  html body .home-link-pricing .promo-text b {
+    font-size: 13px;
+  }
+  html body .home-link-pricing h3 {
+    margin-bottom: 12px;
+  }
 }
 
 
@@ -1534,6 +1623,8 @@ body { padding-bottom: 0; }
   display: block;
   font-size: 30px;
   color: #fff;
+  font-family: 'Pretendard', sans-serif;
+font-weight: 1000;
   letter-spacing: 0.01em;
   margin-bottom: 14px;
 }
@@ -2471,6 +2562,7 @@ body.cart-visible.player-visible{padding-bottom:0;}
   color:var(--pink);
   transform:translateY(-1px);
 }
+\n\n/* ===== CART-ONLY SELECTION + PERSISTENT PLAYER ===== */\n.beats-table .buy-btn.in-cart{\n  color:#ff3f8f;\n  background:rgba(255,63,143,.10);\n  border-color:rgba(255,63,143,.45);\n}\n.beats-table .buy-btn.in-cart svg{\n  stroke:#ff3f8f;\n}\nbody.player-visible.cart-visible .player-bar{\n  bottom:74px;\n}\nbody.player-visible.cart-visible .cart-bar{\n  bottom:0;\n}\nbody.player-visible.cart-visible{\n  padding-bottom:150px;\n}\nbody.player-visible:not(.cart-visible){\n  padding-bottom:76px;\n}\nbody.cart-visible:not(.player-visible){\n  padding-bottom:74px;\n}\n@media (max-width:700px){\n  body.player-visible.cart-visible .player-bar{ bottom:86px; }\n  body.player-visible.cart-visible{ padding-bottom:170px; }\n}\n
 
 /* ===== HOME HERO · HOT BEAT TOP 3 — CLEAN FINAL ===== */
 .hero > .hero-carousel{
@@ -3187,251 +3279,611 @@ body.cart-visible.player-visible{padding-bottom:0;}
   }
 }
 
+/* ===== MOBILE HEADER — FINAL OVERRIDE ===== */
+.mobile-menu-btn,.mobile-menu-overlay,.mobile-side-menu{display:none;}
+@media (max-width:900px){
+ body.mobile-menu-open{overflow:hidden!important;}
+ .gnb{position:sticky!important;top:0!important;z-index:1000!important;background:rgba(0,0,0,.94)!important;border-bottom:1px solid rgba(255,255,255,.08)!important;backdrop-filter:blur(16px)!important;-webkit-backdrop-filter:blur(16px)!important;}
+ .gnb-inner{height:68px!important;max-width:none!important;padding:0 18px!important;margin:0!important;display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:space-between!important;gap:12px!important;}
+ .gnb-inner>.logo{flex:0 0 auto!important;display:flex!important;align-items:center!important;margin:0!important;padding:0!important;}
+ .gnb-inner>.logo .logo-img{width:116px!important;height:auto!important;max-height:none!important;}
+ .gnb .nav{width:auto!important;margin:0 0 0 auto!important;padding:0!important;border:0!important;display:flex!important;flex-direction:row!important;flex-wrap:nowrap!important;align-items:center!important;justify-content:flex-end!important;gap:8px!important;order:initial!important;}
+ .gnb .nav>a{display:none!important;}
+ .gnb .header-cart-btn,.mobile-menu-btn{width:42px!important;height:42px!important;min-width:42px!important;margin:0!important;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;border:1px solid rgba(255,255,255,.12)!important;border-radius:50%!important;background:rgba(255,255,255,.045)!important;}
+ .gnb .header-cart-btn{position:relative!important;}
+ .gnb .header-cart-icon{display:flex!important;align-items:center!important;justify-content:center!important;}
+ .gnb .header-cart-icon svg{width:19px!important;height:19px!important;fill:none!important;stroke:#fff!important;stroke-width:1.8!important;}
+ .gnb .header-cart-count{position:absolute!important;top:-3px!important;right:-2px!important;min-width:17px!important;height:17px!important;padding:0 4px!important;display:flex!important;align-items:center!important;justify-content:center!important;border-radius:999px!important;background:#ff2d87!important;color:#fff!important;font-family:var(--f-mono)!important;font-size:9px!important;font-weight:700!important;line-height:1!important;}
+ .mobile-menu-btn{flex-direction:column!important;gap:5px!important;}
+ .mobile-menu-btn span{display:block!important;width:17px!important;height:1.5px!important;border-radius:999px!important;background:#fff!important;}
+ .mobile-menu-overlay{display:block!important;position:fixed!important;inset:0!important;z-index:1190!important;background:rgba(0,0,0,.58)!important;opacity:0!important;visibility:hidden!important;pointer-events:none!important;transition:opacity .25s ease,visibility .25s ease!important;}
+ .mobile-menu-overlay.open{opacity:1!important;visibility:visible!important;pointer-events:auto!important;}
+ .mobile-side-menu{display:flex!important;position:fixed!important;top:0!important;right:0!important;z-index:1200!important;width:min(84vw,350px)!important;height:100dvh!important;padding:22px 22px 30px!important;flex-direction:column!important;background:rgba(10,10,13,.97)!important;border-left:1px solid rgba(255,255,255,.10)!important;box-shadow:-24px 0 60px rgba(0,0,0,.45)!important;backdrop-filter:blur(22px)!important;-webkit-backdrop-filter:blur(22px)!important;transform:translateX(105%)!important;visibility:hidden!important;transition:transform .28s cubic-bezier(.22,.8,.25,1),visibility .28s!important;}
+ .mobile-side-menu.open{transform:translateX(0)!important;visibility:visible!important;}
+ .mobile-menu-head{display:flex!important;align-items:center!important;justify-content:space-between!important;padding:3px 0 24px!important;border-bottom:1px solid rgba(255,255,255,.10)!important;}
+ .mobile-menu-logo{width:116px!important;height:auto!important;display:block!important;}
+ .mobile-menu-close{width:40px!important;height:40px!important;display:flex!important;align-items:center!important;justify-content:center!important;border:1px solid rgba(255,255,255,.12)!important;border-radius:50%!important;color:#fff!important;background:rgba(255,255,255,.04)!important;font-size:27px!important;font-weight:200!important;line-height:1!important;}
+ .mobile-menu-nav{display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:0!important;padding-top:24px!important;}
+ .mobile-menu-nav>a{display:flex!important;align-items:center!important;min-height:57px!important;padding:0 4px!important;border-bottom:1px solid rgba(255,255,255,.08)!important;color:#fff!important;font-family:var(--f-title)!important;font-size:28px!important;font-weight:400!important;letter-spacing:.01em!important;}
+ .mobile-menu-nav>a::after{content:'↗';margin-left:auto;color:rgba(255,255,255,.32);font-family:var(--f-body);font-size:15px;}
+ .mobile-menu-nav .mobile-get-beats{min-height:54px!important;margin-top:26px!important;padding:0 18px!important;justify-content:center!important;border:0!important;border-radius:999px!important;background:#ff2d87!important;font-family:var(--f-body)!important;font-size:13px!important;font-weight:800!important;letter-spacing:.08em!important;}
+ .mobile-menu-nav .mobile-get-beats::after{display:none!important;}
+ .banner{top:auto!important;padding:8px 0!important;font-size:10px!important;}
+}
+@media (min-width:901px){.mobile-menu-btn,.mobile-menu-overlay,.mobile-side-menu{display:none!important;}}
 
-/* ===== HOT TOP 3 · FINAL MARKUP-SPECIFIC FIX ===== */
-@media (min-width: 901px){
-  /* HOT title uses the exact same typography as Sounds .song-title */
-  #top.hero > section.hero-carousel .hot-rank-info .hot-rank-title{
-    display:block !important;
-    margin:0 !important;
-    padding:0 !important;
-    font-family:var(--f-body) !important;
-    font-size:16px !important;
-    line-height:1.15 !important;
-    font-weight:600 !important;
-    letter-spacing:0 !important;
-    color:#fff !important;
-    text-shadow:none !important;
-    white-space:nowrap !important;
-    overflow:hidden !important;
-    text-overflow:ellipsis !important;
-  }
+/* ONDA FIX: playback icons and selected cart states */
+#top.hero .carousel-slide.playing .carousel-play svg.pause-icon{fill:#fff !important;color:#fff !important;}
+#top.hero .carousel-slide.playing .carousel-play{background:#ff2d87 !important;}
+#top.hero .carousel-slide.playing .carousel-play svg.play-icon{display:none !important;}
+#top.hero .carousel-slide.playing .carousel-play svg.pause-icon{display:block !important;}
+#top.hero .hot-cart-btn.in-cart{color:#ff2d87 !important;border-color:#ff2d87 !important;background:rgba(255,45,135,.15) !important;}
+#top.hero .hot-cart-btn.in-cart svg{stroke:#ff2d87 !important;}
+.beats-table .buy-btn.in-cart,.zine-add-action.in-cart,.zine-mini-add.in-cart{color:#ff2d87 !important;border-color:#ff2d87 !important;}
+.beats-table .buy-btn.in-cart svg{stroke:#ff2d87 !important;}
 
-  /* Stable four-column layout: rank | info | BPM | play */
-  #top.hero > section.hero-carousel .carousel-slide.hot-rank-item{
-    grid-template-columns:42px minmax(0,1fr) 58px 40px !important;
-    column-gap:12px !important;
-  }
-
-  #top.hero > section.hero-carousel .carousel-slide.hot-rank-item > .bpm-badge{
-    grid-column:3 !important;
-    grid-row:1 !important;
-    position:static !important;
-    justify-self:center !important;
-    align-self:center !important;
-    display:inline-flex !important;
-    align-items:center !important;
-    justify-content:center !important;
-    width:58px !important;
-    min-width:58px !important;
-    max-width:58px !important;
-    height:24px !important;
-    min-height:24px !important;
-    margin:0 !important;
-    padding:0 !important;
-    box-sizing:border-box !important;
-    border:1px solid rgba(255,255,255,.20) !important;
-    border-radius:999px !important;
-    background:rgba(0,0,0,.18) !important;
-    font-family:var(--f-mono) !important;
-    font-size:10px !important;
-    line-height:1 !important;
-    font-weight:700 !important;
-    letter-spacing:0 !important;
-    color:#fff !important;
-    white-space:nowrap !important;
-    transform:none !important;
-  }
-
-  #top.hero > section.hero-carousel .carousel-slide.hot-rank-item > .carousel-play{
-    grid-column:4 !important;
-    grid-row:1 !important;
-    justify-self:end !important;
-    align-self:center !important;
+/* HOT BEAT TOP 3 heading font restoration — desktop only */
+@media (min-width: 901px) {
+  html body #top.hero > section.hero-carousel .hero-carousel-head h2 {
+    font-family: var(--f-mono) !important;
+    font-size: 20px !important;
+    font-weight: 800 !important;
+    letter-spacing: .10em !important;
+    line-height: 1.05 !important;
   }
 }
 
-
-/* ===== HOT TOP 3 · GENRE MATCH + BPM LEFT ===== */
-@media (min-width: 901px){
-  /* Match Sounds .song-genre exactly */
-  #top.hero > section.hero-carousel .hot-rank-info .meta{
-    margin-top:6px !important;
-    font-family:var(--f-body) !important;
-    font-size:13px !important;
-    line-height:1.4 !important;
-    font-weight:400 !important;
-    letter-spacing:0 !important;
-    color:var(--text-dim) !important;
-    opacity:1 !important;
-    text-shadow:none !important;
+/* ONDA HOT TOP 3 — restore original compact desktop layout (2026-10-08) */
+@media (min-width: 901px) {
+  html body #top.hero > section.hero-carousel .hero-carousel-head h2 {
+    font-family: var(--f-title) !important;
+    font-size: 28px !important;
+    font-weight: 700 !important;
+    letter-spacing: .025em !important;
+    line-height: 1.1 !important;
+    text-transform: none !important;
   }
-
-  /* Keep BPM at 10px, just move the whole badge left */
-  #top.hero > section.hero-carousel .carousel-slide.hot-rank-item > .bpm-badge{
-    font-size:10px !important;
-    transform:translateX(-10px) !important;
+  html body #top.hero > section.hero-carousel .carousel-slide.hot-rank-item {
+    display: grid !important;
+    grid-template-columns: 36px minmax(0,1fr) 58px 38px 34px !important;
+    column-gap: 10px !important;
+    align-items: center !important;
+    height: 74px !important;
+    min-height: 74px !important;
+    max-height: 74px !important;
+    padding: 0 14px !important;
+    overflow: hidden !important;
   }
-}
-
-
-/* ===== FINAL FIX · HOT PAUSE ICON + SOUNDS BPM ALIGNMENT ===== */
-
-/* HOT TOP 3: while playing, keep the same pink button and show a white pause icon */
-#top.hero .carousel-slide.playing .carousel-play{
-  background:#ff2d87 !important;
-  border-color:#ff2d87 !important;
-  color:#fff !important;
-  box-shadow:0 5px 17px rgba(255,45,135,.28) !important;
-}
-#top.hero .carousel-slide.playing .carousel-play svg.pause-icon{
-  display:block !important;
-  fill:#fff !important;
-  color:#fff !important;
-  margin-left:0 !important;
-}
-#top.hero .carousel-slide.playing .carousel-play svg.play-icon{
-  display:none !important;
-}
-
-/* Sounds table has 6 columns:
-   1 play / 2 song / 3 wave / 4 genre / 5 bpm / 6 buy.
-   Center the actual BPM cell (5th column) under the BPM header. */
-.beats-table tbody .beat-row td:nth-child(5){
-  text-align:center !important;
-}
-.beats-table tbody .beat-row td:nth-child(5) .song-bpm{
-  display:inline-block !important;
-  text-align:center !important;
-}
-
-
-/* ===== HOME HOT TOP 3 · TITLE FONT ONLY ===== */
-@media (min-width: 901px){
-  /* HOT BEAT TOP 3 */
-  #top.hero > section.hero-carousel .hero-carousel-head h2{
-    font-family:var(--f-title) !important;
-    font-weight:400 !important;
+  html body #top.hero > section.hero-carousel .hot-rank-number { grid-column: 1 !important; grid-row: 1 !important; }
+  html body #top.hero > section.hero-carousel .hot-rank-info { grid-column: 2 !important; grid-row: 1 !important; }
+  html body #top.hero > section.hero-carousel .bpm-badge { grid-column: 3 !important; grid-row: 1 !important; }
+  html body #top.hero > section.hero-carousel .carousel-play {
+    grid-column: 4 !important; grid-row: 1 !important;
+    position: static !important; justify-self: center !important;
+    width: 36px !important; height: 36px !important;
+    min-width: 36px !important; min-height: 36px !important;
+    margin: 0 !important; padding: 0 !important;
   }
-
-  /* HOT beat song titles only */
-  #top.hero > section.hero-carousel .hot-rank-title,
-  #top.hero > section.hero-carousel .hot-rank-info .title-row .hot-rank-title{
-    font-family:var(--f-title) !important;
-    font-weight:400 !important;
+  html body #top.hero > section.hero-carousel .hot-cart-btn {
+    grid-column: 5 !important; grid-row: 1 !important;
+    position: static !important; display: inline-flex !important;
+    align-items: center !important; justify-content: center !important;
+    justify-self: center !important; align-self: center !important;
+    width: 32px !important; height: 32px !important;
+    min-width: 32px !important; min-height: 32px !important;
+    max-width: 32px !important; max-height: 32px !important;
+    margin: 0 !important; padding: 0 !important;
+    border: 1px solid rgba(255,255,255,.24) !important;
+    border-radius: 9px !important;
+    background: rgba(10,10,14,.32) !important;
+    color: #eee !important;
+    box-shadow: none !important;
+    line-height: 0 !important;
+  }
+  html body #top.hero > section.hero-carousel .hot-cart-btn svg {
+    display: block !important; width: 17px !important; height: 17px !important;
+    min-width: 17px !important; min-height: 17px !important;
+    fill: none !important; stroke: currentColor !important;
+    stroke-width: 1.5 !important;
+  }
+  html body #top.hero > section.hero-carousel .hot-cart-btn.in-cart {
+    color: #ff2d87 !important; border-color: #ff2d87 !important;
+    background: rgba(255,45,135,.12) !important;
   }
 }
 
-
-/* ===== HOME HOT TOP 3 · FINAL DISPLAY TYPE ===== */
-@media (min-width: 901px){
-  #top.hero > section.hero-carousel .hero-carousel-head h2{
-    font-family:var(--f-title) !important;
-    font-size:20px !important;
-    line-height:1.1 !important;
-    font-weight:400 !important;
-    letter-spacing:.08em !important;
+/* ONDA HOT TOP 3: genre matches Sounds table; BPM/play breathing room */
+@media (min-width: 901px) {
+  html body #top.hero > section.hero-carousel .carousel-slide.hot-rank-item {
+    grid-template-columns: 36px minmax(0,1fr) 58px 44px 34px !important;
+    column-gap: 12px !important;
   }
-
-  #top.hero > section.hero-carousel .hot-rank-title,
-  #top.hero > section.hero-carousel .hot-rank-info .title-row .hot-rank-title{
-    font-family:var(--f-title) !important;
-    font-size:18px !important;
-    line-height:1.1 !important;
-    font-weight:400 !important;
-    letter-spacing:.02em !important;
+  html body #top.hero > section.hero-carousel .hot-rank-info .meta,
+  html body #top.hero > section.hero-carousel .carousel-slide .meta {
+    font-family: var(--f-body) !important;
+    font-size: 13px !important;
+    font-weight: 400 !important;
+    line-height: 1.4 !important;
+    letter-spacing: normal !important;
+    color: var(--text-dim) !important;
+    margin-top: 3px !important;
   }
-}
-
-
-/* ===== HOME HOT TOP 3 · HEADING + INTERACTIVE CARD FINAL ===== */
-@media (min-width: 901px){
-  html body #top.hero > section.hero-carousel .hero-carousel-head > h2{
-    font-family:var(--f-title) !important;
-    font-size:30px !important;
-    line-height:1.1 !important;
-    font-weight:400 !important;
-    letter-spacing:.08em !important;
-    text-shadow:none !important;
-  }
-
-  html body #top.hero > section.hero-carousel .carousel-slide.hot-rank-item{
-    cursor:pointer !important;
-    transform:translateY(0) scale(1) !important;
-    transform-origin:center !important;
-    transition:transform .18s ease, border-color .18s ease,
-               box-shadow .18s ease, background .18s ease !important;
-  }
-
-  html body #top.hero > section.hero-carousel .carousel-slide.hot-rank-item:hover{
-    transform:translateY(-3px) scale(1.012) !important;
-    border-color:rgba(255,45,135,.42) !important;
-    background:linear-gradient(110deg,rgba(255,255,255,.16),rgba(255,45,135,.075)) !important;
-    box-shadow:
-      inset 0 1px 0 rgba(255,255,255,.22),
-      0 12px 30px rgba(0,0,0,.24),
-      0 0 18px rgba(255,45,135,.10) !important;
-  }
-
-  html body #top.hero > section.hero-carousel .carousel-slide.hot-rank-item:active{
-    transform:translateY(-1px) scale(1.006) !important;
+  html body #top.hero > section.hero-carousel .carousel-slide.hot-rank-item .carousel-play {
+    margin-left: 8px !important;
   }
 }
 
-/* ===== HOME HOT TOP 3 · CART BUTTON ===== */
-@media (min-width:901px){
-  html body #top.hero > section.hero-carousel .carousel-slide.hot-rank-item{
-    grid-template-columns:42px minmax(0,1fr) 58px 40px 34px !important;
-    column-gap:9px !important;
+/* HOT BEAT TOP 3 — subtle lift and soft pink hover, desktop only */
+@media (min-width: 901px) and (hover: hover) {
+  html body #top.hero .hero-carousel .carousel-slide.hot-rank-item {
+    transition: transform .22s ease, background .22s ease, border-color .22s ease, box-shadow .22s ease !important;
+    will-change: transform;
   }
-  html body #top.hero > section.hero-carousel .hot-cart-btn{
-    grid-column:5 !important;
-    width:32px !important;
-    height:32px !important;
-    padding:0 !important;
-    justify-self:center !important;
-    align-self:center !important;
-    display:inline-flex !important;
-    align-items:center !important;
-    justify-content:center !important;
-    border:1px solid rgba(255,255,255,.18) !important;
-    border-radius:10px !important;
-    background:rgba(10,10,14,.28) !important;
-    color:rgba(255,255,255,.72) !important;
-    cursor:pointer !important;
-    transition:transform .16s ease,color .16s ease,border-color .16s ease,background .16s ease !important;
-  }
-  html body #top.hero > section.hero-carousel .hot-cart-btn svg{
-    width:15px !important;
-    height:15px !important;
-    fill:none !important;
-    stroke:currentColor !important;
-  }
-  html body #top.hero > section.hero-carousel .hot-cart-btn:hover{
-    transform:translateY(-1px) !important;
-    color:#ff2d87 !important;
-    border-color:rgba(255,45,135,.55) !important;
-    background:rgba(255,45,135,.10) !important;
-  }
-  html body #top.hero > section.hero-carousel .hot-cart-btn.in-cart{
-    color:#ff2d87 !important;
-    border-color:rgba(255,45,135,.58) !important;
-    background:rgba(255,45,135,.14) !important;
-  }
-  html body #top.hero > section.hero-carousel .hot-cart-btn.in-cart svg{
-    fill:rgba(255,45,135,.16) !important;
+  html body #top.hero .hero-carousel .carousel-slide.hot-rank-item:hover {
+    transform: translateY(-4px) !important;
+    background: linear-gradient(110deg, rgba(255,48,132,.12), rgba(255,255,255,.065)) !important;
+    border-color: rgba(255,85,160,.38) !important;
+    box-shadow: 0 12px 26px rgba(0,0,0,.22), 0 3px 14px rgba(255,45,135,.075) !important;
   }
 }
-/* ===== FIXED BOTTOM BARS SPACING ===== */
-
-body.player-visible:not(.cart-visible) {
-  padding-bottom: 76px;
+@media (prefers-reduced-motion: reduce) {
+  html body #top.hero .hero-carousel .carousel-slide.hot-rank-item { transition: none !important; }
 }
 
-body.cart-visible:not(.player-visible) {
-  padding-bottom: 74px;
+
+/* ONDA MOBILE — left sliding navigation; desktop remains untouched */
+@media (max-width: 900px) {
+  .gnb .gnb-inner { min-width:0!important; }
+  .gnb .nav { flex:0 0 auto!important; }
+  .gnb .nav #mobile-menu-btn { order:0!important; }
+  .gnb .nav #header-cart { order:1!important; }
+  #mobile-side-menu.mobile-side-menu {
+    left:0!important;right:auto!important;
+    transform:translateX(-105%)!important;
+    border-left:0!important;border-right:1px solid rgba(255,255,255,.10)!important;
+    box-shadow:24px 0 60px rgba(0,0,0,.45)!important;
+  }
+  #mobile-side-menu.mobile-side-menu.open { transform:translateX(0)!important; }
+  #mobile-menu-btn { touch-action:manipulation; }
+  #mobile-side-menu .mobile-menu-nav a:focus-visible,
+  #mobile-menu-btn:focus-visible,
+  #mobile-menu-close:focus-visible { outline:2px solid var(--pink)!important;outline-offset:3px; }
 }
 
-body.player-visible.cart-visible {
-  padding-bottom: 150px;
+/* ONDA mobile header: hamburger LEFT / logo CENTER / cart RIGHT */
+@media (max-width:900px) {
+  html body .gnb .gnb-inner {
+    position:relative!important;
+    display:flex!important;
+    flex-direction:row!important;
+    align-items:center!important;
+    justify-content:center!important;
+    flex-wrap:nowrap!important;
+    width:100%!important;
+    box-sizing:border-box!important;
+    height:68px!important;
+    padding:0 16px!important;
+  }
+  html body .gnb .gnb-inner > a.logo {
+    position:absolute!important;
+    left:50%!important;
+    top:50%!important;
+    transform:translate(-50%,-50%)!important;
+    margin:0!important;
+    z-index:1!important;
+  }
+  html body .gnb .gnb-inner > a.logo .logo-img {width:116px!important;height:auto!important;}
+  html body .gnb .gnb-inner > nav.nav {
+    display:contents!important;
+  }
+  html body .gnb .gnb-inner #mobile-menu-btn {
+    display:inline-flex!important;
+    position:absolute!important;
+    left:16px!important;
+    top:50%!important;
+    transform:translateY(-50%)!important;
+    z-index:2!important;
+  }
+  html body .gnb .gnb-inner #header-cart {
+    display:inline-flex!important;
+    position:absolute!important;
+    right:16px!important;
+    left:auto!important;
+    top:50%!important;
+    transform:translateY(-50%)!important;
+    z-index:2!important;
+  }
+  html body .gnb .gnb-inner nav.nav > a {display:none!important;}
 }
+
+/* ONDA 2026-10-08: mobile-only GET BEATS between centered logo and cart */
+@media (max-width:900px){
+  html body .gnb .gnb-inner nav.nav > a.try-now.get-beats-btn{
+    display:inline-flex!important;
+    position:absolute!important;
+    top:50%!important;
+    right:68px!important;
+    left:auto!important;
+    transform:translateY(-50%)!important;
+    z-index:2!important;
+    width:auto!important;
+    height:32px!important;
+    padding:0 9px!important;
+    margin:0!important;
+    white-space:nowrap!important;
+    font-size:10px!important;
+    letter-spacing:0!important;
+    border:1px solid #ff3f8f!important;
+    border-radius:6px!important;
+    background:transparent!important;
+    color:#fff!important;
+  }
+  html body .gnb .gnb-inner nav.nav > a.try-now.get-beats-btn:hover{
+    transform:translateY(-50%)!important;
+    background:#ff3f8f!important;
+  }
+  html body .gnb .gnb-inner > a.logo .logo-img{width:100px!important;}
+}
+@media (max-width:430px){
+  html body .gnb .gnb-inner > a.logo .logo-img{width:90px!important;}
+}
+@media (max-width:360px){
+  html body .gnb .gnb-inner #mobile-menu-btn{left:10px!important;width:36px!important;height:36px!important;min-width:36px!important;}
+  html body .gnb .gnb-inner #header-cart{right:10px!important;width:36px!important;height:36px!important;min-width:36px!important;}
+  html body .gnb .gnb-inner > a.logo .logo-img{width:76px!important;}
+  html body .gnb .gnb-inner nav.nav > a.try-now.get-beats-btn{right:52px!important;padding:0 6px!important;font-size:9px!important;height:30px!important;}
+}
+
+/* ONDA minimal mobile header — 2026-10-08. Desktop unaffected. */
+@media (max-width:900px) {
+  html body .gnb .gnb-inner { height:62px!important; padding:0 12px!important; }
+  html body .gnb .gnb-inner > a.logo { left:50%!important; top:50%!important; transform:translate(-50%,-50%)!important; z-index:1!important; }
+  html body .gnb .gnb-inner > a.logo .logo-img { width:98px!important; max-width:none!important; }
+  html body .gnb .gnb-inner #mobile-menu-btn,
+  html body .gnb .gnb-inner #header-cart {
+    width:30px!important; height:36px!important; min-width:30px!important;
+    border:0!important; border-radius:0!important; background:transparent!important;
+    box-shadow:none!important; padding:0!important;
+  }
+  html body .gnb .gnb-inner #mobile-menu-btn { left:12px!important; gap:4px!important; }
+  html body .gnb .gnb-inner #mobile-menu-btn span { width:19px!important; height:1.4px!important; }
+  html body .gnb .gnb-inner #header-cart { right:12px!important; }
+  html body .gnb .gnb-inner .header-cart-icon svg { width:18px!important; height:18px!important; stroke-width:1.6!important; }
+  html body .gnb .gnb-inner .header-cart-count { min-width:14px!important; height:14px!important; font-size:8px!important; top:0!important; right:-3px!important; }
+  html body .gnb .gnb-inner nav.nav > a.try-now.get-beats-btn {
+    right:49px!important; height:26px!important; padding:0 5px!important;
+    border:0!important; border-radius:0!important; background:transparent!important;
+    font-size:9px!important; font-weight:700!important; letter-spacing:-.02em!important;
+    color:#fff!important; white-space:nowrap!important; box-shadow:none!important;
+  }
+  html body .gnb .gnb-inner nav.nav > a.try-now.get-beats-btn:hover { background:transparent!important; color:#ff3f8f!important; }
+}
+@media (max-width:380px) {
+  html body .gnb .gnb-inner > a.logo .logo-img { width:88px!important; }
+  html body .gnb .gnb-inner nav.nav > a.try-now.get-beats-btn { right:43px!important; font-size:8px!important; padding:0 3px!important; }
+  html body .gnb .gnb-inner #mobile-menu-btn { left:9px!important; }
+  html body .gnb .gnb-inner #header-cart { right:9px!important; }
+}
+
+/* ONDA mobile search action — desktop unchanged. */
+.gnb .nav .mobile-search-icon { display:none; }
+@media (max-width:900px) {
+  html body .gnb .gnb-inner nav.nav > a.try-now.get-beats-btn {
+    display:flex!important; align-items:center!important; justify-content:center!important;
+    position:absolute!important; right:50px!important; top:50%!important;
+    transform:translateY(-50%)!important; width:28px!important; min-width:28px!important;
+    height:36px!important; padding:0!important; margin:0!important;
+    font-size:0!important; line-height:0!important; letter-spacing:0!important;
+    color:#fff!important; background:transparent!important; border:0!important;
+    box-shadow:none!important; border-radius:0!important; z-index:3!important;
+  }
+  html body .gnb .gnb-inner nav.nav > a.try-now.get-beats-btn .mobile-search-icon {
+    display:block!important; width:20px!important; height:20px!important;
+    flex:none!important; stroke:#fff!important; fill:none!important;
+  }
+  html body .gnb .gnb-inner nav.nav > a.try-now.get-beats-btn:focus-visible {
+    outline:2px solid #ff3f8f!important; outline-offset:2px!important;
+  }
+}
+@media (max-width:380px) {
+  html body .gnb .gnb-inner nav.nav > a.try-now.get-beats-btn {right:43px!important;}
+  html body .gnb .gnb-inner nav.nav > a.try-now.get-beats-btn .mobile-search-icon {width:18px!important;height:18px!important;}
+}
+
+/* ONDA mobile hero: preserve image crop, left-bottom title, standalone HOT BEAT. */
+@media (max-width:900px){
+  html body #top.hero{height:clamp(410px, 115vw, 570px)!important;min-height:0!important;overflow:hidden!important;}
+  html body #top.hero .hero-slot{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:cover!important;}
+  html body #top.hero .hero-copy{position:absolute!important;left:0!important;right:0!important;top:auto!important;bottom:30px!important;width:100%!important;max-width:none!important;padding:0 22px!important;margin:0!important;transform:none!important;box-sizing:border-box!important;z-index:4!important;}
+  html body #top.hero .hero-copy h1{font-size:clamp(34px, 9vw, 53px)!important;line-height:1.04!important;letter-spacing:-.025em!important;margin:0!important;max-width:100%!important;}
+  html body #top.hero .hero-copy h1 > span,
+  html body #top.hero .hero-copy h1 > span[style],
+  html body #top.hero .hero-copy h1 > span > span[style]{font-size:inherit!important;line-height:inherit!important;}
+  html body #top.hero .hero-copy .hero-tag{margin-top:10px!important;}
+  /* HOT BEAT mobile — one maintained carousel layout; desktop untouched. */
+  html body > section.hero-carousel {
+    position:relative!important;display:block!important;width:100%!important;
+    margin:0!important;padding:27px 0 30px!important;
+    background:#09090d!important;overflow:hidden!important;
+  }
+  html body > section.hero-carousel .hero-carousel-head {margin:0 7% 18px!important;}
+  html body > section.hero-carousel .hero-carousel-head h2 {
+    font-size:clamp(23px,6vw,27px)!important;font-weight:900!important;
+    letter-spacing:.025em!important;line-height:1.2!important;text-align:left!important;
+  }
+  html body > section.hero-carousel .carousel-viewport {width:100%!important;overflow:hidden!important;}
+  html body > section.hero-carousel #hotTrack {
+    display:flex!important;flex-direction:row!important;align-items:stretch!important;
+    gap:12px!important;overflow-x:auto!important;overflow-y:hidden!important;
+    scroll-snap-type:x mandatory!important;scroll-padding-inline:7%!important;
+    scroll-behavior:smooth!important;overscroll-behavior-x:contain!important;
+    touch-action:pan-x pan-y!important;transform:none!important;
+    padding:2px 7% 12px!important;box-sizing:border-box!important;
+    scrollbar-width:none!important;-webkit-overflow-scrolling:touch!important;
+  }
+  html body > section.hero-carousel #hotTrack::-webkit-scrollbar {display:none!important;}
+  html body > section.hero-carousel .carousel-slide.hot-rank-item {
+    position:relative!important;display:grid!important;flex:0 0 86%!important;
+    width:86%!important;min-width:0!important;box-sizing:border-box!important;
+    scroll-snap-align:center!important;
+    grid-template-columns:29px minmax(0,1fr) 40px 29px 27px!important;
+    grid-template-rows:1fr!important;align-items:center!important;
+    column-gap:8px!important;
+    height:86px!important;min-height:86px!important;max-height:86px!important;
+    padding:0 11px!important;
+    background:linear-gradient(110deg,rgba(45,42,48,.92),rgba(19,19,22,.94))!important;
+    border:1px solid rgba(255,255,255,.21)!important;border-radius:17px!important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.045)!important;
+    opacity:.45!important;transition:opacity .2s,border-color .2s,background .2s!important;
+    overflow:hidden!important;
+  }
+  html body > section.hero-carousel .carousel-slide.hot-rank-item.is-active {
+    opacity:1!important;border-color:rgba(255,45,135,.76)!important;
+    background:linear-gradient(105deg,rgba(60,34,51,.95),rgba(29,24,31,.96))!important;
+    box-shadow:0 0 18px rgba(255,45,135,.09),inset 0 1px 0 rgba(255,255,255,.07)!important;
+  }
+  html body > section.hero-carousel .hot-rank-number {
+    display:block!important;grid-column:1!important;grid-row:1!important;
+    font-size:23px!important;line-height:1!important;
+    color:#ff2d87!important;font-weight:800!important;
+  }
+  html body > section.hero-carousel .hot-rank-info {
+    display:flex!important;flex-direction:column!important;justify-content:center!important;
+    grid-column:2!important;grid-row:1!important;min-width:0!important;
+    align-self:center!important;text-align:left!important;overflow:hidden!important;    padding-left:5px!important;
+  }
+  html body > section.hero-carousel .hot-rank-info .title-row {
+    display:block!important;min-width:0!important;line-height:1.1!important;
+  }
+  html body > section.hero-carousel .hot-rank-info .title {
+    display:block!important;font-size:18px!important;font-weight:300!important;
+    line-height:1.1!important;letter-spacing:-.02em!important;
+    white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;
+  }
+  html body > section.hero-carousel .hot-rank-info .meta,
+  html body > section.hero-carousel .carousel-slide .meta {
+    display:block!important;visibility:visible!important;
+    font-size:9px!important;font-weight:400!important;line-height:1.3!important;
+    color:#aaa5ae!important;margin-top:1px!important;
+    white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;
+  }
+  html body > section.hero-carousel .slide-tags,
+  html body > section.hero-carousel .carousel-now-playing,
+  html body > section.hero-carousel .carousel-nav {display:none!important;}
+  html body > section.hero-carousel .bpm-badge {
+    display:flex!important;grid-column:3!important;grid-row:1!important;
+    position:static!important;align-items:center!important;justify-content:center!important;
+    width:40px!important;min-width:40px!important;height:20px!important;
+    padding:0 2px!important;box-sizing:border-box!important;
+    white-space:nowrap!important;font-size:7px!important;font-weight:700!important;
+    border-radius:999px!important;border:1px solid rgba(255,255,255,.26)!important;
+    background:rgba(0,0,0,.25)!important;letter-spacing:0!important;
+  }
+  html body > section.hero-carousel .carousel-play {
+    display:inline-flex!important;grid-column:4!important;grid-row:1!important;
+    position:static!important;align-items:center!important;justify-content:center!important;
+    width:25px!important;height:25px!important;min-width:25px!important;min-height:25px!important;
+   margin:0 0 0 5px!important;padding:0!important;transform:none!important;border-radius:50%!important;
+    background:#ff2d87!important;box-shadow:0 3px 12px rgba(255,45,135,.2)!important;
+  }
+  html body > section.hero-carousel .carousel-play svg {
+    width:11px!important;height:13px!important;
+  }
+  html body > section.hero-carousel .hot-cart-btn {
+    display:inline-flex!important;grid-column:5!important;grid-row:1!important;
+    position:static!important;align-items:center!important;justify-content:center!important;
+    width:25px!important;height:25px!important;min-width:25px!important;min-height:25px!important;
+    margin:0!important;padding:0!important;transform:none!important;
+    border:1px solid rgba(255,255,255,.28)!important;border-radius:9px!important;
+    background:rgba(0,0,0,.18)!important;
+  }
+  html body > section.hero-carousel .hot-cart-btn svg {width:11px!important;height:11px!important;}
+  html body > section.hero-carousel .carousel-dots {
+    display:flex!important;justify-content:center!important;align-items:center!important;
+    gap:10px!important;margin:5px 0 0!important;
+  }
+  html body > section.hero-carousel .carousel-dots span {
+    display:block!important;width:6px!important;height:6px!important;
+    border-radius:50%!important;background:#66616b!important;
+  }
+  html body > section.hero-carousel .carousel-dots span.on {
+    width:17px!important;border-radius:10px!important;background:#ff2d87!important;
+  }
+  html body > section.hero-carousel .carousel-hint {display:none!important;}
+
+}
+@media (max-width:380px){
+  html body #top.hero .hero-copy{padding:0 17px!important;bottom:25px!important;}
+  html body #top.hero .hero-copy h1{font-size:clamp(31px, 8.5vw, 38px)!important;}
+}
+
+/* Mobile-only: compact 2:1 hero, minimal crop and raised left title. */
+@media (max-width:900px){
+  html body #top.hero{
+    height:50vw!important;
+    min-height:0!important;
+    max-height:450px!important;
+  }
+  html body #top.hero .hero-slot{
+    object-fit:cover!important;
+    object-position:center center!important;
+  }
+  html body #top.hero .hero-copy{
+    left:0!important;
+    right:0!important;
+    bottom:22px!important;
+    padding:0 18px!important;
+  }
+  html body #top.hero .hero-copy h1{
+    font-size:clamp(20px,5.4vw,31px)!important;
+    line-height:1.02!important;
+  }
+}
+@media (max-width:380px){
+  html body #top.hero .hero-copy{bottom:18px!important;padding:0 15px!important;}
+  html body #top.hero .hero-copy h1{font-size:clamp(19px,5.3vw,23px)!important;}
+}
+
+/* HOT BEAT: narrow mobile fit; desktop unaffected. */
+@media (max-width:380px){
+  html body > section.hero-carousel .carousel-slide.hot-rank-item{
+    grid-template-columns:23px minmax(0,1fr) 49px 34px 30px!important;
+    gap:5px!important;padding:0 10px!important;
+  }
+  html body > section.hero-carousel .hot-rank-number{font-size:19px!important;}
+  html body > section.hero-carousel .bpm-badge{width:49px!important;font-size:9px!important;}
+  html body > section.hero-carousel .carousel-play{width:34px!important;height:34px!important;min-width:34px!important;min-height:34px!important;}
+  html body > section.hero-carousel .hot-cart-btn{width:30px!important;height:30px!important;min-width:30px!important;min-height:30px!important;}
+}
+
+/* SOUNDS mobile: compact catalog, six fixed mood choices, collapsible dance styles. */
+@media (max-width: 900px) {
+  body.sounds-page .page-hero { padding: 14px 0 11px; }
+  body.sounds-page .page-hero-inner { padding: 0 20px; }
+  body.sounds-page .page-hero .section-kicker { font-size: 9px; }
+  body.sounds-page .page-hero-title { font-size: clamp(30px, 8vw, 42px); margin-top: 5px; }
+  body.sounds-page .page-hero-sub { margin-top: 5px; font-size: clamp(11px, 2.15vw, 12px); line-height: 1.45; max-width: none; white-space: nowrap; letter-spacing: -0.045em; }
+  body.sounds-page .sounds { padding-top: 22px; }
+  body.sounds-page .sounds-inner { padding-left: 14px; padding-right: 14px; }
+  body.sounds-page .sounds-toolbar { display: flex; flex-direction: column; gap: 13px; margin-bottom: 14px; }
+  body.sounds-page .sounds-toolbar .search-wrap { order: -1; width: 100%; min-width: 0; padding: 10px 14px; }
+  body.sounds-page .sounds-toolbar .filters { order: 0; display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); width: 100%; flex: none; gap: 8px; margin: 0; }
+  body.sounds-page .filters .filter-btn { box-sizing: border-box; min-width: 0; width: 100%; min-height: 36px; padding: 7px 3px; border-radius: 999px; font-size: 11px; line-height: 1.2; letter-spacing: -0.02em; white-space: nowrap; }
+  body.sounds-page .filters .filter-btn.active { background: #eb2994; border-color: #eb2994; color: #fff; box-shadow: none; }
+  body.sounds-page .tag-filters-row { display: block; padding: 0; margin-bottom: 15px; border: 1px solid #262630; border-radius: 10px; }
+  body.sounds-page .dance-style-toggle { display: flex; align-items: center; width: 100%; min-height: 44px; gap: 8px; padding: 0 13px; border: 0; background: #15151a; color: #fff; cursor: pointer; text-align: left; border-radius: 10px; }
+  body.sounds-page .dance-style-toggle .tag-filters-label { color: #e7e7ea; letter-spacing: .12em; font-size: 10px; }
+  body.sounds-page .dance-style-status { margin-left: auto; font-size: 11px; color: #aaa6b2; }
+  body.sounds-page .dance-style-chevron { font-size: 20px; line-height: 1; color: #aaa6b2; transition: transform .2s; }
+  body.sounds-page .tag-filters-row.is-open .dance-style-chevron { transform: rotate(180deg); }
+  body.sounds-page .tag-filters-row:not(.is-open) .tag-filters { display: none; }
+  body.sounds-page .tag-filters-row.is-open .tag-filters { display: flex; padding: 12px; gap: 7px; }
+
+  /* SOUNDS track rows: play | title + genre | dance tags | BPM | cart */
+  body.sounds-page .beats-table,
+  body.sounds-page .beats-table tbody { display: block; width: 100%; }
+  body.sounds-page .beats-table thead { display: block; width: 100%; }
+  body.sounds-page .beats-table thead tr {
+    display: grid;
+    grid-template-columns: 32px minmax(90px, 1fr) 94px 25px 27px;
+    padding-right: 18px;
+    column-gap: 5px;
+    align-items: center;
+    min-height: 34px;
+    border-bottom: 1px solid #24242e;
+  }
+  body.sounds-page .beats-table thead th {
+    display: block;
+    width: auto;
+    min-width: 0;
+    padding: 0;
+    text-align: left;
+    font-size: 10px;
+    letter-spacing: .16em;
+  }
+  body.sounds-page .beats-table thead th:first-child,
+  body.sounds-page .beats-table thead th.wave { display: none; }
+  body.sounds-page .beats-table thead th:nth-child(2) { grid-column: 2; }
+  body.sounds-page .beats-table thead th.genre { grid-column: 3; font-size: 0; }
+  body.sounds-page .beats-table thead th.genre::after { content: "dance"; font-size: 10px; }
+  body.sounds-page .beats-table thead th.bpm { grid-column: 4; text-align: center; transform: translateX(-5px); }
+  body.sounds-page .beats-table thead th:last-child { grid-column: 5; text-align: center; transform: translateX(5px); }
+  body.sounds-page .beats-table .beat-row {
+  display: grid;
+  grid-template-columns: 32px minmax(90px, 1fr) 94px 25px 27px;
+  align-items: center;
+  column-gap: 5px;
+  min-height: 90px;
+  padding: 9px 18px 9px 0;
+}
+  body.sounds-page .beats-table .beat-row > td {
+    display: block;
+    width: auto;
+    min-width: 0;
+    max-width: none;
+    padding: 0;
+  }
+  body.sounds-page .beats-table .beat-row > td:first-child { grid-column: 1; }
+  body.sounds-page .beats-table .beat-row > td.song-cell { display: contents; }
+  body.sounds-page .beats-table .song-copy { grid-column: 2; min-width: 0; }
+  body.sounds-page .beats-table .song-title {
+    display: block; font-size: 11px; line-height: 1.3;
+    overflow-wrap: anywhere;
+  }
+  body.sounds-page .beats-table .mobile-song-genre {
+    display: block; margin-top: 4px; color: #92909d;
+    font-size: 9px; line-height: 1.25; overflow-wrap: anywhere;
+  }
+body.sounds-page .beats-table .song-tags {
+  grid-column: 3;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 4px;
+  margin: 0;
+  min-width: 0;
+  overflow: visible;
+}
+  body.sounds-page .beats-table .song-tag {
+  flex: 0 0 auto;
+  min-width: 0;
+  max-width: 100%;
+  padding: 3px 7px;
+  font-size: 6px;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  text-align: center;
+}
+  body.sounds-page .beats-table .beat-row > td.wave-cell,
+  body.sounds-page .beats-table .beat-row > td.genre-cell { display: none; }
+  body.sounds-page .beats-table .beat-row > td:nth-child(5) {
+    display: block; grid-column: 4; text-align: center;  transform: translateX(-5px);
+  }
+  body.sounds-page .beats-table .song-bpm { font-size: 11px; }
+  body.sounds-page .beats-table .beat-row > td:last-child {
+    display: block; grid-column: 5; text-align: center !important;
+  }
+  body.sounds-page .beats-table .play-btn { width: 30px; height: 30px; }
+  body.sounds-page .beats-table .play-btn svg { width: 12px; height: 12px; }
+  body.sounds-page .beats-table .buy-btn { margin: 0 auto; }
+  body.sounds-page .beats-table .buy-btn svg {
+  width: 13px;
+  height: 13px;
+}
+  /* Compact spacing at the end of the mobile catalog. */
+  body.sounds-page .sounds { padding-bottom: 24px; }
+  body.sounds-page .beats-table .beat-row.playing { box-shadow: none; }
+  body.sounds-page footer { padding-top: 26px; padding-bottom: 26px; }
+  body.sounds-page footer .ft-inner { gap: 22px; }
+  body.sounds-page .player-bar { padding-top: 12px; padding-bottom: 20px; }
+  body.sounds-page .pb-inner { row-gap: 10px; }
+}
+@media (min-width: 901px) {
+  body.sounds-page .dance-style-toggle { display: contents; }
+  body.sounds-page .dance-style-status, body.sounds-page .dance-style-chevron { display: none; }
+}
+
+@media (min-width: 901px) { body.sounds-page .mobile-song-genre { display: none; } }
