@@ -233,15 +233,26 @@ const PREVIEW_LIMIT = 60;
 function syncBottomBars(){
   const player = document.getElementById('player-bar');
   const cartBar = document.getElementById('cart-bar');
-  document.body.classList.toggle('player-visible', !!player && !player.classList.contains('hidden'));
-  document.body.classList.toggle('cart-visible', !!cartBar && !cartBar.classList.contains('hidden'));
+  const playerVisible = !!player && !player.classList.contains('hidden');
+  const cartVisible = !!cartBar && !cartBar.classList.contains('hidden');
+  document.body.classList.toggle('player-visible', playerVisible);
+  document.body.classList.toggle('cart-visible', cartVisible);
+  // Read the rendered heights, not hard-coded desktop/mobile guesses.
+  const playerHeight = playerVisible ? Math.ceil(player.getBoundingClientRect().height) : 0;
+  const cartHeight = cartVisible ? Math.ceil(cartBar.getBoundingClientRect().height) : 0;
+  document.body.style.setProperty('--onda-cart-bar-height', cartHeight + 'px');
+  document.body.style.setProperty('--onda-bottom-bars-height', (playerHeight + cartHeight) + 'px');
 }
- // seconds — 1분 미리듣기 제한
-function syncBottomBars(){
-  const player = document.getElementById('player-bar');
-  const cartBar = document.getElementById('cart-bar');
-  document.body.classList.toggle('player-visible', !!player && !player.classList.contains('hidden'));
-  document.body.classList.toggle('cart-visible', !!cartBar && !cartBar.classList.contains('hidden'));
+if (typeof ResizeObserver !== 'undefined') {
+  const ondaBottomObserver = new ResizeObserver(() => syncBottomBars());
+  const watchBottomBars = () => ['player-bar','cart-bar'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el && !el.dataset.ondaObserved) { el.dataset.ondaObserved = '1'; ondaBottomObserver.observe(el); }
+  });
+  document.addEventListener('DOMContentLoaded', watchBottomBars);
+  window.addEventListener('resize', syncBottomBars);
+  // Elements are created lazily; attach observers when they first become visible.
+  window.ondaWatchBottomBars = watchBottomBars;
 }
 function ensurePlayerBar(){
   if (document.getElementById('player-bar')) return document.getElementById('player-bar');
@@ -356,6 +367,7 @@ function ensurePlayerBar(){
 function showPlayer(title, meta){
   const bar = ensurePlayerBar();
   bar.classList.remove('hidden');
+  if (window.ondaWatchBottomBars) window.ondaWatchBottomBars();
   syncBottomBars();
   bar.querySelector('.pb-title').textContent = title || '';
   bar.querySelector('.pb-sub').textContent = meta || '';
@@ -576,8 +588,9 @@ function ensureCartBar(){
   bar.innerHTML = `
     <div class="cart-bar-inner">
       <div class="cart-bar-left">
-        <span class="cart-count"><b>0</b>곡 선택됨</span>
-        <span class="cart-promo" id="cart-promo"></span>
+        <div class="cart-bundle-top"><span class="cart-bundle-label">3-TRACK BUNDLE</span><span class="cart-bundle-step" id="cart-bundle-step">1 / 3 TRACKS</span></div>
+        <div class="cart-bundle-progress" aria-hidden="true"><i></i><i></i><i></i></div>
+        <div class="cart-bundle-message" id="cart-bundle-message">2곡 더 담으면 ₩14,400 할인</div>
       </div>
       <div class="cart-bar-right">
    
@@ -621,7 +634,15 @@ function updateCartBar(){
   }
   bar.classList.remove('hidden');
   syncBottomBars();
-  bar.querySelector('.cart-count b').textContent = n;
+  // Compact cart bar has no cart-count node; keep updating totals and progress.
+  const countNode = bar.querySelector('.cart-count b');
+  if (countNode) countNode.textContent = n;
+  const progressCount = n % 3 === 0 ? 3 : n % 3;
+  const remainingToBundle = (3 - (n % 3)) % 3;
+  bar.querySelector('#cart-bundle-step').textContent = `${progressCount} / 3 TRACKS`;
+  bar.querySelectorAll('.cart-bundle-progress i').forEach((segment, index) => segment.classList.toggle('filled', index < progressCount));
+  bar.querySelector('#cart-bundle-message').textContent = remainingToBundle === 0
+    ? `묶음할인 적용 완료 · ${fmt(discount)} 절약` : `${remainingToBundle}곡 더 담으면 ₩14,400 할인`;
   const totalEl = bar.querySelector('#cart-total-val');
   const oldEl = bar.querySelector('.cart-total-old');
   totalEl.textContent = fmt(total);
@@ -631,13 +652,7 @@ function updateCartBar(){
   } else {
     oldEl.style.display = 'none';
   }
-  const promoEl = bar.querySelector('#cart-promo');
-  if (bundles >= 1){
-    promoEl.textContent = `· 묶음 할인 ${bundles}회 적용 (-${fmt(discount)})`;
-  } else {
-    const more = 3 - n;
-    promoEl.textContent = more > 0 ? `· ${more}곡 더 담으면 묶음 할인 적용 (-₩ 14,400)` : '';
-  }
+  syncBottomBars();
 }
 
 /* === Checkout modal === */
@@ -660,7 +675,13 @@ function ensureCheckout(){
           </div>
         </div>
         <div class="checkout-list" id="checkout-list"></div>
-        <div class="checkout-promo-notice" id="checkout-promo"></div>
+        <div class="checkout-bundle-card" id="checkout-bundle-card" aria-live="polite">
+          <div class="checkout-bundle-head"><span>3-TRACK BUNDLE</span><span id="checkout-bundle-step">1 / 3 TRACKS</span></div>
+          <div class="checkout-bundle-progress" aria-hidden="true"><i></i><i></i><i></i></div>
+          <div class="checkout-bundle-message" id="checkout-bundle-message">2곡만 더 담으면 묶음할인!</div>
+          <div class="checkout-bundle-sub">3곡 묶음 구매 시</div>
+          <div class="checkout-bundle-bottom"><div class="checkout-bundle-prices"><s>₩29,400</s> <strong>₩15,000</strong></div><span class="checkout-bundle-save">₩14,400 절약</span></div>
+        </div>
         <div class="checkout-summary">
           <div class="row"><span>소계</span><span id="co-subtotal">₩ 0</span></div>
           <div class="row discount" id="co-discount-row"><span>3곡 묶음 할인</span><span id="co-discount">-₩ 0</span></div>
@@ -916,17 +937,16 @@ function renderCheckout(){
   m.querySelector('#co-discount').textContent = '-' + fmt(discount);
   m.querySelector('#co-discount-row').style.display = discount > 0 ? 'flex' : 'none';
   m.querySelector('#co-total').textContent = fmt(total);
-  const promo = m.querySelector('#checkout-promo');
-  if (n > 0 && n < 3){
-    promo.textContent = `🎁 ${3-n}곡만 더 담으면 3곡 묶음 ₩15,000 (-₩14,400 할인) 적용!`;
-    promo.style.display = 'block';
-  } else if (n >= 3 && n % 3 !== 0){
-    const need = 3 - (n % 3);
-    promo.textContent = `🎁 ${need}곡만 더 담으면 추가 묶음 할인이 적용됩니다.`;
-    promo.style.display = 'block';
-  } else {
-    promo.style.display = 'none';
-  }
+  const bundleCard = m.querySelector('#checkout-bundle-card');
+  const remaining = (3 - (n % 3)) % 3;
+  const filled = n % 3 === 0 && n > 0 ? 3 : n % 3;
+  bundleCard.style.display = n > 0 ? 'block' : 'none';
+  m.querySelector('#checkout-bundle-step').textContent = `${filled} / 3 TRACKS`;
+  m.querySelectorAll('.checkout-bundle-progress i').forEach((el, i) => el.classList.toggle('filled', i < filled));
+  m.querySelector('#checkout-bundle-message').textContent = remaining === 0
+    ? '3곡 묶음할인이 적용됐어요!'
+    : `${remaining}곡만 더 담으면 묶음할인!`;
+  m.querySelector('.checkout-bundle-sub').textContent = remaining === 0 ? '3곡 묶음할인 적용' : '3곡 묶음 구매 시';
 }
 
 function openCheckout(){
@@ -1266,18 +1286,36 @@ function bindZineRows(scope){
 function zineProductMain(b){
  if(!b)return '<div class="zine-missing-track">Track unavailable</div>';
  const tags=(b.tags||[]).map(t=>esc(t)).join(' · ');
- return `<div class="zine-featured-card"><div class="zine-featured-title">${esc(b.title)}</div><div class="zine-featured-meta">${esc(b.genre||'—')} · ${esc(b.bpm||'—')} BPM</div>${tags?`<div class="zine-featured-tags">${tags}</div>`:''}<div class="zine-featured-actions"><button type="button" class="zine-preview-action" data-id="${esc(b.id)}" data-src="${esc(b.preview)}">▶ PREVIEW</button><button type="button" class="zine-add-action" data-id="${esc(b.id)}">ADD TO CART +</button></div></div>`;
+ return `<div class="zine-featured-card"><div class="zine-featured-title">${esc(b.title)}</div><div class="zine-featured-meta">${esc(b.genre||'—')} · ${esc(b.bpm||'—')} BPM</div>${tags?`<div class="zine-featured-tags">${tags}</div>`:''}<div class="zine-featured-actions"><button type="button" class="zine-preview-action" data-id="${esc(b.id)}" data-src="${esc(b.preview)}" aria-label="Preview track"><svg class="play-icon" viewBox="0 0 10 12" aria-hidden="true"><polygon points="0,0 10,6 0,12"/></svg><svg class="pause-icon" viewBox="0 0 10 12" aria-hidden="true"><rect x="1" y="1" width="3" height="10"/><rect x="6" y="1" width="3" height="10"/></svg><span>PREVIEW</span></button><button type="button" class="zine-add-action zine-cart-btn" data-id="${esc(b.id)}" aria-label="Add to cart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.6 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg></button></div></div>`;
 }
-function zineProductMini(b){if(!b)return '';return `<div class="zine-mini-card"><div class="zine-mini-copy"><strong>${esc(b.title)}</strong><span>${esc(b.genre||'—')} · ${esc(b.bpm||'—')} BPM</span></div><button type="button" class="zine-mini-play" data-id="${esc(b.id)}" data-src="${esc(b.preview)}">▶</button><button type="button" class="zine-mini-add" data-id="${esc(b.id)}">ADD TO CART</button></div>`;}
+function zineProductMini(b){if(!b)return '';return `<div class="zine-mini-card"><div class="zine-mini-copy"><strong>${esc(b.title)}</strong><span>${esc(b.genre||'—')} · ${esc(b.bpm||'—')} BPM</span></div><button type="button" class="zine-mini-play" data-id="${esc(b.id)}" data-src="${esc(b.preview)}" aria-label="Preview track"><svg class="play-icon" viewBox="0 0 10 12" aria-hidden="true"><polygon points="0,0 10,6 0,12"/></svg><svg class="pause-icon" viewBox="0 0 10 12" aria-hidden="true"><rect x="1" y="1" width="3" height="10"/><rect x="6" y="1" width="3" height="10"/></svg></button><button type="button" class="zine-mini-add zine-cart-btn" data-id="${esc(b.id)}" aria-label="Add to cart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.6 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg></button></div>`;}
 function bindZineProductActions(scope){
  scope.querySelectorAll('.zine-preview-action,.zine-mini-play').forEach(btn=>btn.onclick=()=>{let ghost=scope.querySelector(`.zine-audio-ghost[data-id="${CSS.escape(String(btn.dataset.id))}"]`);if(!ghost){ghost=document.createElement('div');ghost.className='beat-row zine-audio-ghost';ghost.dataset.id=btn.dataset.id;ghost.dataset.src=btn.dataset.src;ghost.style.display='none';ghost.innerHTML='<button class="play-btn"><svg class="play-icon" viewBox="0 0 10 12"><polygon points="0,0 10,6 0,12"/></svg><svg class="pause-icon" viewBox="0 0 10 12"><rect x="1" y="1" width="3" height="10"/><rect x="6" y="1" width="3" height="10"/></svg></button>';scope.appendChild(ghost);}togglePlay(ghost,btn.dataset.id,btn.dataset.src);});
- scope.querySelectorAll('.zine-add-action,.zine-mini-add').forEach(btn=>btn.onclick=()=>{const id=String(btn.dataset.id);cart.add(id);saveCart();updateCartBar();btn.textContent='ADDED ✓';});
+ const syncZinePlay=()=>scope.querySelectorAll('.zine-mini-play,.zine-preview-action').forEach(b=>{const playing=!!audio && !audio.paused && currentId===String(b.dataset.id);b.classList.toggle('is-playing',playing);b.setAttribute('aria-label',playing?'Pause track':'Preview track');});
+ if(audio && !scope.dataset.zinePlaySync){scope.dataset.zinePlaySync='1';['play','pause','ended'].forEach(ev=>audio.addEventListener(ev,syncZinePlay));}
+ syncZinePlay();
+ scope.querySelectorAll('.zine-add-action,.zine-mini-add').forEach(btn=>btn.onclick=()=>{const id=String(btn.dataset.id);cart.add(id);saveCart();updateCartBar();btn.classList.add('in-cart');btn.setAttribute('aria-label','Added to cart');});
 }
 async function initOndazine(){
  const list=document.getElementById('ondazine-list'),detail=document.getElementById('ondazine-detail');if(!list||!detail)return;
  try{const zines=await fetchZines(),id=new URLSearchParams(location.search).get('id');
   if(id){document.body.classList.add('ondazine-detail-mode');const hero=document.querySelector('#ondazine-app .page-hero');if(hero)hero.hidden=true;const z=zines.find(x=>String(x.id)===String(id));if(!z){detail.hidden=false;detail.innerHTML='<div class="ondazine-empty">ONDAZINE을 찾을 수 없습니다.</div>';list.hidden=true;return;}list.hidden=true;detail.hidden=false;const f=BEATS.find(b=>String(b.db_id||b.id)===String(z.featured_sound_id)),p1=BEATS.find(b=>String(b.db_id||b.id)===String(z.more_sound_1_id)),p2=BEATS.find(b=>String(b.db_id||b.id)===String(z.more_sound_2_id));const cover=`<div class="zine-shop-cover"><img src="${esc(z.cover_url||'')}" alt="${esc(z.title)}">${z.instagram_url?'<span>VIEW ON INSTAGRAM ↗</span>':''}</div>`;detail.innerHTML=`<a class="zine-back" href="ondazine.html">← ALL ONDAZINE</a><article class="zine-shop-layout">${z.instagram_url?`<a class="zine-cover-link" href="${esc(z.instagram_url)}" target="_blank" rel="noopener">${cover}</a>`:cover}<div class="zine-shop-info"><section class="zine-shop-featured"><div class="zine-shop-label">RECOMMENDED TRACK</div>${zineProductMain(f)}</section><section class="zine-shop-more"><div class="zine-shop-label">MORE PICKS FOR YOU</div>${zineProductMini(p1)}${zineProductMini(p2)}</section></div></article>`;bindZineProductActions(detail);
-  }else{document.body.classList.remove('ondazine-detail-mode');detail.hidden=true;list.hidden=false;list.innerHTML=zines.length?zines.map(z=>`<a class="ondazine-card" href="ondazine.html?id=${encodeURIComponent(z.id)}"><div class="ondazine-cover"><img src="${esc(z.cover_url||'')}" alt="${esc(z.title)}"><span class="ondazine-open">READ & LISTEN ↗</span></div><div class="ondazine-card-copy"><span>ONDA ZINE VOL.${esc(z.issue_no||'—')}</span><h2>${esc(z.title)}</h2>${z.subtitle?`<p>${esc(z.subtitle)}</p>`:''}</div></a>`).join(''):'<div class="ondazine-empty">아직 등록된 ONDAZINE이 없습니다.</div>';}
+  }else{document.body.classList.remove('ondazine-detail-mode');detail.hidden=true;list.hidden=false;list.innerHTML=zines.length?zines.slice(0,8).map(z=>`<a class="ondazine-card" href="ondazine.html?id=${encodeURIComponent(z.id)}"><div class="ondazine-cover"><img src="${esc(z.cover_url||'')}" alt="${esc(z.title)}"><span class="ondazine-open">READ & LISTEN ↗</span></div><div class="ondazine-card-copy"><span>ONDA ZINE VOL.${esc(z.issue_no||'—')}</span><h2>${esc(z.title)}</h2>${z.subtitle?`<p>${esc(z.subtitle)}</p>`:''}</div></a>`).join(''):'<div class="ondazine-empty">아직 등록된 ONDAZINE이 없습니다.</div>';
+  const getPageSize=()=>window.matchMedia('(max-width: 600px)').matches?8:9;
+  let pageSize=getPageSize();
+  let totalPages=Math.ceil(zines.length/pageSize);
+  let pager=document.getElementById('ondazine-pagination');
+  if(!pager){pager=document.createElement('nav');pager.id='ondazine-pagination';pager.className='ondazine-pagination';pager.setAttribute('aria-label','ONDAZINE pages');list.insertAdjacentElement('afterend',pager);}
+  const cardHTML=z=>`<a class="ondazine-card" href="ondazine.html?id=${encodeURIComponent(z.id)}"><div class="ondazine-cover"><img src="${esc(z.cover_url||'')}" alt="${esc(z.title)}"><span class="ondazine-open">READ & LISTEN ↗</span></div><div class="ondazine-card-copy"><span>ONDA ZINE VOL.${esc(z.issue_no||'—')}</span><h2>${esc(z.title)}</h2>${z.subtitle?`<p>${esc(z.subtitle)}</p>`:''}</div></a>`;
+  const showPage=page=>{
+   const current=Math.max(1,Math.min(totalPages,page));
+   list.innerHTML=zines.slice((current-1)*pageSize,current*pageSize).map(cardHTML).join('');
+   pager.innerHTML=totalPages>=1?`<button type="button" data-page="${current-1}" ${current===1?'disabled':''} aria-label="Previous page">‹</button>${Array.from({length:totalPages},(_,i)=>`<button type="button" data-page="${i+1}" ${i+1===current?'aria-current="page"':''}>${i+1}</button>`).join('')}<button type="button" data-page="${current+1}" ${current===totalPages?'disabled':''} aria-label="Next page">›</button>`:'';
+   pager.querySelectorAll('button:not(:disabled)').forEach(btn=>btn.addEventListener('click',()=>{showPage(Number(btn.dataset.page));document.querySelector('#ondazine-app .page-hero')?.scrollIntoView({behavior:'smooth',block:'start'});}));
+  };
+  if(zines.length)showPage(1);
+  window.addEventListener('resize',()=>{const next=getPageSize();if(next!==pageSize){pageSize=next;totalPages=Math.ceil(zines.length/pageSize);showPage(1);}});
+}
  }catch(err){console.error(err);list.innerHTML='<div class="ondazine-empty">ONDAZINE을 불러오지 못했습니다.</div>';}
 }
 
@@ -1564,3 +1602,6 @@ loadBeats().then(() => {
   // Fallback only for hard reload/direct entry. SPA navigation itself never destroys audio.
   restorePlayerState();
 });
+
+// Keep the footer fully scrollable when the viewport changes size.
+window.addEventListener('resize', () => { if (document.body) syncBottomBars(); }, {passive:true});

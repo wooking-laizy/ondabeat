@@ -3927,3 +3927,465 @@ body.sounds-page .beats-table .song-tags {
   .checkout-actions .checkout-secondary { padding: 14px 10px; font-size: 12px; }
   .checkout-actions .checkout-pay { padding: 14px 8px; font-size: 13px; }
 }
+
+/* ONDAZINE cart buttons: match SOUNDS cart icon and toggle states. */
+.ondazine-detail-mode .zine-featured-actions { grid-template-columns: minmax(0,1fr) 52px; }
+.ondazine-detail-mode .zine-mini-card { grid-template-columns: minmax(0,1fr) 44px 44px; }
+.ondazine-detail-mode .zine-cart-btn {
+  width:44px; height:44px; min-height:44px; padding:0;
+  display:inline-flex; align-items:center; justify-content:center;
+  justify-self:end; border:1px solid #34343d; border-radius:9px;
+  background:transparent; color:#fff !important; cursor:pointer;
+  transition:color .2s,border-color .2s,background .2s;
+}
+.ondazine-detail-mode .zine-cart-btn svg { width:20px; height:20px; stroke:currentColor; }
+.ondazine-detail-mode .zine-cart-btn:hover,
+.ondazine-detail-mode .zine-cart-btn.in-cart {
+  color:#ff2d87 !important; border-color:#ff2d87 !important;
+  background:rgba(255,45,135,.10);
+}
+.ondazine-detail-mode .zine-cart-btn.in-cart svg { stroke:#ff2d87; fill:rgba(255,45,135,.12); }
+@media(max-width:560px){
+  .ondazine-detail-mode .zine-featured-actions { grid-template-columns:minmax(0,1fr) 52px; }
+  .ondazine-detail-mode .zine-mini-card { grid-template-columns:minmax(0,1fr) 42px 44px; }
+  .ondazine-detail-mode .zine-mini-add { grid-column:auto; }
+}
+
+/* ONDAZINE refinements: rounded playback controls, compact mobile editorial. */
+#ondazine-detail .zine-preview-action {
+  border-radius: 999px;
+  transition: border-color .2s, background .2s, color .2s;
+}
+#ondazine-detail .zine-mini-play {
+  width: 42px;
+  height: 42px;
+  min-height: 42px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  justify-self: center;
+  padding: 0;
+  transition: border-color .2s, background .2s, color .2s;
+}
+#ondazine-detail .zine-preview-action:hover,
+#ondazine-detail .zine-mini-play:hover {
+  background: rgba(255,45,135,.10);
+}
+@media (max-width: 600px) {
+  body:not(.ondazine-detail-mode) #ondazine-app .page-hero {
+    padding-top: 12px;
+    padding-bottom: 16px;
+    min-height: 0;
+  }
+
+  body:not(.ondazine-detail-mode) #ondazine-app .page-hero-inner {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  body:not(.ondazine-detail-mode) #ondazine-app .page-hero-title {
+    font-size: 30px;
+    margin-top: 4px;
+    margin-bottom: 4px;
+  }
+
+  body:not(.ondazine-detail-mode) #ondazine-app .page-hero-sub {
+    font-size: 11px;
+    line-height: 1.4;
+  }
+
+  /* 모바일 ONDAZINE 목록 2열 */
+  body:not(.ondazine-detail-mode) #ondazine-list.ondazine-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 14px;
+    row-gap: 28px;
+  }
+
+  #ondazine-list .ondazine-card {
+    width: 100%;
+    max-width: none;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  /* 모바일 상세 표지 기존 크기 유지 */
+  .ondazine-detail-mode #ondazine-detail .zine-shop-cover {
+    width: 70%;
+    max-width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .ondazine-detail-mode #ondazine-detail .zine-shop-layout {
+    gap: 24px;
+  }
+}
+
+/* ONDAZINE — unified cover interactions and compact mobile archive */
+#ondazine-list .ondazine-cover::after {
+  content:"";
+  position:absolute;
+  inset:0;
+  background:rgba(8,8,11,.22);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .28s ease;
+}
+#ondazine-list .ondazine-open {
+  z-index:2;
+  inset:0;
+  right:0;
+  bottom:0;
+  padding:14px;
+  border:0;
+  background:transparent;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  font-size:11px;
+  color:#fff;
+  opacity:0;
+  transform:scale(.94);
+  transition:opacity .28s ease, transform .28s ease;
+  pointer-events:none;
+}
+@media (hover:hover) {
+  #ondazine-list .ondazine-card:hover .ondazine-cover::after,
+  #ondazine-list .ondazine-card:focus-visible .ondazine-cover::after {opacity:1;}
+  #ondazine-list .ondazine-card:hover .ondazine-open,
+  #ondazine-list .ondazine-card:focus-visible .ondazine-open {opacity:1;transform:scale(1);}
+  #ondazine-list .ondazine-card:hover .ondazine-cover img,
+  #ondazine-list .ondazine-card:focus-visible .ondazine-cover img {filter:grayscale(.2) brightness(.55);transform:scale(1.012);}
+  .ondazine-detail-mode .zine-cover-link:focus-visible .zine-shop-cover img {filter:grayscale(.2) brightness(.55);transform:scale(1.012);}
+  .ondazine-detail-mode .zine-cover-link:focus-visible .zine-shop-cover span,
+  .ondazine-detail-mode .zine-cover-link:focus-visible .zine-shop-cover span::before {opacity:1;}
+}
+@media (max-width:600px) {
+  body:not(.ondazine-detail-mode) #ondazine-list.ondazine-grid {
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    column-gap:14px;
+    row-gap:28px;
+  }
+  body:not(.ondazine-detail-mode) #ondazine-list .ondazine-card {
+    width:100%;
+    max-width:none;
+    margin:0;
+  }
+  #ondazine-list .ondazine-card-copy {padding-top:10px;}
+  #ondazine-list .ondazine-card-copy>span {font-size:9px;letter-spacing:.08em;}
+  #ondazine-list .ondazine-card-copy h2 {font-size:14px;line-height:1.35;margin:6px 0 4px;}
+  #ondazine-list .ondazine-card-copy p {font-size:11px;line-height:1.45;}
+}
+@media (hover:none) {
+  #ondazine-list .ondazine-open {opacity:0;}
+}
+
+/* ONDAZINE detail cover: always-visible Instagram cue on touch/mobile. */
+@media (max-width: 900px) {
+  .ondazine-detail-mode .zine-cover-link .zine-shop-cover img {
+    filter: brightness(.68);
+  }
+  .ondazine-detail-mode .zine-cover-link .zine-shop-cover span,
+  .ondazine-detail-mode .zine-cover-link:hover .zine-shop-cover span {
+    opacity: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    background: rgba(8,8,11,.16);
+    pointer-events: none;
+  }
+  .ondazine-detail-mode .zine-cover-link .zine-shop-cover span::before,
+  .ondazine-detail-mode .zine-cover-link:hover .zine-shop-cover span::before {
+    opacity: 1;
+    transform: scale(1);
+    width: 52px;
+    height: 52px;
+    flex-shrink: 0;
+  }
+  .ondazine-detail-mode .zine-cover-link .zine-shop-cover span::after {
+    content: "VIEW ON INSTAGRAM ↗";
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1.4;
+    letter-spacing: .1em;
+    text-align: center;
+    text-shadow: 0 1px 8px rgba(0,0,0,.45);
+  }
+}
+
+/* ONDAZINE October 10: local detail fixes, do not affect home/Sounds */
+body.ondazine-detail-mode #ondazine-app .ondazine-section{padding-bottom:16px!important;min-height:0!important;}
+body.ondazine-detail-mode #ondazine-detail .zine-shop-layout{margin-bottom:12px!important;}
+body.ondazine-detail-mode footer{padding-top:24px!important;}
+#ondazine-detail .zine-mini-play{background:#2a1a2f!important;border:0!important;border-radius:50%!important;box-shadow:none;}
+#ondazine-detail .zine-mini-play svg{width:16px!important;height:16px!important;fill:#ff2d87!important;flex-shrink:0;}
+#ondazine-detail .zine-mini-play .play-icon,#ondazine-detail .zine-preview-action .play-icon{display:block!important;}
+#ondazine-detail .zine-mini-play .pause-icon,#ondazine-detail .zine-preview-action .pause-icon{display:none!important;}
+#ondazine-detail .zine-mini-play.is-playing .play-icon,#ondazine-detail .zine-preview-action.is-playing .play-icon{display:none!important;}
+#ondazine-detail .zine-mini-play.is-playing .pause-icon,#ondazine-detail .zine-preview-action.is-playing .pause-icon{display:block!important;}
+#ondazine-detail .zine-mini-play.is-playing{background:#ff2d87!important;box-shadow:0 0 0 4px rgba(255,45,135,.15);}
+#ondazine-detail .zine-mini-play.is-playing svg{fill:#fff!important;}
+#ondazine-detail .zine-mini-play:hover{background:#ff2d87!important;}
+#ondazine-detail .zine-mini-play:hover svg{fill:#fff!important;}
+#ondazine-detail .zine-preview-action{display:flex;align-items:center;justify-content:center;gap:9px;}
+#ondazine-detail .zine-preview-action svg{width:12px;height:12px;fill:#ff2d87;flex-shrink:0;}
+#ondazine-detail .zine-preview-action:hover svg{fill:#fff;}
+.ondazine-pagination{display:flex;align-items:center;justify-content:center;gap:8px;margin:36px 0 0;flex-wrap:wrap;}
+.ondazine-pagination button{min-width:36px;height:36px;border:1px solid #383840;border-radius:8px;background:transparent;color:#fff;font:700 12px var(--f-mono);cursor:pointer;}
+.ondazine-pagination button[aria-current="page"]{background:#ff2d87;border-color:#ff2d87;color:#08080b;}
+.ondazine-pagination button:disabled{opacity:.3;cursor:default;}
+@media(max-width:600px){
+ body:not(.ondazine-detail-mode) #ondazine-list.ondazine-grid{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:28px 14px!important;}
+ body.ondazine-detail-mode #ondazine-detail .zine-shop-cover{width:62%!important;max-width:250px!important;margin-inline:auto!important;}
+ body.ondazine-detail-mode #ondazine-detail .zine-shop-layout{gap:22px!important;}
+ body.ondazine-detail-mode #ondazine-app .ondazine-section{padding-bottom:12px!important;}
+ .ondazine-pagination{margin-top:24px;}
+}
+
+
+/* ONDAZINE-only: compact mobile magazine spacing and footer transition */
+@media (max-width: 600px) {
+  body:not(.ondazine-detail-mode) #ondazine-app .ondazine-section {
+    padding-top: 20px !important;
+    padding-bottom: 28px !important;
+    min-height: 0 !important;
+  }
+  body:not(.ondazine-detail-mode) #ondazine-app .ondazine-inner {
+    padding-top: 0 !important;
+  }
+  body:not(.ondazine-detail-mode) #ondazine-app .ondazine-pagination {
+    margin-top: 24px !important;
+    margin-bottom: 0 !important;
+  }
+  body.ondazine-detail-mode #ondazine-app .ondazine-section {
+    padding-top: 0 !important;
+    padding-bottom: 20px !important;
+    min-height: 0 !important;
+  }
+  body.ondazine-detail-mode #ondazine-detail .zine-shop-layout {
+    margin-bottom: 0 !important;
+  }
+  body #ondazine-app + footer {
+    padding-top: 30px !important;
+  }
+}
+/* Keep the page counter visible even for a single archive page */
+#ondazine-pagination button[aria-current="page"] {
+  background: #ff2d87;
+  color: #08080b;
+}
+
+
+/* Shared mobile page banner — use the exact SOUNDS hero measurements.
+   Applies to PRICING, QnA and ONDAZINE list; leaves SOUNDS and desktop untouched. */
+@media (max-width: 900px) {
+  body:not(.sounds-page) .page-hero {
+    padding: 14px 0 11px;
+    min-height: 0;
+  }
+  body:not(.sounds-page) .page-hero-inner {
+    padding: 0 20px;
+  }
+  body:not(.sounds-page) .page-hero .section-kicker {
+    font-size: 9px;
+    margin-bottom: 0;
+  }
+  body:not(.sounds-page) .page-hero-title {
+    font-size: clamp(30px, 8vw, 42px);
+    margin-top: 5px;
+    margin-bottom: 0;
+    line-height: 0.9;
+  }
+  body:not(.sounds-page) .page-hero-sub {
+    margin-top: 5px;
+    font-size: clamp(11px, 2.15vw, 12px);
+    line-height: 1.45;
+    max-width: none;
+    white-space: nowrap;
+    letter-spacing: -0.045em;
+  }
+  /* Override older ONDAZINE-specific hero sizing to keep every page identical. */
+  body:not(.ondazine-detail-mode) #ondazine-app .page-hero {
+    padding: 14px 0 11px;
+    min-height: 0;
+  }
+  body:not(.ondazine-detail-mode) #ondazine-app .page-hero-inner {
+    padding: 0 20px;
+  }
+  body:not(.ondazine-detail-mode) #ondazine-app .page-hero-title {
+    font-size: clamp(30px, 8vw, 42px);
+    margin-top: 5px;
+    margin-bottom: 0;
+    line-height: 0.9;
+  }
+  body:not(.ondazine-detail-mode) #ondazine-app .page-hero-sub {
+    margin-top: 5px;
+    font-size: clamp(11px, 2.15vw, 12px);
+    line-height: 1.45;
+    max-width: none;
+    white-space: nowrap;
+    letter-spacing: -0.045em;
+  }
+}
+
+/* ONDAZINE pagination matches SOUNDS beats-pagination exactly. */
+.ondazine-pagination {display:flex;justify-content:center;align-items:center;gap:8px;margin:34px 0 8px;min-height:42px;}
+.ondazine-pagination button {appearance:none;border:1px solid #2a2a31;background:transparent;color:#9b9ba5;min-width:38px;height:38px;padding:0 11px;border-radius:999px;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:400;cursor:pointer;transition:all .18s ease;}
+.ondazine-pagination button:hover:not(:disabled) {border-color:#ff3f8f;color:#fff;}
+.ondazine-pagination button[aria-current="page"] {background:#ff3f8f;border-color:#ff3f8f;color:#fff;font-weight:700;}
+.ondazine-pagination button:disabled {opacity:.28;cursor:default;}
+@media(max-width:640px){
+ .ondazine-pagination {gap:5px;margin-top:14px!important;margin-bottom:0;}
+ .ondazine-pagination button {min-width:34px;height:34px;padding:0 9px;font-size:11px;}
+}
+/* Mobile PRICING: remove forced equal-height cards and excessive whitespace. */
+@media(max-width:900px){
+ .pricing {padding:34px 0 46px;}
+ .pricing .plans-grid {grid-auto-rows:auto;gap:18px;margin-bottom:26px;}
+ .pricing .plan-card {min-height:0!important;height:auto;align-self:start;padding:28px 22px;}
+ .pricing .plan-cta {margin-top:8px;}
+ .pricing .plan-perks {margin-bottom:22px;}
+ .pricing .pricing-intro.single-row {margin-bottom:28px;}
+ .pricing .license-grid {margin-top:22px;gap:16px;}
+ /* QnA: let the questions determine page height. */
+ .qna {padding:32px 0 42px;min-height:0;}
+ .qna .qna-inner {padding-bottom:0;}
+}
+
+/* ONDAZINE pager: exact same visual tokens as SOUNDS pager (desktop + mobile). */
+#ondazine-app #ondazine-pagination.ondazine-pagination {
+ display:flex;justify-content:center;align-items:center;gap:8px;
+ margin:34px 0 8px;min-height:42px;flex-wrap:wrap;
+}
+#ondazine-app #ondazine-pagination.ondazine-pagination button {
+ appearance:none;box-sizing:border-box;border:1px solid #2a2a31;
+ background:transparent;color:#9b9ba5;min-width:38px;height:38px;
+ padding:0 11px;border-radius:999px;font-family:'JetBrains Mono',monospace;
+ font-size:12px;font-weight:400;line-height:1;cursor:pointer;
+ transition:all .18s ease;
+}
+#ondazine-app #ondazine-pagination.ondazine-pagination button:hover:not(:disabled) {
+ border-color:#ff3f8f;color:#fff;
+}
+#ondazine-app #ondazine-pagination.ondazine-pagination button[aria-current="page"] {
+ background:#ff3f8f;border-color:#ff3f8f;color:#fff;font-weight:700;
+}
+#ondazine-app #ondazine-pagination.ondazine-pagination button:disabled {
+ opacity:.28;cursor:default;
+}
+@media(max-width:640px) {
+ #ondazine-app #ondazine-pagination.ondazine-pagination {gap:5px;margin-top:14px;margin-bottom:0;}
+ #ondazine-app #ondazine-pagination.ondazine-pagination button {
+  min-width:34px;height:34px;padding:0 9px;font-size:11px;
+ }
+}
+
+/* Simple single-line bundle reminder in the fixed cart bar. */
+#cart-bar .cart-bar-left {align-items:center;}
+#cart-bar .cart-promo {color:#50d79d; font-size:11px; white-space:normal;}
+@media(max-width:600px){
+  #cart-bar .cart-promo {display:inline; font-size:10px; line-height:1.4;}
+  #cart-bar .cart-bar-left {gap:5px 9px;}
+}
+
+/* Global footer visibility under fixed music player and checkout bar.
+   Overrides legacy body padding-bottom:0 and fixed pixel offsets. */
+body { padding-bottom: calc(var(--onda-bottom-bars-height, 0px) + env(safe-area-inset-bottom, 0px)) !important; }
+body.player-visible.cart-visible .player-bar,
+body.cart-visible.player-visible .player-bar { bottom: var(--onda-cart-bar-height, 0px) !important; }
+
+
+/* Checkout bundle offer: reference card, shown in cart review only. */
+#checkout-modal .checkout-bundle-card{background:#101014;color:#fff;border-radius:13px;padding:17px 12px 16px;margin:16px 0;box-sizing:border-box;}
+#checkout-modal .checkout-bundle-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px;font-size:11px;}
+#checkout-modal .checkout-bundle-head span:first-child{color:#ff2d87;font-weight:600;letter-spacing:.02em;}
+#checkout-modal .checkout-bundle-head span:last-child{color:#a5a3ad;font-size:10px;}
+#checkout-modal .checkout-bundle-progress{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;margin-bottom:15px;}
+#checkout-modal .checkout-bundle-progress i{display:block;height:6px;background:#403a47;border-radius:6px;}
+#checkout-modal .checkout-bundle-progress i.filled{background:#ff2d87;}
+#checkout-modal .checkout-bundle-message{font-size:15px;font-weight:650;margin-bottom:12px;}
+#checkout-modal .checkout-bundle-sub{font-size:12px;color:#aaa7b0;margin-bottom:7px;}
+#checkout-modal .checkout-bundle-bottom{display:flex;align-items:flex-end;justify-content:space-between;gap:8px;}
+#checkout-modal .checkout-bundle-prices{display:flex;align-items:baseline;flex-wrap:wrap;gap:7px;}
+#checkout-modal .checkout-bundle-prices s{font-size:12px;color:#aaa7b0;}
+#checkout-modal .checkout-bundle-prices strong{font-size:18px;color:#ff2d87;}
+#checkout-modal .checkout-bundle-save{background:#361526;color:#ff4a9c;padding:10px 9px;border-radius:7px;font-size:12px;white-space:nowrap;}
+@media(max-width:480px){#checkout-modal .checkout-bundle-card{padding:15px 12px;}#checkout-modal .checkout-bundle-message{font-size:14px;}}
+
+/* ONDA BEAT: 3-step bundle progress lives in the FIXED checkout bar. */
+#cart-bar { padding: 12px 0 13px; }
+#cart-bar .cart-bar-inner {align-items:center;gap:26px;}
+#cart-bar .cart-bar-left {display:flex;flex-direction:column;align-items:stretch;gap:7px;flex:1;min-width:0;max-width:660px;}
+#cart-bar .cart-bundle-top {display:flex;align-items:center;justify-content:space-between;gap:10px;font-family:var(--f-mono);font-size:10px;letter-spacing:.07em;}
+#cart-bar .cart-bundle-label {color:#ff2d87;font-weight:700;}
+#cart-bar .cart-bundle-step {color:#a9a6b0;font-size:10px;white-space:nowrap;}
+#cart-bar .cart-bundle-progress {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;width:100%;}
+#cart-bar .cart-bundle-progress i {display:block;height:6px;border-radius:99px;background:#403a47;transition:background .2s ease;}
+#cart-bar .cart-bundle-progress i.filled {background:#ff2d87;}
+#cart-bar .cart-bundle-message {color:#fff;font-size:14px;font-weight:700;line-height:1.25;}
+#cart-bar .cart-bundle-detail {display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+#cart-bar .cart-count {font-size:11px;color:#aaa7b0;}
+#cart-bar .cart-count b {font-size:12px;}
+#cart-bar .cart-promo {font-size:10px;color:#ff4a9c;}
+#cart-bar .cart-bar-right {flex-shrink:0;}
+/* Don't repeat the same 3-track progress card in the checkout dialog. */
+#checkout-modal .checkout-bundle-card {display:none !important;}
+@media(max-width:900px){
+ #cart-bar .cart-bar-inner {flex-direction:row;align-items:center;padding:0 18px;gap:12px;}
+ #cart-bar .cart-bar-right {gap:10px;}
+ #cart-bar .cart-total b {font-size:17px;white-space:nowrap;}
+ #cart-bar .cart-buy-btn {padding:11px 15px;font-size:12px;white-space:nowrap;}
+}
+@media(max-width:520px){
+ #cart-bar {padding:10px 0 11px;}
+ #cart-bar .cart-bar-inner {display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;}
+ #cart-bar .cart-bar-left {gap:5px;}
+ #cart-bar .cart-bundle-top {font-size:9px;}
+ #cart-bar .cart-bundle-step {font-size:9px;}
+ #cart-bar .cart-bundle-progress i {height:5px;}
+ #cart-bar .cart-bundle-message {font-size:12px;}
+ #cart-bar .cart-bundle-detail {gap:4px;}
+ #cart-bar .cart-count {font-size:10px;}
+ #cart-bar .cart-promo {display:none !important;}
+ #cart-bar .cart-bar-right {flex-direction:column;align-items:flex-end;gap:6px;}
+ #cart-bar .cart-total b {font-size:16px;}
+ #cart-bar .cart-total-old {font-size:10px;}
+ #cart-bar .cart-buy-btn {padding:9px 12px;font-size:11px;}
+}
+
+/* ONDA BEAT: compact fixed bundle progress + seamless stacked bars. */
+#cart-bar .cart-bundle-detail, #cart-bar .cart-count, #cart-bar .cart-promo {display:none !important;}
+#cart-bar {padding:10px 0 !important; border-top:1px solid rgba(255,255,255,.10);}
+#cart-bar .cart-bar-left {gap:5px !important;}
+#cart-bar .cart-bundle-progress i {height:5px;}
+#cart-bar .cart-bundle-message {font-size:12px;line-height:1.35;font-weight:650;}
+#cart-bar .cart-bundle-step {font-size:10px;}
+body.player-visible.cart-visible #player-bar,
+body.cart-visible.player-visible #player-bar {
+  bottom:calc(var(--onda-cart-bar-height, 0px) - 1px) !important;
+  margin-bottom:0 !important;
+}
+body.player-visible.cart-visible #cart-bar,
+body.cart-visible.player-visible #cart-bar {bottom:0 !important;margin-top:0 !important;}
+@media(max-width:520px){
+  #cart-bar {padding:9px 0 !important;}
+  #cart-bar .cart-bundle-message {font-size:11px;}
+  #cart-bar .cart-bar-left {gap:4px !important;}
+  #cart-bar .cart-bundle-top {font-size:9px;}
+}
+
+/* ONDA beat: restore bundle progress INSIDE the checkout cart review.
+   The fixed bottom purchase bar keeps its compact three-step progress. */
+#checkout-modal .checkout-step[data-step="cart"] .checkout-bundle-card {
+  display:block !important;
+  margin:18px 0 14px;
+}
+#checkout-modal .checkout-bundle-progress i.filled {background:#ff2d87;}
+@media(max-width:600px){
+  #checkout-modal .checkout-step[data-step="cart"] .checkout-bundle-card {margin:14px 0 12px;}
+}
