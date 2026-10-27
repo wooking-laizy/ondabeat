@@ -713,6 +713,12 @@ function ensureCheckout(){
           <span class="pay-field-hint" id="pay-email-hint">입금 확인 후 이 이메일로 음원 파일을 보내드립니다.</span>
         </label>
 
+        <label class="pay-field">
+          <span class="pay-field-label">입금자명 <em>*</em></span>
+          <input type="text" id="pay-depositor" placeholder="실제 송금 시 표시될 이름" autocomplete="name" maxlength="60" />
+          <span class="pay-field-hint" id="pay-depositor-hint">은행 이체 내역에 표시되는 입금자명과 동일하게 입력해 주세요.</span>
+        </label>
+
         <div class="bank-card">
           <div class="bank-row">
             <span class="bank-label">은행</span>
@@ -788,6 +794,16 @@ function ensureCheckout(){
       emailEl.focus();
       return;
     }
+    const depositorEl = m.querySelector('#pay-depositor');
+    const depositorHint = m.querySelector('#pay-depositor-hint');
+    const depositorName = depositorEl.value.trim();
+    if (!depositorName || depositorName.length > 60 || /[\r\n<>]/.test(depositorName)) {
+      depositorEl.classList.add('invalid');
+      depositorHint.textContent = '실제 송금 시 표시되는 입금자명을 입력해 주세요.';
+      depositorHint.classList.add('error');
+      depositorEl.focus();
+      return;
+    }
     const { items, total, bundles, singles } = calcCart();
     const orderId = 'ONDA-' + Date.now().toString(36).toUpperCase();
     const tracksList = items.map(b => `• ${b.title} (${b.genre}, ${b.bpm}BPM) [${b.id}]`).join('\n');
@@ -798,6 +814,9 @@ function ensureCheckout(){
 
 [ 고객 이메일 — 음원 발송 주소 ]
 ${email}
+
+[ 입금자명 ]
+${depositorName}
 
 [ 주문 곡 (${items.length}곡) ]
 ${tracksList}
@@ -837,6 +856,7 @@ ${tracksList}
         body: JSON.stringify({
           orderId,
           email,
+          depositorName,
           items: items.map(b => ({ id: String(b.id), title: String(b.title) })),
           total,
           bundles,
@@ -877,6 +897,13 @@ ${tracksList}
     });
   });
   // email validity reset
+  m.querySelector('#pay-depositor').addEventListener('input', () => {
+    const el = m.querySelector('#pay-depositor');
+    const hint = m.querySelector('#pay-depositor-hint');
+    el.classList.remove('invalid');
+    hint.classList.remove('error');
+    hint.textContent = '은행 이체 내역에 표시되는 입금자명과 동일하게 입력해 주세요.';
+  });
   m.querySelector('#pay-email').addEventListener('input', () => {
     const el = m.querySelector('#pay-email');
     const hint = m.querySelector('#pay-email-hint');

@@ -22,16 +22,17 @@ module.exports = async function handler(req, res) {
     if (typeof body === 'string') body = JSON.parse(body);
     if (JSON.stringify(body).length > MAX_BODY_BYTES) throw new Error('Too large');
   } catch (_) { return res.status(400).json({ error: 'Invalid request' }); }
-  const { orderId, email, items, total, bundles, singles } = body || {};
+  const { orderId, email, depositorName, items, total, bundles, singles } = body || {};
   const validItems = Array.isArray(items) && items.length >= 1 && items.length <= 30 &&
     items.every(x => x && typeof x.id === 'string' && x.id.length <= 80 &&
       typeof x.title === 'string' && x.title.length >= 1 && x.title.length <= 160);
   const validEmail = typeof email === 'string' && email.length <= 254 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const validDepositorName = typeof depositorName === 'string' && depositorName.trim().length >= 1 && depositorName.trim().length <= 60 && !/[\r\n<>]/.test(depositorName);
   const validOrderId = typeof orderId === 'string' && /^ONDA-[A-Z0-9]{5,24}$/.test(orderId);
   const expectedBundles = Math.floor((items?.length || 0) / 3);
   const expectedSingles = (items?.length || 0) % 3;
   const expectedTotal = expectedBundles * BUNDLE_PRICE + expectedSingles * SINGLE_PRICE;
-  if (!validItems || !validEmail || !validOrderId || bundles !== expectedBundles ||
+  if (!validItems || !validEmail || !validDepositorName || !validOrderId || bundles !== expectedBundles ||
       singles !== expectedSingles || total !== expectedTotal) {
     return res.status(400).json({ error: 'Invalid order details' });
   }
@@ -46,7 +47,7 @@ module.exports = async function handler(req, res) {
         'Content-Type': 'application/json',
         Prefer: 'return=minimal'
       },
-      body: JSON.stringify({ order_id: orderId, email, items, total, bundles, singles, status: 'pending' })
+      body: JSON.stringify({ order_id: orderId, email, depositor_name: depositorName.trim(), items, total, bundles, singles, status: 'pending' })
     });
     if (saved.status === 409) return res.status(409).json({ error: 'Order already exists' });
     if (!saved.ok) throw new Error(`Order database HTTP ${saved.status}: ${(await saved.text()).slice(0, 300)}`);
@@ -68,6 +69,7 @@ module.exports = async function handler(req, res) {
         { name: '주문번호', value: safe(orderId), inline: true },
         { name: '입금 예정 금액', value: `₩${total.toLocaleString('ko-KR')}`, inline: true },
         { name: '고객 이메일', value: safe(email), inline: false },
+        { name: '입금자명', value: safe(depositorName.trim()), inline: true },
         { name: `구매 곡 (${items.length}곡)`, value: tracks, inline: false },
         { name: '가격 구성', value: `3곡 묶음 ${bundles}건 / 단품 ${singles}곡`, inline: false }
       ],
