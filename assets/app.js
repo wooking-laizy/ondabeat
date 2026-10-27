@@ -828,6 +828,26 @@ ${tracksList}
     } catch (e) {
       console.log('Form submit failed (will still confirm to user):', e);
     }
+    // Notify the owner of a bank-transfer ORDER REQUEST, not a confirmed payment.
+    // The Discord webhook is stored only on the Vercel server.
+    try {
+      const notifyResponse = await fetch('/api/order-notification', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          orderId,
+          email,
+          items: items.map(b => ({ id: String(b.id), title: String(b.title) })),
+          total,
+          bundles,
+          singles
+        })
+      });
+      if (!notifyResponse.ok) console.warn('[ONDA] Discord notification failed:', notifyResponse.status);
+    } catch (error) {
+      // Keep the existing Google Form order flow intact if Discord is unavailable.
+      console.warn('[ONDA] Discord notification unavailable:', error);
+    }
     btn.disabled = false;
     btn.textContent = '결제하기';
 
