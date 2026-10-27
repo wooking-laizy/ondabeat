@@ -11,7 +11,9 @@ module.exports = async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
   const webhook = process.env.DISCORD_ORDER_WEBHOOK_URL;
-  if (!webhook) return res.status(503).json({ error: 'Notification not configured' });
+  const supabaseUrl = process.env.SUPABASE_URL;
+  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!supabaseUrl || !serviceKey) return res.status(503).json({ error: 'Order storage not configured' });
   if (Number(req.headers['content-length'] || 0) > MAX_BODY_BYTES) {
     return res.status(413).json({ error: 'Request too large' });
   }
@@ -33,6 +35,25 @@ module.exports = async function handler(req, res) {
       singles !== expectedSingles || total !== expectedTotal) {
     return res.status(400).json({ error: 'Invalid order details' });
   }
+  // Persist the order server-side. Service role credentials never reach the browser.
+  // Duplicate order IDs are rejected by the database unique constraint.
+  try {
+    const saved = await fetch(`${supabaseUrl.replace(/\/$/, '')}/rest/v1/onda_orders`, {
+      method: 'POST',
+      headers: {
+        apikey: serviceKey,
+        Authorization: `Bearer ${serviceKey}`,
+        'Content-Type': 'application/json',
+        Prefer: 'return=minimal'
+      },
+      body: JSON.stringify({ order_id: orderId, email, items, total, bundles, singles, status: 'pending' })
+    });
+    if (saved.status === 409) return res.status(409).json({ error: 'Order already exists' });
+    if (!saved.ok) throw new Error(`Order database HTTP ${saved.status}: ${(await saved.text()).slice(0, 300)}`);
+  } catch (error) {
+    console.error('[ONDA] Order save failed:', error.message);
+    return res.status(503).json({ error: 'Order could not be saved' });
+  }
   // Prevent Discord mentions from untrusted customer-entered content.
   const safe = value => String(value).replace(/@/g, '@\u200b').replace(/[`*_~|<>]/g, '');
   const tracks = items.map((x, i) => `${i + 1}. ${safe(x.title)} [${safe(x.id)}]`).join('\n').slice(0, 1000);
@@ -53,6 +74,7 @@ module.exports = async function handler(req, res) {
       timestamp: new Date().toISOString()
     }]
   };
+  if (!webhook) return res.status(200).json({ ok: true, saved: true, notified: false });
   try {
     const response = await fetch(webhook, {
       method: 'POST',
@@ -63,6 +85,6 @@ module.exports = async function handler(req, res) {
     return res.status(200).json({ ok: true });
   } catch (error) {
     console.error('[ONDA] Discord notification error:', error.message);
-    return res.status(502).json({ error: 'Notification delivery failed' });
+    return res.status(200).json({ ok: true, saved: true, notified: false });
   }
 };
